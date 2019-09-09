@@ -9,7 +9,7 @@ import { StyleSheet, Text, View, Platform } from "react-native";
 import { WebView } from "react-native-webview";
 import DeviceInfo from "react-native-device-info";
 
-export default class App extends Component<{}> {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -40,6 +40,14 @@ export default class App extends Component<{}> {
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
   }
+  getDeviceId(msgData) {
+    msgData.isSuccessfull = true;
+    const deviceBrand = DeviceInfo.getDeviceId();
+    msgData.args = [deviceBrand];
+    this.myWebView.injectJavaScript(
+      `window.postMessage('${JSON.stringify(msgData)}', '*');`
+    );
+  }
 
   onWebViewMessage(event) {
     console.log("Message received from webview");
@@ -59,6 +67,9 @@ export default class App extends Component<{}> {
       case "getDeviceBattery":
         this[msgData.targetFunc].apply(this, [msgData]);
         break;
+      case "getDeviceId":
+        this[msgData.targetFunc].apply(this, [msgData]);
+        break;
     }
   }
 
@@ -71,7 +82,7 @@ export default class App extends Component<{}> {
           }}
           tyle={styles.container}
           scrollEnabled={false}
-          source={{ uri: "http://192.168.1.104:3000" }}
+          source={{ uri: "http://192.168.1.23:3000" }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>
