@@ -1,0 +1,3 @@
+export const ADD_ARTICLE = "ADD_ARTICLE";
+export const CHANGE_LOCATION = "CHANGE_LOCATION";
+export const PREVIOUS_PAGE = "PREVIOUS_PAGE";

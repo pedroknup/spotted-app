@@ -1,0 +1,57 @@
+.footer {
+  height: 56px;
+  min-height: 56px;
+  background-color: #f7f7f7;
+  border-top: #b7b7b7 0.5px solid;
+  color: #b4b6b6;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.footer-button {
+  width: 64px;
+  text-align: center;
+  height: 56px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+}
+
+.footer-button-icon {
+  height: 24px;
+  margin: 8px 0 4px 0;
+}
+
+.footer-button-icon path {
+  fill: #b4b6b6;
+}
+
+.footer-button.selected {
+  color: #fc3158;
+  font-weight: bold;
+}
+
+.footer-button.selected .footer-button-icon path {
+  fill: #fc3158 !important;
+}
+/*# sourceMappingURL=footer-ios.component.css.map */

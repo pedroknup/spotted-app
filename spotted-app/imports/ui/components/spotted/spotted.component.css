@@ -1,0 +1,193 @@
+.spotted {
+  width: 100%;
+  display: table;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+}
+
+.spotted.white-fg > * {
+  color: white !important;
+}
+
+.spotted.white-fg svg path {
+  fill: white !important;
+}
+
+.spotted-yellow {
+  background: #fefcea;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fefcea), to(#f1da36));
+  background: linear-gradient(to bottom, #fefcea 0%, #f1da36 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#f1da36',GradientType=0 );
+}
+
+.spotted-yellow-orange {
+  background: #ffe48c;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffe48c), to(#ffcd1c));
+  background: linear-gradient(to bottom, #ffe48c 0%, #ffcd1c 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffe48c', endColorstr='#ffcd1c',GradientType=0 );
+}
+
+.spotted-orange {
+  background: #f6e6b4;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f6e6b4), to(#ed9017));
+  background: linear-gradient(to bottom, #f6e6b4 0%, #ed9017 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6e6b4', endColorstr='#ed9017',GradientType=0 );
+}
+
+.spotted-orange-red {
+  background: #ff9151;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff9151), to(#ff670f));
+  background: linear-gradient(to bottom, #ff9151 0%, #ff670f 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9151', endColorstr='#ff670f',GradientType=0 );
+}
+
+.spotted-red {
+  background: #ff3019;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff3019), to(#cf0404));
+  background: linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 );
+}
+
+.spotted-red-purple {
+  background: #ff87d1;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff87d1), to(#fc4198));
+  background: linear-gradient(to bottom, #ff87d1 0%, #fc4198 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff87d1', endColorstr='#fc4198',GradientType=0 );
+}
+
+.spotted-purple {
+  background: #e570e7;
+  background: -webkit-gradient(linear, left top, left bottom, from(#e570e7), color-stop(47%, #c85ec7), to(#a849a3));
+  background: linear-gradient(to bottom, #e570e7 0%, #c85ec7 47%, #a849a3 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e570e7', endColorstr='#a849a3',GradientType=0 );
+}
+
+.spotted-purple-blue {
+  background: #a557f9;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #a557f9), to(#8311fc));
+  background: linear-gradient(to bottom, #a557f9 1%, #8311fc 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a557f9', endColorstr='#8311fc',GradientType=0 );
+}
+
+.spotted-blue {
+  background: #87e0fd;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#87e0fd), color-stop(40%, #53cbf1), to(#05abe0));
+  background: linear-gradient(to bottom, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.spotted-blue-green {
+  background: #63e8ed;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, #63e8ed), to(#10e4ef));
+  background: linear-gradient(to bottom, #63e8ed 2%, #10e4ef 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#63e8ed', endColorstr='#10e4ef',GradientType=0 );
+}
+
+.spotted-green {
+  background: #d1f480;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d1f480), color-stop(44%, #83e63c), to(#19a612));
+  background: linear-gradient(to bottom, #d1f480 0%, #83e63c 44%, #19a612 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1f480', endColorstr='#19a612',GradientType=0 );
+}
+
+.spotted-green-yellow {
+  background: #d2ff52;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d2ff52), to(#91e842));
+  background: linear-gradient(to bottom, #d2ff52 0%, #91e842 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d2ff52', endColorstr='#91e842',GradientType=0 );
+}
+
+.spotted-black {
+  background: #45484d;
+  background: -webkit-gradient(linear, left top, left bottom, from(#45484d), to(#000000));
+  background: linear-gradient(to bottom, #45484d 0%, #000000 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 );
+}
+
+.spotted-white {
+  background: #f2f5f6;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f2f5f6), color-stop(37%, #e3eaed), to(#c8d7dc));
+  background: linear-gradient(to bottom, #f2f5f6 0%, #e3eaed 37%, #c8d7dc 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 );
+}
+
+.spotted-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.spotted-icon {
+  height: 16px;
+  cursor: pointer;
+}
+
+.spotted-text {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+.spotted-comments {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-comments span {
+  margin-left: 6px;
+}
+
+.spotted-likes {
+  margin-right: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.spotted-likes span {
+  margin-left: 6px;
+}
+
+.spotted-footer {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-footer-actions {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+/*# sourceMappingURL=spotted.component.css.map */

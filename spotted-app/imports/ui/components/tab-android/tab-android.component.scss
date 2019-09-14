@@ -1,0 +1,49 @@
+$primary-color: rgb(252, 49, 88);
+$dark-grey: #b4b6b6;
+.tab-android {
+  background-color: $primary-color;
+  height: 48px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  justify-content: space-evenly;
+  > div {
+    margin: auto;
+    text-align: center;
+  }
+  &-item {
+    color: RGBA(255, 255, 255, 0.8);
+    box-sizing: border-box;
+    text-transform: uppercase;
+    max-width: 96px;
+    display: inline-flex;
+    min-width: 96px;
+    height: 48px;
+    min-height: 48px;
+    align-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    > span {
+      margin: auto;
+    }
+    position: relative;
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: rgba(252, 49, 88, 0.8);
+    }
+    &__selected {
+      color: white;
+      &::after {
+        content: "";
+        height: 2px;
+        width: 96px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background-color: white;
+      }
+    }
+  }
+}

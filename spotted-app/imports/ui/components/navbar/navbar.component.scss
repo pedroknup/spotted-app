@@ -1,0 +1,149 @@
+$primary-color: #fc3158;
+$dark-grey: #b4b6b6;
+.navbar2-ios {
+  display: inline-flex;
+  width: 100%;
+  height: 44px;
+  border-bottom: 1px solid $dark-grey;
+  background-color: #f7f7f7;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+
+  > ul {
+    display: inline-flex;
+    list-style-type: none;
+  }
+  &-create-post {
+    position: absolute;
+    box-sizing: boder;
+    left: auto;
+    right: 12px;
+    svg {
+      height: 24px;
+    }
+    z-index: 2;
+  }
+
+  &-title {
+    font-size: 17px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+  }
+  &-button {
+    align-items: center;
+    z-index: 2;
+    display: flex;
+    cursor: pointer;
+    color: $primary-color;
+    &-icon {
+      height: 32px;
+      path {
+        fill: $primary-color;
+      }
+      &.back {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+      &.stroke {
+        path {
+          stroke: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+$dark-grey: #b4b6b6;
+.navbar-android {
+  display: inline-flex;
+  width: 100%;
+  height: 56px;
+  background-color: $primary-color;
+  color: white;
+  align-items: center;
+  // justify-content: space-between;
+  z-index: 10;
+
+  > ul {
+    display: inline-flex;
+    list-style-type: none;
+  }
+
+  &-button {
+    svg {
+      width: 24px;
+      user-select: none;
+      path {
+        fill: white !important;
+      }
+    }
+
+    margin: 16px;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  &-menu {
+    svg {
+      path {
+        fill: white !important;
+      }
+    }
+    width: 24px;
+    margin: 16px;
+    cursor: pointer;
+  }
+
+  &-create-post {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+    svg {
+      margin: auto;
+      height: 24px;
+      path {
+        fill: white !important;
+      }
+    }
+
+    color: white;
+    z-index: 2;
+    background-color: $primary-color;
+  }
+
+  &-title {
+    font-size: 17px;
+    position: absolute;
+    left: 56px;
+    z-index: 1;
+  }
+  &-button {
+    align-items: center;
+    z-index: 2;
+    display: flex;
+    cursor: pointer;
+    color: $primary-color;
+    &-icon {
+      height: 32px;
+      path {
+        fill: $primary-color;
+      }
+      &.back {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+      &.stroke {
+        path {
+          stroke: $primary-color;
+        }
+      }
+    }
+  }
+}

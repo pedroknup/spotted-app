@@ -1,0 +1,157 @@
+.spotted {
+  width: 100%;
+  display: table;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+}
+
+.spotted.white-fg > * {
+  color: white !important;
+}
+
+.spotted.white-fg svg path {
+  fill: white !important;
+}
+
+.spotted-white {
+  background: #f2f5f6;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f2f5f6), color-stop(37%, #e3eaed), to(#c8d7dc));
+  background: linear-gradient(to bottom, #f2f5f6 0%, #e3eaed 37%, #c8d7dc 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 );
+}
+
+.spotted-pink {
+  background: #fb83fa;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fb83fa), to(#e93cec));
+  background: linear-gradient(to bottom, #fb83fa 0%, #e93cec 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb83fa', endColorstr='#e93cec',GradientType=0 );
+}
+
+.spotted-red {
+  background: #ff3019;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff3019), to(#cf0404));
+  background: linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 );
+}
+
+.spotted-black {
+  background: #45484d;
+  background: -webkit-gradient(linear, left top, left bottom, from(#45484d), to(#000000));
+  background: linear-gradient(to bottom, #45484d 0%, #000000 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 );
+}
+
+.spotted-orange {
+  background: #f6e6b4;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#f6e6b4), to(#ed9017));
+  background: linear-gradient(to bottom, #f6e6b4 0%, #ed9017 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6e6b4', endColorstr='#ed9017',GradientType=0 );
+  /* IE6-9 */
+}
+
+.spotted-green {
+  background: #d1f480;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d1f480), color-stop(44%, #83e63c), to(#19a612));
+  background: linear-gradient(to bottom, #d1f480 0%, #83e63c 44%, #19a612 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1f480', endColorstr='#19a612',GradientType=0 );
+}
+
+.spotted-purple {
+  background: #a90329;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#a90329), color-stop(44%, #8f0222), to(#6d0019));
+  background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.spotted-blue {
+  background: #87e0fd;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#87e0fd), color-stop(40%, #53cbf1), to(#05abe0));
+  background: linear-gradient(to bottom, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.spotted-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.spotted-icon {
+  height: 16px;
+  cursor: pointer;
+}
+
+.spotted-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.spotted-comments {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-comments span {
+  margin-left: 6px;
+}
+
+.spotted-likes {
+  margin-right: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.spotted-likes span {
+  margin-left: 6px;
+}
+
+.spotted-footer {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-footer-actions {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+/*# sourceMappingURL=spotted-details.component.css.map */

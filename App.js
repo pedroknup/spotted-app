@@ -82,7 +82,7 @@ export default class App extends Component {
           }}
           tyle={styles.container}
           scrollEnabled={false}
-          source={{ uri: "http://192.168.1.23:3000" }}
+          source={{ uri: "http://192.168.1.13:3000" }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>
