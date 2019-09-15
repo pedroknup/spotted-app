@@ -119,10 +119,12 @@ export function getDeviceId(callback, err) {
     function(res) {
       const device = checkOS(res);
       callback(device);
+      // callback(devices.IOS);
     },
     function(err) {
       // callback(devices.WEB);
-      callback(devices.IOS_NOTCH); //dev env
+      callback(devices.IOS);
+      // callback(devices.IOS_NOTCH); //dev env
     }
   );
 }

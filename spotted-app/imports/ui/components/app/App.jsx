@@ -26,6 +26,7 @@ import {
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
 import { devices } from "../../redux/constants/enums.js";
+import { getRandomName } from "../../util/random-names.js";
 
 class App extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class App extends Component {
       getDeviceId(
         OS => {
           this.setState({ isLoading: false });
-          alert(OS);
+          // alert(OS);
           self.props.actions.changeDevice(OS);
         },
         () => {
@@ -107,9 +108,6 @@ class App extends Component {
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
     return (
       <div
-        style={{
-          maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
-        }}
         data-elastic
         className="content"
       >
@@ -192,12 +190,15 @@ class App extends Component {
     const { currentLocation, history } = this.props;
     const { page, pageSize, os, isNewIOS } = this.state;
 
+    
+
     return (
-      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
+      <div style={{ paddingTop: this.props.device === devices.IOS_NOTCH ? "45px" : "0" }} className="app">
         {!this.state.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}
             push={this.push}
+            device={this.props.device}
             pages={this.state.pages}
             spotteds={this.props.spotteds}
             secondPage={this.state.secondPage}

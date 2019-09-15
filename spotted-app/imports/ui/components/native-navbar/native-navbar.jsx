@@ -7,6 +7,9 @@ import Spotted from "../spotted/spotted.component.jsx";
 import elasticScroll from "elastic-scroll-polyfill";
 import NewSpotted from "../new-spotted/new-spotted.component.jsx";
 import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
+import { devices } from "../../redux/constants/enums";
+import FooterIos from "../footer-ios/footer-ios.component.jsx";
+import { getRandomNames } from "../../util/random-names";
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   var canvas =
@@ -266,12 +269,24 @@ export class NativeNavbar extends Component {
       history,
       staticContext,
       match: routeMatch,
-
+      device,
       ...rest
     } = this.props;
     const self = this;
 
     const isNewIOS = true;
+
+    const getMaxHeight = () => {
+      if (device === devices.IOS_NOTCH) {
+        // return "calc(100vh - 171px)";
+        return "calc(100vh - 175px)";
+      } else if (device === devices.IOS) {
+        return "calc(100vh - 110px)";
+      } else if (device === devices.WEB) {
+        return "calc(100vh)";
+      }
+    };
+
     return (
       <Router>
         <div className="App">
@@ -339,6 +354,9 @@ export class NativeNavbar extends Component {
               onClick={() => {
                 self.previousPage();
               }}
+              style={{
+                top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
+              }}
               className={`title-red navbar-ios-title`}
             >
               Feed
@@ -346,6 +364,9 @@ export class NativeNavbar extends Component {
             <div
               onClick={() => {
                 self.previousPage();
+              }}
+              style={{
+                top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
               }}
               className={`title-red-black navbar-ios-title`}
             >
@@ -388,7 +409,12 @@ export class NativeNavbar extends Component {
               </svg>
             </div>
 
-            <div className={`title-blue navbar-ios-title`}>
+            <div
+              style={{
+                top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
+              }}
+              className={`title-blue navbar-ios-title`}
+            >
               {this.state.secondPageNewSpotted ? "New Spotted" : "Spotted"}
             </div>
             <div className={`middle`}></div>
@@ -396,6 +422,7 @@ export class NativeNavbar extends Component {
 
           {this.state.secondPageNewSpotted === true ? (
             <SwipeableViews
+              className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={1}
               // index={0}
@@ -404,39 +431,41 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div
-                style={{
-                  maxHeight: isNewIOS
-                    ? "calc(100vh - 171px)"
-                    : "calc(100vh - 100px)"
-                }}
-                data-elastic
-                className="content"
-              >
-                {this.props.spotteds.map((spotted, id) => (
-                  <div
-                    key={id}
-                    onClick={() => {
-                      this.openSpottedInfo(spotted);
-                      console.log("clicked");
-                    }}
-                  >
-                    <Spotted
-                      text={spotted.text}
-                      source={spotted.source}
-                      color={spotted.color}
-                      id={spotted.id}
-                      comments={spotted.comments}
-                      likes={spotted.likes}
-                      isLiked={spotted.isLiked}
-                    />
-                  </div>
-                ))}
+              <div style={{minHeight: "100vh"}}>
+                <div
+                  style={{
+                    maxHeight: getMaxHeight()
+                  }}
+                  data-elastic
+                  className="content"
+                >
+                  {this.props.spotteds.map((spotted, id) => (
+                    <div
+                      key={id}
+                      onClick={() => {
+                        this.openSpottedInfo(spotted);
+                        console.log("clicked");
+                      }}
+                    >
+                      <Spotted
+                        text={spotted.text}
+                        source={spotted.source}
+                        color={spotted.color}
+                        id={spotted.id}
+                        comments={spotted.comments}
+                        likes={spotted.likes}
+                        isLiked={spotted.isLiked}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <FooterIos />
               </div>
               <NewSpotted previousPage={this.previousPage} />
             </SwipeableViews>
           ) : this.state.secondPageSpottedInfo ? (
             <SwipeableViews
+              className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={1}
               // index={0}
@@ -445,39 +474,42 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div
-                style={{
-                  maxHeight: isNewIOS
-                    ? "calc(100vh - 171px)"
-                    : "calc(100vh - 100px)"
-                }}
-                data-elastic
-                className="content"
-              >
-                {this.props.spotteds.map((spotted, id) => (
-                  <div
-                    key={id}
-                    onClick={() => {
-                      this.openSpottedInfo(spotted);
-                      console.log("clicked");
-                    }}
-                  >
-                    <Spotted
-                      text={spotted.text}
-                      source={spotted.source}
-                      color={spotted.color}
-                      id={spotted.id}
-                      comments={spotted.comments}
-                      likes={spotted.likes}
-                      isLiked={spotted.isLiked}
-                    />
-                  </div>
-                ))}
+              <div style={{minHeight: "100vh"}}>
+                <div
+                  style={{
+                    maxHeight: getMaxHeight()
+                  }}
+                  data-elastic
+                  className="content"
+                >
+                  {this.props.spotteds.map((spotted, id) => (
+                    <div
+                      key={id}
+                      onClick={() => {
+                        this.openSpottedInfo(spotted);
+                        console.log("clicked");
+                      }}
+                    >
+                      <Spotted
+                        text={spotted.text}
+                        source={spotted.source}
+                        color={spotted.color}
+                        id={spotted.id}
+                        comments={spotted.comments}
+                        likes={spotted.likes}
+                        isLiked={spotted.isLiked}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <FooterIos />
               </div>
+
               <SpottedDetails {...this.state.selectedSpotted} />
             </SwipeableViews>
           ) : (
             <SwipeableViews
+              className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={0}
               // index={0}
@@ -486,37 +518,40 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div
-                style={{
-                  maxHeight: isNewIOS
-                    ? "calc(100vh - 171px)"
-                    : "calc(100vh - 100px)"
-                }}
-                data-elastic
-                className="content"
-              >
-                {this.props.spotteds.map((spotted, id) => (
-                  <div
-                    key={id}
-                    onClick={() => {
-                      this.openSpottedInfo(spotted);
-                      console.log("clicked");
-                    }}
-                  >
-                    <Spotted
-                      text={spotted.text}
-                      source={spotted.source}
-                      color={spotted.color}
-                      id={spotted.id}
-                      comments={spotted.comments}
-                      likes={spotted.likes}
-                      isLiked={spotted.isLiked}
-                    />
-                  </div>
-                ))}
+              <div style={{minHeight: "100vh"}}>
+                <div
+                  style={{
+                    maxHeight: getMaxHeight()
+                  }}
+                  data-elastic
+                  className="content"
+                >
+                  {this.props.spotteds.map((spotted, id) => (
+                    <div
+                      key={id}
+                      onClick={() => {
+                        this.openSpottedInfo(spotted);
+                        console.log("clicked");
+                      }}
+                    >
+                      <Spotted
+                        text={spotted.text}
+                        source={spotted.source}
+                        color={spotted.color}
+                        id={spotted.id}
+                        comments={spotted.comments}
+                        likes={spotted.likes}
+                        isLiked={spotted.isLiked}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <FooterIos />
               </div>
             </SwipeableViews>
           )}
+          {/* {!(this.state.secondPageNewSpotted || this.state.secondPageSpottedInfo ) && (this.props.device === devices.IOS || */}
+          {/* <FooterIos /> */}
         </div>
       </Router>
     );

@@ -12,6 +12,17 @@ html {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
+.swipeable-views {
+ 
+  > * {
+    // border: 1px solid red;
+    -webkit-box-shadow: -7px 1px 18px -2px rgba(0, 0, 0, 0.63);
+    -moz-box-shadow: -7px 1px 18px -2px rgba(0, 0, 0, 0.63);
+    box-shadow: -7px 1px 18px -2px rgba(0, 0, 0, 0.63);
+    z-index: 1;
+  }
+
+}
 .navbar-ios {
   display: inline-flex;
   width: 100%;
@@ -83,7 +94,7 @@ html {
   transition: transform 260ms ease;
   transform: translateY(calc(100vh));
   background-color: #f7f7f7;
-  &-content{
+  &-content {
     background-color: white;
   }
   &-close {

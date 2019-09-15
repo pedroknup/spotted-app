@@ -28,9 +28,7 @@
   }
   .title-blue {
     position: absolute;
-    top: 57px;
     z-index: 10;
-    top: 57px;
     left: 26px;
     font-weight: 600;
     transition: transform 260ms ease;
@@ -53,7 +51,6 @@
   
   .title-red {
     position: absolute;
-    top: 57px;
     left: 26px;
     z-index: 100;
     color: #fc3158;
@@ -63,7 +60,6 @@
   .title-red-black {
     transition: transform 260ms ease;
     position: absolute;
-    top: 57px;
     left: 26px;
     z-index: 100;
     font-weight: 600;
