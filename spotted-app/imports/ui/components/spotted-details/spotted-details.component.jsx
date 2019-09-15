@@ -123,12 +123,13 @@ SpottedDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { currentLocation: state.currentLocation };
+  return { uniqueId: state.uniqueId };
 }
 
 function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(locationActions, dispatch) };
 }
+
 
 export default connect(
   mapStateToProps,

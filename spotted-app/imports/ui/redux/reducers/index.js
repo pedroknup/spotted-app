@@ -2,55 +2,42 @@ import {
   ADD_ARTICLE,
   CHANGE_LOCATION,
   PREVIOUS_PAGE,
-  CHANGE_DEVICE
+  CHANGE_DEVICE,
+  CHANGE_UNIQUE_ID,
+  VERIFY
 } from "../constants/action-types";
-
-
 
 import { PAGE_HOME } from "../constants/pages";
 const initialState = {
-  articles: [],
-  currentLocation: {
-    id: "home",
-    page: "Spotted",
-    backButton: null,
-    hasActionButton: true,
-    payload: null,
-    device: null
-  },
-  history: [{ ...PAGE_HOME }]
+  uniqueId: "",
+  device: null
 };
 function rootReducer(state = initialState, action) {
-  if (action.type === ADD_ARTICLE) {
-    return Object.assign({}, state, {
-      articles: state.articles.concat(action.payload)
-    });
-  } else if (action.type === CHANGE_DEVICE) {
-    return Object.assign({}, state, {
+  if (action.type === CHANGE_DEVICE) {
+    const newState = Object.assign({}, state, {
       device: action.payload
     });
-  } else if (action.type === CHANGE_LOCATION) {
-    let history = state.history;
-    const matchIndex = history.findIndex(item => item.id === action.payload.id);
+    localStorage.setItem("reducer", JSON.stringify(newState));
+    return newState;
+  } else if (action.type === VERIFY) {
+    const persistentStateJson = localStorage.getItem("reducer");
 
-    if (matchIndex >= 0) {
-      history.slice(0, matchIndex);
-    } else {
-      history.push(action.payload);
+    try {
+      const persistentState = JSON.parse(persistentStateJson);
+
+      Object.assign({}, state, {
+        ...persistentState
+      });
+      return state;
+    } catch (e) {
+      state;
     }
-
-    return Object.assign({}, state, {
-      history,
-      currentLocation: action.payload
+  } else if (action.type === CHANGE_UNIQUE_ID) {
+    const newState = Object.assign({}, state, {
+      uniqueId: action.payload
     });
-  } else if (action.type === PREVIOUS_PAGE) {
-    let history = state.history;
-    history.pop();
-    const currentLocation = history.slice(-1)[0];
-    return Object.assign({}, state, {
-      currentLocation,
-      history
-    });
+    localStorage.setItem("reducer", JSON.stringify(newState));
+    return newState;
   }
   return state;
 }

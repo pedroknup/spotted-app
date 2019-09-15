@@ -21,7 +21,8 @@ import {
   checkBridge,
   getSystemInfo,
   getDeviceId,
-  initBridge
+  initBridge,
+  getUniqueId
 } from "../../util/react-native-bridge.js";
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
@@ -45,21 +46,37 @@ class App extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
+    const self = this;
     try {
-      const self = this;
       initBridge();
       getDeviceId(
         OS => {
-          this.setState({ isLoading: false });
-          // alert(OS);
           self.props.actions.changeDevice(OS);
         },
         () => {
-          alert("lolol");
           const device = devices.WEB;
           this.setState({ isLoading: false });
           alert(device);
           self.props.actions.changeDevice(device);
+        }
+      );
+      //  alert(deviceId);
+      // else alert("oops");
+    } catch (e) {
+      alert(e);
+      console.log("error");
+    }
+
+    try {
+      getUniqueId(
+        uniqueId => {
+          self.props.actions.changeUniqueId(uniqueId);
+          self.setState({ isLoading: false });
+        },
+        () => {
+          self.setState({ isLoading: false });
+          // self.props.actions.setUniqueId("web");
+          alert(" oops");
         }
       );
       //  alert(deviceId);
@@ -107,10 +124,7 @@ class App extends Component {
 
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
     return (
-      <div
-        data-elastic
-        className="content"
-      >
+      <div data-elastic className="content">
         <h1>VISH</h1>
         {spotteds.map((spotted, id) => (
           <Spotted
@@ -190,10 +204,17 @@ class App extends Component {
     const { currentLocation, history } = this.props;
     const { page, pageSize, os, isNewIOS } = this.state;
 
-    
-
     return (
-      <div style={{ paddingTop: this.props.device === devices.IOS_NOTCH ? "45px" : "0" }} className="app">
+      <div
+        style={{
+          paddingTop: this.props.device === devices.IOS_NOTCH ? "45px" : "0"
+        }}
+        className="app"
+      >
+        {()=>{
+          this.props.actions.verify();
+          return; 
+        }}
         {!this.state.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}
@@ -273,7 +294,7 @@ class App extends Component {
 // )(App);
 
 function mapStateToProps(state) {
-  return { device: state.device };
+  return { device: state.device , uniqueId: state.uniqueId };
 }
 
 function mapDispatchToProps(dispatch) {

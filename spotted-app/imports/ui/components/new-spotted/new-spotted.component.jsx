@@ -34,6 +34,7 @@ const NewSpotted = props => {
   const [text, setText] = React.useState("");
   const [colorClass, setColorClass] = React.useState(getRandomColor());
 
+  console.log("local storage", localStorage.getItem("reducer"))
   const postSpotted = (text, color, source, actions) => {
     Spotteds.insert({
       color,

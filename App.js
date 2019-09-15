@@ -48,6 +48,14 @@ export default class App extends Component {
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
   }
+  getUniqueId(msgData) {
+    msgData.isSuccessfull = true;
+    const uniqueId = DeviceInfo.getUniqueID();
+    msgData.args = [uniqueId];
+    this.myWebView.injectJavaScript(
+      `window.postMessage('${JSON.stringify(msgData)}', '*');`
+    );
+  }
 
   onWebViewMessage(event) {
     console.log("Message received from webview");
@@ -68,6 +76,8 @@ export default class App extends Component {
         this[msgData.targetFunc].apply(this, [msgData]);
         break;
       case "getDeviceId":
+        this[msgData.targetFunc].apply(this, [msgData]);
+      case "getUniqueId":
         this[msgData.targetFunc].apply(this, [msgData]);
         break;
     }

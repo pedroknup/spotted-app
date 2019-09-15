@@ -118,13 +118,32 @@ export function getDeviceId(callback, err) {
     "",
     function(res) {
       const device = checkOS(res);
-      callback(device);
-      // callback(devices.IOS);
+      // callback(device);
+      callback(devices.IOS_NOTCH);
     },
     function(err) {
       // callback(devices.WEB);
       callback(devices.IOS);
       // callback(devices.IOS_NOTCH); //dev env
+    }
+  );
+}
+export function getUniqueId(callback, err) {
+  let toReturn = "";
+
+  if (!window.webViewBridge.send) {
+    err();
+    return;
+  }
+  window.webViewBridge.send(
+    "getUniqueId",
+    "",
+    function(res) {
+      callback(res);
+      // callback(devices.IOS);
+    },
+    function(err) {
+      callback("web")
     }
   );
 }

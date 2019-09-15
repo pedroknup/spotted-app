@@ -1152,7 +1152,7 @@ const randomNames = [
   "Allergies Solar",
   "Book Shoe",
   "Breakfast Poop",
-  "Horse Hnads",
+  "Horse Hands",
   "Horse Floppy Disk",
   "Toolbox BBQ",
   "Dog Websites",

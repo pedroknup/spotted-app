@@ -4,6 +4,7 @@ export const PREVIOUS_PAGE = "PREVIOUS_PAGE";
 export const VERIFY = "VERIFY";
 export const CHANGE_DEVICE = "CHANGE_DEVICE";
 export const CHANGE_DEVICE_ID = "CHANGE_DEVICE_ID";
+export const CHANGE_UNIQUE_ID = "CHANGE_UNIQUE_ID";
 
 
 
