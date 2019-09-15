@@ -1,3 +1,5 @@
+import { devices } from "../redux/constants/enums";
+
 var promiseChain = Promise.resolve();
 var callbacks = {};
 export var initBridge = function() {
@@ -54,6 +56,7 @@ export var initBridge = function() {
           });
         })
         .catch(function(e) {
+          error();
           console.error("rnBridge send failed " + e.message);
         });
     }
@@ -80,7 +83,6 @@ export var initBridge = function() {
 };
 
 export function checkBridge() {
-  init();
   if (window.webViewBridge !== undefined && window.webViewBridge !== null) {
     return true;
   }
@@ -88,20 +90,39 @@ export function checkBridge() {
   return false;
 }
 
-export function getDeviceId(callback) {
-    let toReturn = "";
 
+
+const checkOS = device => {
+  if (device.includes("iPhone")) {
+    const version = device.replace("iPhone", "");
+    try {
+      if (parseInt(version) >= 10.0) return devices.IOS_NOTCH;
+      else return devices.IOS;
+    } catch (e) {
+      return devices.IOS;
+    }
+  }
+  return devices.ANDROID;
+};
+
+
+export function getDeviceId(callback, err) {
+  let toReturn = "";
+
+  if (!window.webViewBridge.send) {
+    err();
+    return;
+  }
   window.webViewBridge.send(
     "getDeviceId",
     "",
     function(res) {
-      // return res;
-      callback(res)
-
+      const device = checkOS(res);
+      callback(device);
     },
     function(err) {
-        alert("lol", err)
+      // callback(devices.WEB);
+      callback(devices.IOS_NOTCH); //dev env
     }
   );
-
 }

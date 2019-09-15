@@ -1,8 +1,12 @@
 import {
   ADD_ARTICLE,
   CHANGE_LOCATION,
-  PREVIOUS_PAGE
+  PREVIOUS_PAGE,
+  CHANGE_DEVICE
 } from "../constants/action-types";
+
+
+
 import { PAGE_HOME } from "../constants/pages";
 const initialState = {
   articles: [],
@@ -11,21 +15,24 @@ const initialState = {
     page: "Spotted",
     backButton: null,
     hasActionButton: true,
-    payload: null
+    payload: null,
+    device: null
   },
-  history: [{...PAGE_HOME}]
+  history: [{ ...PAGE_HOME }]
 };
 function rootReducer(state = initialState, action) {
   if (action.type === ADD_ARTICLE) {
     return Object.assign({}, state, {
       articles: state.articles.concat(action.payload)
     });
+  } else if (action.type === CHANGE_DEVICE) {
+    return Object.assign({}, state, {
+      device: action.payload
+    });
   } else if (action.type === CHANGE_LOCATION) {
     let history = state.history;
-    const matchIndex = history.findIndex(
-      item => item.id === action.payload.id
-    );
-   
+    const matchIndex = history.findIndex(item => item.id === action.payload.id);
+
     if (matchIndex >= 0) {
       history.slice(0, matchIndex);
     } else {
@@ -42,7 +49,7 @@ function rootReducer(state = initialState, action) {
     const currentLocation = history.slice(-1)[0];
     return Object.assign({}, state, {
       currentLocation,
-      history,
+      history
     });
   }
   return state;

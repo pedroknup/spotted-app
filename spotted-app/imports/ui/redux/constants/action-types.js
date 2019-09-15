@@ -1,3 +1,9 @@
 export const ADD_ARTICLE = "ADD_ARTICLE";
 export const CHANGE_LOCATION = "CHANGE_LOCATION";
 export const PREVIOUS_PAGE = "PREVIOUS_PAGE";
+export const VERIFY = "VERIFY";
+export const CHANGE_DEVICE = "CHANGE_DEVICE";
+export const CHANGE_DEVICE_ID = "CHANGE_DEVICE_ID";
+
+
+

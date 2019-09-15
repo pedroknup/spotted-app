@@ -11,7 +11,7 @@ import FooterIos from "../footer-ios/footer-ios.component.jsx";
 import Navbar from "../navbar/navbar.component.jsx";
 import { bindActionCreators } from "redux";
 
-import * as locationActions from "../../redux/actions/index";
+import * as actions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { NEW_SPOTTED, PAGE_SPOTTED } from "../../redux/constants/pages.js";
 import Spotteds from "../../../api/spotteds.js";
@@ -25,8 +25,7 @@ import {
 } from "../../util/react-native-bridge.js";
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
-
-// App component - represents the whole app
+import { devices } from "../../redux/constants/enums.js";
 
 class App extends Component {
   constructor(props) {
@@ -35,7 +34,7 @@ class App extends Component {
       page: 0,
       pageSize: 10,
       isNewIOS: true,
-      isLoading: false,
+      isLoading: true,
       os: "ios",
       pages: [],
       modalPage: null
@@ -46,12 +45,27 @@ class App extends Component {
     this.closeModal = this.closeModal.bind(this);
 
     try {
+      const self = this;
       initBridge();
-      getDeviceId((res)=>{alert(res)});
+      getDeviceId(
+        OS => {
+          this.setState({ isLoading: false });
+          alert(OS);
+          self.props.actions.changeDevice(OS);
+        },
+        () => {
+          alert("lolol");
+          const device = devices.WEB;
+          this.setState({ isLoading: false });
+          alert(device);
+          self.props.actions.changeDevice(device);
+        }
+      );
       //  alert(deviceId);
       // else alert("oops");
     } catch (e) {
       alert(e);
+      console.log("error");
     }
   }
 
@@ -118,6 +132,7 @@ class App extends Component {
 
   componentDidMount() {
     // console.log(this.props.spotteds);
+
     elasticScroll();
   }
   renderSpotted() {
@@ -179,7 +194,7 @@ class App extends Component {
 
     return (
       <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
-        {!this.props.isLoading && (
+        {!this.state.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}
             push={this.push}
@@ -245,14 +260,38 @@ class App extends Component {
   }
 }
 
-export default withTracker(props => {
-  const handle = Meteor.subscribe("spotteds");
+// export default connect(
+//   withTracker(props => {
+//     const handle = Meteor.subscribe("spotteds");
 
-  return {
-    isLoading: !handle.ready(),
-    spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
-  };
-})(App);
+//     return {
+//       isLoading: !handle.ready(),
+//       spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
+//     };
+//   })
+// )(App);
+
+function mapStateToProps(state) {
+  return { device: state.device };
+}
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(actions, dispatch) };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withTracker(() => {
+    const handle = Meteor.subscribe("spotteds");
+
+    return {
+      isLoading: !handle.ready(),
+      spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
+    };
+  })(App)
+);
 
 // export default withTracker(() => {
 //   const subscriptionHandle = Meteor.subscribe("spotteds");
