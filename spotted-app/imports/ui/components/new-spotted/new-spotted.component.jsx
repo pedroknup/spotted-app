@@ -33,19 +33,19 @@ const getRandomColor = () => {
 const NewSpotted = props => {
   const [text, setText] = React.useState("");
   const [colorClass, setColorClass] = React.useState(getRandomColor());
-
-  console.log("local storage", localStorage.getItem("reducer"))
   const postSpotted = (text, color, source, actions) => {
+    if (!text || !text.trim()){
+      alert("Spotted can not be empty!");
+      return;
+    }
     Spotteds.insert({
       color,
       text,
-      source,
+      coordinates: props.coordinates,
       comments: [],
       likes: [],
-      isLiked: false,
       createdAt: new Date() // current time
     });
-    // alert("Success!");
     props.previousPage();
   };
   const openSpottedDetails = () => {
@@ -68,7 +68,7 @@ const NewSpotted = props => {
   };
 
   return (
-    <div style={{height: 'calc(100vh - 100px)'}}>
+    <div style={{height: 'calc(100vh - 175px)'}}>
       <div
         className={`new-spotted new-spotted-${colorClass} ${colorClass !=
           "white" && "white-fg"}`}
@@ -235,7 +235,7 @@ NewSpotted.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { currentLocation: state.currentLocation };
+  return { currentLocation: state.currentLocation, coordinates: state.coordinates };
 }
 
 function mapDispatchToProps(dispatch) {

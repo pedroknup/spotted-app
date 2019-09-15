@@ -434,7 +434,8 @@ export class NativeNavbar extends Component {
               <div style={{minHeight: "100vh"}}>
                 <div
                   style={{
-                    maxHeight: getMaxHeight()
+                    maxHeight: getMaxHeight(),
+                    minHeight: getMaxHeight()
                   }}
                   data-elastic
                   className="content"
@@ -477,7 +478,8 @@ export class NativeNavbar extends Component {
               <div style={{minHeight: "100vh"}}>
                 <div
                   style={{
-                    maxHeight: getMaxHeight()
+                    maxHeight: getMaxHeight(),
+                    minHeight: getMaxHeight()
                   }}
                   data-elastic
                   className="content"
@@ -521,7 +523,8 @@ export class NativeNavbar extends Component {
               <div style={{minHeight: "100vh"}}>
                 <div
                   style={{
-                    maxHeight: getMaxHeight()
+                    maxHeight: getMaxHeight(),
+                    minHeight: getMaxHeight()
                   }}
                   data-elastic
                   className="content"

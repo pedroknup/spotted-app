@@ -5,6 +5,7 @@ export const VERIFY = "VERIFY";
 export const CHANGE_DEVICE = "CHANGE_DEVICE";
 export const CHANGE_DEVICE_ID = "CHANGE_DEVICE_ID";
 export const CHANGE_UNIQUE_ID = "CHANGE_UNIQUE_ID";
+export const CHANGE_COORDINATES = "CHANGE_COORDINATES";
 
 
 

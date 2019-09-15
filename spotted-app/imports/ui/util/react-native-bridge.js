@@ -90,8 +90,6 @@ export function checkBridge() {
   return false;
 }
 
-
-
 const checkOS = device => {
   if (device.includes("iPhone")) {
     const version = device.replace("iPhone", "");
@@ -104,7 +102,6 @@ const checkOS = device => {
   }
   return devices.ANDROID;
 };
-
 
 export function getDeviceId(callback, err) {
   let toReturn = "";
@@ -128,6 +125,20 @@ export function getDeviceId(callback, err) {
     }
   );
 }
+export function getGeolocation(callback, err) {
+  window.webViewBridge.send(
+    "getGeolocation",
+    "",
+    function(res) {
+      callback(res);
+    },
+    function(err) {
+      // callback(devices.WEB);
+      callback(false);
+      // callback(devices.IOS_NOTCH); //dev env
+    }
+  );
+}
 export function getUniqueId(callback, err) {
   let toReturn = "";
 
@@ -143,7 +154,7 @@ export function getUniqueId(callback, err) {
       // callback(devices.IOS);
     },
     function(err) {
-      callback("web")
+      callback("web");
     }
   );
 }

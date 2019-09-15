@@ -57,6 +57,30 @@ export default class App extends Component {
     );
   }
 
+  requestLocationPermission() {
+    geolocation.setRNConfiguration({ skipPermissionRequests: true });
+    geolocation.requestAuthorization();
+  }
+
+  getGeolocation(msgData) {
+    navigator.geolocation.setRNConfiguration({ skipPermissionRequests: true });
+    navigator.geolocation.requestAuthorization();
+   
+    navigator.geolocation.getCurrentPosition(coordinates => {
+      msgData.args = [coordinates];
+      msgData.isSuccessfull = true;
+      this.myWebView.injectJavaScript(
+        `window.postMessage('${JSON.stringify(msgData)}', '*');`
+      );
+    }, ()=>{
+      msgData.isSuccessfull = false;
+      this.myWebView.injectJavaScript(
+        `window.postMessage('${JSON.stringify(msgData)}', '*');`
+      );
+    });
+   
+  }
+
   onWebViewMessage(event) {
     console.log("Message received from webview");
 
@@ -78,6 +102,9 @@ export default class App extends Component {
       case "getDeviceId":
         this[msgData.targetFunc].apply(this, [msgData]);
       case "getUniqueId":
+        this[msgData.targetFunc].apply(this, [msgData]);
+        break;
+      case "getGeolocation":
         this[msgData.targetFunc].apply(this, [msgData]);
         break;
     }
@@ -103,7 +130,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    marginBottom: -5
   },
   welcome: {
     flex: 1,

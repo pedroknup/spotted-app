@@ -101,7 +101,8 @@ const SpottedDetails = props => {
               </svg>
             </span>
           </div>
-          <span className="spotted-distance">{source}</span>
+          {/* <span className="spotted-distance">{props.coordinates.latitude},{props.coordinates.longitude}</span> */}
+          <span className="spotted-distance">{props.coordinates ? JSON.stringify(props.coordinates) : " oops"}</span>
         </div>
       </div>
 
@@ -123,7 +124,7 @@ SpottedDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { uniqueId: state.uniqueId };
+  return { uniqueId: state.uniqueId, coordinates: state.coordinates };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -22,12 +22,17 @@ import {
   getSystemInfo,
   getDeviceId,
   initBridge,
-  getUniqueId
+  getUniqueId,
+  getGeolocation
 } from "../../util/react-native-bridge.js";
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
 import { devices } from "../../redux/constants/enums.js";
 import { getRandomName } from "../../util/random-names.js";
+import {
+  calculateDistanceBetweenTwoCoords,
+  simplifyDistance
+} from "../../util/geolocalization.js";
 
 class App extends Component {
   constructor(props) {
@@ -49,6 +54,30 @@ class App extends Component {
     const self = this;
     try {
       initBridge();
+      getGeolocation(
+        response => {
+          // {
+          //   coords={
+          //     altitude,
+          //     altitudeAccuracy,
+          //     latitude,
+          //     accuracy,
+          //     longitude,
+          //   },
+          //   timestamp
+          // }
+
+          const coordinates = {
+            latitude: response.coords.altitude,
+            longitude: response.coords.longitude
+          };
+          // alert(JSON.stringify(coordinates))
+          self.props.actions.changeCoordinates(coordinates);
+        },
+        () => {
+          alert("err");
+        }
+      );
       getDeviceId(
         OS => {
           self.props.actions.changeDevice(OS);
@@ -211,9 +240,9 @@ class App extends Component {
         }}
         className="app"
       >
-        {()=>{
+        {() => {
           this.props.actions.verify();
-          return; 
+          return;
         }}
         {!this.state.isLoading && (
           <NativeNavbar
@@ -294,7 +323,7 @@ class App extends Component {
 // )(App);
 
 function mapStateToProps(state) {
-  return { device: state.device , uniqueId: state.uniqueId };
+  return { device: state.device, uniqueId: state.uniqueId };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -307,10 +336,42 @@ export default connect(
 )(
   withTracker(() => {
     const handle = Meteor.subscribe("spotteds");
+    let spotteds;
+    try {
+      let currentState = JSON.parse(localStorage.getItem("reducer"));
+      // if (currentState.coordinates === undefined)
+      //   currentState.coordinates = {
+      //     latitude: 51.8125626,
+      //     longitude: 5.8372264
+      //   };
 
+      //amsterdam
+      // latitude 52.370216
+      // longitude:  4.895168
+
+      //tilburg:
+      // latitude: 10.2168
+      // longitude: 5.077
+      spotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
+        .fetch()
+        .map(item => {
+          let toReturn = { ...item };
+          const distance = calculateDistanceBetweenTwoCoords(
+            item.coordinates.latitude,
+            item.coordinates.longitude,
+            currentState.coordinates.latitude,
+            currentState.coordinates.longitude
+          );
+
+          toReturn.source = simplifyDistance(distance);
+          return toReturn;
+        });
+    } catch (e) {
+      alert(e);
+    }
     return {
       isLoading: !handle.ready(),
-      spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
+      spotteds: spotteds
     };
   })(App)
 );

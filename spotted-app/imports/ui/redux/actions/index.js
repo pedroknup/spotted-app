@@ -4,7 +4,8 @@ import {
   PREVIOUS_PAGE,
   CHANGE_DEVICE,
   CHANGE_UNIQUE_ID,
-  VERIFY
+  VERIFY,
+  CHANGE_COORDINATES
 } from "../constants/action-types";
 
 export function addArticle(payload) {
@@ -21,6 +22,9 @@ export function changeDevice(payload) {
 }
 export function changeUniqueId(payload) {
   return { type: CHANGE_UNIQUE_ID, payload };
+}
+export function changeCoordinates(payload) {
+  return { type: CHANGE_COORDINATES, payload };
 }
 export function verify() {
   return { type: VERIFY };
