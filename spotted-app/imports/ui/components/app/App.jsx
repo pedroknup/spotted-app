@@ -68,7 +68,7 @@ class App extends Component {
           // }
 
           const coordinates = {
-            latitude: response.coords.altitude,
+            latitude: response.coords.latitude,
             longitude: response.coords.longitude
           };
           // alert(JSON.stringify(coordinates))
@@ -232,8 +232,10 @@ class App extends Component {
   render() {
     const { currentLocation, history } = this.props;
     const { page, pageSize, os, isNewIOS } = this.state;
+    const self = this;
 
     return (
+      
       <div
         style={{
           paddingTop: this.props.device === devices.IOS_NOTCH ? "45px" : "0"
@@ -352,6 +354,12 @@ export default connect(
       //tilburg:
       // latitude: 10.2168
       // longitude: 5.077
+
+      if (!currentState)
+        currentState = { coordinates: { latitude: 0, longitude: 0 } };
+      else if (!currentState.coordinates)
+        currentState.coordinates = { latitude: 0, longitude: 0 };
+
       spotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
         .fetch()
         .map(item => {

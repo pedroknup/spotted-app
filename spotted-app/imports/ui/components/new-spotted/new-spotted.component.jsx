@@ -34,14 +34,16 @@ const NewSpotted = props => {
   const [text, setText] = React.useState("");
   const [colorClass, setColorClass] = React.useState(getRandomColor());
   const postSpotted = (text, color, source, actions) => {
-    if (!text || !text.trim()){
+    if (!text || !text.trim()) {
       alert("Spotted can not be empty!");
       return;
     }
+    // alert(JSON.stringify(props.coordinates))
     Spotteds.insert({
       color,
       text,
       coordinates: props.coordinates,
+      // coordinates: { latitude: 51.55798, longitude: 5.084318 },
       comments: [],
       likes: [],
       createdAt: new Date() // current time
@@ -68,7 +70,7 @@ const NewSpotted = props => {
   };
 
   return (
-    <div style={{height: 'calc(100vh - 175px)'}}>
+    <div style={{ height: "calc(100vh - 175px)" }}>
       <div
         className={`new-spotted new-spotted-${colorClass} ${colorClass !=
           "white" && "white-fg"}`}
@@ -235,7 +237,10 @@ NewSpotted.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { currentLocation: state.currentLocation, coordinates: state.coordinates };
+  return {
+    currentLocation: state.currentLocation,
+    coordinates: state.coordinates
+  };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -9,6 +9,9 @@ import { StyleSheet, Text, View, Platform } from "react-native";
 import { WebView } from "react-native-webview";
 import DeviceInfo from "react-native-device-info";
 
+const SERVER_URL_WEBBIO = "http://192.168.177.141:3000"; // webbio
+// const SERVER_URL_WEBBIO = 'http://192.168.1.13:3000 '//kamile
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -63,22 +66,29 @@ export default class App extends Component {
   }
 
   getGeolocation(msgData) {
-    navigator.geolocation.setRNConfiguration({ skipPermissionRequests: true });
-    navigator.geolocation.requestAuthorization();
-   
-    navigator.geolocation.getCurrentPosition(coordinates => {
-      msgData.args = [coordinates];
-      msgData.isSuccessfull = true;
-      this.myWebView.injectJavaScript(
-        `window.postMessage('${JSON.stringify(msgData)}', '*');`
-      );
-    }, ()=>{
-      msgData.isSuccessfull = false;
-      this.myWebView.injectJavaScript(
-        `window.postMessage('${JSON.stringify(msgData)}', '*');`
-      );
-    });
-   
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 50000
+    };
+    // navigator.geolocation.setRNConfiguration(options);
+    // navigator.geolocation.requestAuthorization();
+
+    navigator.geolocation.getCurrentPosition(
+      coordinates => {
+        msgData.args = [coordinates];
+        msgData.isSuccessfull = true;
+        this.myWebView.injectJavaScript(
+          `window.postMessage('${JSON.stringify(msgData)}', '*');`
+        );
+      },
+      () => {
+        msgData.isSuccessfull = false;
+        this.myWebView.injectJavaScript(
+          `window.postMessage('${JSON.stringify(msgData)}', '*');`
+        );
+      },
+      options
+    );
   }
 
   onWebViewMessage(event) {
@@ -119,7 +129,7 @@ export default class App extends Component {
           }}
           tyle={styles.container}
           scrollEnabled={false}
-          source={{ uri: "http://192.168.1.13:3000" }}
+          source={{ uri: SERVER_URL_WEBBIO }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>

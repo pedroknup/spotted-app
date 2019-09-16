@@ -126,18 +126,24 @@ export function getDeviceId(callback, err) {
   );
 }
 export function getGeolocation(callback, err) {
-  window.webViewBridge.send(
-    "getGeolocation",
-    "",
-    function(res) {
-      callback(res);
-    },
-    function(err) {
-      // callback(devices.WEB);
-      callback(false);
-      // callback(devices.IOS_NOTCH); //dev env
-    }
-  );
+  try {
+    if (window.webViewBridge.send)
+      window.webViewBridge.send(
+        "getGeolocation",
+        "",
+        function(res) {
+          alert(JSON.stringify(res))
+          callback(res);
+        },
+        function(err) {
+          // callback(devices.WEB);
+          callback(false);
+          // callback(devices.IOS_NOTCH); //dev env
+        }
+      );
+  } catch (e) {
+    callback({coords:{latitude: 0, longitude: 0}});
+  }
 }
 export function getUniqueId(callback, err) {
   let toReturn = "";
