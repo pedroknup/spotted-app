@@ -145,6 +145,28 @@ export function getGeolocation(callback, err) {
     callback({coords:{latitude: 0, longitude: 0}});
   }
 }
+
+export function uploadPicture(callback, err) {
+  try {
+   
+      window.webViewBridge.send(
+        "uploadPicture",
+        "",
+        function(res) {
+         alert(JSON.stringify(res))
+          callback(res);
+        },
+        function(err) {
+          // callback(devices.WEB);
+          alert(JSON.stringify(err))
+          callback({source: ""});
+          // callback(devices.IOS_NOTCH); //dev env
+        }
+      );
+  } catch (e) {
+    callback({ source: ""});
+  }
+}
 export function getUniqueId(callback, err) {
   let toReturn = "";
 

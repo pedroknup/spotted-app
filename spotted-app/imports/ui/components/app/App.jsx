@@ -23,7 +23,8 @@ import {
   getDeviceId,
   initBridge,
   getUniqueId,
-  getGeolocation
+  getGeolocation,
+  uploadPicture
 } from "../../util/react-native-bridge.js";
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
@@ -231,11 +232,10 @@ class App extends Component {
 
   render() {
     const { currentLocation, history } = this.props;
-    const { page, pageSize, os, isNewIOS } = this.state;
+    const { page, pageSize, os, isNewIOS, uploadedImage } = this.state;
     const self = this;
 
     return (
-      
       <div
         style={{
           paddingTop: this.props.device === devices.IOS_NOTCH ? "45px" : "0"
@@ -246,6 +246,18 @@ class App extends Component {
           this.props.actions.verify();
           return;
         }}
+        <div>
+          <button
+            onClick={() => {
+              uploadPicture(res => {
+                self.setState({ uploadedImage: res.uri });
+              });
+            }}
+          >
+            Upload Image
+          </button>
+          <img style={{ width: "100%", height: "auto" }} src={uploadedImage} />
+        </div>
         {!this.state.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}

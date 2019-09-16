@@ -8,6 +8,7 @@ import React, { Component, Fragment } from "react";
 import { StyleSheet, Text, View, Platform } from "react-native";
 import { WebView } from "react-native-webview";
 import DeviceInfo from "react-native-device-info";
+import ImagePicker from "react-native-image-picker";
 
 const SERVER_URL_WEBBIO = "http://192.168.177.141:3000"; // webbio
 // const SERVER_URL_WEBBIO = 'http://192.168.1.13:3000 '//kamile
@@ -65,6 +66,34 @@ export default class App extends Component {
     geolocation.requestAuthorization();
   }
 
+  uploadPicture(msgData) {
+    try {
+      const options = {
+        title: "Upload picture"
+      };
+ 
+      ImagePicker.showImagePicker(options, response => {
+         console.warn(JSON.stringify(response));
+        if (response.didCancel) {
+          msgData.isSuccessfull = false;
+        } else if (response.error) {
+          msgData.isSuccessfull = false;
+        } else {
+          console.warn(JSON.stringify(response));
+          msgData.isSuccessfull = true;
+          const source = { uri: `data:image/jpeg;base64, ${response.data}` };
+          msgData.args = [source];
+        }
+        this.myWebView.injectJavaScript(
+          `window.postMessage('${JSON.stringify(msgData)}', '*');`
+        );
+      });
+    } catch (e) {
+      // alert(JSON.stringify(e));
+      console.warn(e);
+    }
+  }
+
   getGeolocation(msgData) {
     const options = {
       enableHighAccuracy: false,
@@ -112,6 +141,9 @@ export default class App extends Component {
       case "getDeviceId":
         this[msgData.targetFunc].apply(this, [msgData]);
       case "getUniqueId":
+        this[msgData.targetFunc].apply(this, [msgData]);
+        break;
+      case "uploadPicture":
         this[msgData.targetFunc].apply(this, [msgData]);
         break;
       case "getGeolocation":
