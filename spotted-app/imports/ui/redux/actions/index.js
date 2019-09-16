@@ -5,7 +5,8 @@ import {
   CHANGE_DEVICE,
   CHANGE_UNIQUE_ID,
   VERIFY,
-  CHANGE_COORDINATES
+  CHANGE_COORDINATES,
+  CHANGE_SELECTED_SPOTTED
 } from "../constants/action-types";
 
 export function addArticle(payload) {
@@ -24,8 +25,10 @@ export function changeUniqueId(payload) {
   return { type: CHANGE_UNIQUE_ID, payload };
 }
 export function changeCoordinates(payload) {
-  console.log("changing " + payload)
   return { type: CHANGE_COORDINATES, payload };
+}
+export function changeSelectedSpotted(payload) {
+  return { type: CHANGE_SELECTED_SPOTTED, payload };
 }
 export function verify() {
   return { type: VERIFY };

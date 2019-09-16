@@ -37,24 +37,10 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     };
     getGeolocation(
       response => {
-        // {
-        //   coords={
-        //     altitude,
-        //     altitudeAccuracy,
-        //     latitude,
-        //     accuracy,
-        //     longitude,
-        //   },
-        //   timestamp
-        // }
-
-        console.log("response", response);
         const coordinates = {
           latitude: response.latitude,
           longitude: response.longitude
         };
-        // alert(JSON.stringify(coordinates))
-
         this.setState({
           subscription: {
             spotteds: Meteor.subscribe("spotteds.published", 0, itemPerPage, {
@@ -79,6 +65,10 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     this.state.subscription.spotteds.stop();
   }
 
+  componentDidMount() {
+    elasticScroll();
+  }
+  
   filterByGenre(event) {
     let filterGenre = {
       ["spotteds.slug"]:
@@ -117,7 +107,6 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
   loadMore() {
     // Keep a copy of previous page items
     this.previous = this.data;
-    console.log("loading more");
     // Update subscription
     this.state.subscription.spotteds.stop();
     let newSubscription = Object.assign({}, this.state.subscription, {
@@ -148,9 +137,22 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     let newData = Spotteds.find().fetch();
     this.data = this.previous.concat(newData);
 
+    console.log(this.data)
+
+    if (this.props.selectedSpotted){
+        const foundSpotted = this.data.find(spotted=>{
+            return spotted._id == this.props.selectedSpotted._id
+        })
+        if (foundSpotted){
+            if (foundSpotted.commentsAmount != this.props.selectedSpotted.commentsAmount){
+                this.props.actions.changeSelectedSpotted(foundSpotted);
+                console.log("changing")
+            }
+        }
+    }
+
     // Reset previous array
     this.previous = [];
-    console.log(this.data);
     return this.data;
   }
 
@@ -197,12 +199,13 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
         ) : (
           <div style={fixedHeight()} data-elastic className="content">
             {movies.map((el, id) => {
-              console.log(el);
+
               return (
                 <div
                   key={id}
                   onClick={() => {
                     // ;
+                    this.props.actions.changeSelectedSpotted(el)
                     if (this.props.openSpotted) this.props.openSpotted(el);
                     //   console.log("clicked");
                   }}
@@ -215,6 +218,8 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
                       id={el.id}
                       comments={el.comments}
                       likes={el.likes}
+                      likesAmount = {el.likesAmount}
+                      commentsAmount = {el.commentsAmount}
                       isLiked={el.isLiked}
                     />
                   )}
@@ -236,7 +241,8 @@ function mapStateToProps(state) {
   return {
     device: state.device,
     uniqueId: state.uniqueId,
-    coordinates: state.coordinates
+    coordinates: state.coordinates,
+    selectedSpotted: state.selectedSpotted,
   };
 }
 

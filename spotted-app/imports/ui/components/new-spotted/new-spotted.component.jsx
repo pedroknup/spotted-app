@@ -10,7 +10,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 import Spotteds from "../../../api/spotteds";
 import InputComponent from "../core/input/input.component.jsx";
-import { uploadPicture } from "../../util/react-native-bridge";
+import { uploadPicture, getGeolocation } from "../../util/react-native-bridge";
 
 const getRandomColor = () => {
   const colors = [
@@ -40,17 +40,18 @@ const NewSpotted = props => {
       alert("Spotted can not be empty!");
       return;
     }
-    // alert(JSON.stringify(props.coordinates))
-    Spotteds.insert({
-      color,
-      text,
-      coordinates: props.coordinates,
-      // coordinates: { latitude: 51.55798, longitude: 5.084318 },
-      comments: [],
-      likes: [],
-      createdAt: new Date() // current time
-    });
-    props.previousPage();
+    getGeolocation((res)=>{
+      Spotteds.insert({
+        color,
+        text,
+        coordinates: res,
+        authorId: props.uniqueId,
+        createdAt: new Date() // current time
+      });
+      props.previousPage();
+    })
+
+   
   };
   const openSpottedDetails = () => {
     const spottedPage = PAGE_SPOTTED;
@@ -264,7 +265,8 @@ NewSpotted.propTypes = {
 function mapStateToProps(state) {
   return {
     currentLocation: state.currentLocation,
-    coordinates: state.coordinates
+    coordinates: state.coordinates,
+    uniqueId: state.uniqueId
   };
 }
 

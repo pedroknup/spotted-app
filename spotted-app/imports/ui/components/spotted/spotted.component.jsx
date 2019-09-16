@@ -100,6 +100,7 @@ const Spotted = props => {
                 </g>
               </g>
             </svg>
+            {props.commentsAmount}
           </span>
         </div>
         <span className="spotted-distance">{source}</span>

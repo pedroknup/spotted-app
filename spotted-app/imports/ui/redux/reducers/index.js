@@ -5,7 +5,8 @@ import {
   CHANGE_DEVICE,
   CHANGE_UNIQUE_ID,
   VERIFY,
-  CHANGE_COORDINATES
+  CHANGE_COORDINATES,
+  CHANGE_SELECTED_SPOTTED
 } from "../constants/action-types";
 
 import { PAGE_HOME } from "../constants/pages";
@@ -34,6 +35,12 @@ function rootReducer(state = initialState, action) {
     } catch (e) {
       state;
     }
+  } else if (action.type === CHANGE_SELECTED_SPOTTED) {
+    // alert("changing coords")
+    const newState = Object.assign({}, state, {
+      selectedSpotted: action.payload
+    });
+    return newState;
   } else if (action.type === CHANGE_COORDINATES) {
     // alert("changing coords")
     const newState = Object.assign({}, state, {

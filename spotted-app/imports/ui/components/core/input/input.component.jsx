@@ -10,6 +10,7 @@ const InputComponent = props => {
   return (
     <div style={{ width: "100%" }}>
       <input
+        value={props.value}
         className="input"
         placeholder={props.placeholder}
         onChange={onChange}

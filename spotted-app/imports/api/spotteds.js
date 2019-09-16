@@ -26,7 +26,7 @@ if (Meteor.isServer) {
     if (coordinates === null || coordinates === undefined) return [];
 
     if (coordinates.latitude === undefined || !uniqueId) return [];
-    const sort = { createdAt: -1 };
+    const sort = { createdAt: 1 };
 
     console.log("uniqueId", uniqueId);
     console.log("coordinates", coordinates);
@@ -37,8 +37,9 @@ if (Meteor.isServer) {
       if (doc.authorId == uniqueId) {
         mappedObj.isUserOwner = true;
       }
-      if (doc.likes.find(idLiked => uniqueId == idLiked))
-        mappedObj.isLiked = true;
+      if (doc.likes)
+        if (doc.likes.find(idLiked => uniqueId == idLiked))
+          mappedObj.isLiked = true;
 
       const distance = calculateDistanceBetweenTwoCoords(
         doc.coordinates.latitude,
@@ -51,26 +52,31 @@ if (Meteor.isServer) {
       if (distance > max_distance) return;
       mappedObj.source = simplifyDistance(distance);
       mappedObj._id = doc._id;
-      mappedObj.comments = doc.comments.map(comment => {
-        return {
-          author: comment.author,
-          id: comment.authorId == uniqueId ? comment.authorId : null,
-          text: comment.text,
-          createdAt: comment.createdAt
-        };
-      });
+      if (doc.comments) {
+        mappedObj.comments = doc.comments.map(comment => {
+          return {
+            author: comment.author,
+            id: comment.authorId == uniqueId ? comment.authorId : null,
+            text: comment.text,
+            createdAt: comment.createdAt
+          };
+        });
+      } else mappedObj.comments = [];
       mappedObj.color = doc.color;
       mappedObj.backgroundImage = doc.backgroundImage;
       mappedObj.text = doc.text;
-      mappedObj.likesAmount = doc.likes.length;
-      mappedObj.commentsAmount = doc.comments.length;
+      if (doc.likes) mappedObj.likesAmount = doc.likes.length;
+      else mappedObj.likesAmount = 0;
+      if (doc.comments) mappedObj.commentsAmount = doc.comments.length;
+      else mappedObj.commentsAmount = 0;
+
       mappedObj.visible = true;
       return mappedObj;
     };
 
     var self = this;
 
-    var observer = Spotteds.find({}, { skip, limit }).observe({
+    var observer = Spotteds.find({}, { sort: {createdAt: -1}, skip, limit }).observe({
       added: function(document) {
         self.added("spotteds", document._id, transform(document));
       },
@@ -88,32 +94,32 @@ if (Meteor.isServer) {
 
     self.ready();
   });
+
   Meteor.methods({
     "spotteds.insertComment"(spottedId, text, uniqueId) {
-      check(comment, String);
-
+      console.log("inserting comment", spottedId, text, uniqueId);
       const spottedFound = Spotteds.findOne({ _id: spottedId });
-
+      let previousCommentAuthor;
       if (spottedFound) {
-        const previousCommentAuthor = pottedFound.comments.find(
-          comment => comment.authorId === uniqueId
-        );
+        if (spottedFound.comments)
+          previousCommentAuthor = spottedFound.comments.find(
+            comment => comment.authorId === uniqueId
+          );
 
         const comment = {
           text,
           author: previousCommentAuthor
             ? previousCommentAuthor.author
-            : getRandomName(), //if it's the first time the user is commenting on this spotted, a new name will be generated for him
+            : getRandomName(spottedFound.comments), //if it's the first time the user is commenting on this spotted, a new name will be generated for him
           authorId: uniqueId,
           createdAt: new Date()
         };
-        while (
-          spottedFound.comments.find(
-            comment => comment.author === comment.author
-          )
-        ) {
-          comment.author = getRandomName(); //making sure his name is not being used already on this spotted
-        }
+        if (previousCommentAuthor)
+          while (
+            spottedFound.comments.find(el => el.author === comment.author)
+          ) {
+            comment.author = getRandomName(spottedFound.comments); //making sure his name is not being used already on this spotted
+          }
         Spotteds.update(spottedId, { $push: { comments: comment } });
       }
     },

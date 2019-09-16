@@ -164,9 +164,17 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  padding: 8px 0px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  max-height: 400px;
+  overflow: scroll;
+  margin-top: 16px;
 }
 
 .comment {
+  padding: 4px 16px;
+  margin: 4px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -175,6 +183,9 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .comment > div {
@@ -185,10 +196,12 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  margin-bottom: 4px;
 }
 
 .comment-author {
   font-weight: bold;
+  margin-right: 6px;
 }
 
 .comment-when {

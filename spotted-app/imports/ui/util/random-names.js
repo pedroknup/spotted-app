@@ -3,13 +3,14 @@ export const getRandomName = previousNames => {
   let hasFound = false,
     randomizedName = "";
   do {
-    let randomIndex =  Math.floor(Math.random() * arrayLenght);
-    console.log(randomIndex)
+    let randomIndex = Math.floor(Math.random() * arrayLenght);
+    console.log(randomIndex);
     randomizedName = randomNames[randomIndex];
-    console.log(" generated" , randomizedName)
-    hasFound = previousNames.find(name => name == randomizedName)
-      ? true
-      : false;
+    console.log(" generated", randomizedName);
+    if (previousNames)
+      hasFound = previousNames.find(name => name == randomizedName)
+        ? true
+        : false;
   } while (hasFound);
   return randomizedName;
 };

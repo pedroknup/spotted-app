@@ -8,7 +8,7 @@ $dark-grey: #b4b6b6;
   position: relative;
   text-align: center;
   font-size: 12px;
-  
+
   &.white-fg {
     > * {
       color: white !important;
@@ -194,24 +194,34 @@ $dark-grey: #b4b6b6;
   }
 }
 
-
-.comments{
+.comments {
   display: flex;
   height: 100%;
   flex-direction: column;
+  padding: 8px 0px;
+  box-sizing: border-box;
+  max-height: 400px;
+  overflow: scroll;
+  margin-top: 16px;
 }
-.comment{
+.comment {
+  padding: 4px 16px;
+  margin: 4px 0;
   display: flex;
   height: 100%;
   flex-direction: column;
+
+  justify-content: space-between;
   > div {
     display: flex;
     flex-direction: row;
+    margin-bottom: 4px;
   }
-  &-author{
+  &-author {
     font-weight: bold;
+    margin-right: 6px;
   }
-  &-when{
+  &-when {
     color: #b7b7b7;
   }
 }

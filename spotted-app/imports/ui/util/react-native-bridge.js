@@ -132,7 +132,7 @@ export function getGeolocation(callback, err) {
         "getGeolocation",
         "",
         function(res) {
-          alert(JSON.stringify(res));
+          // alert(JSON.stringify(res));
           callback(res.coords);
         },
         function(err) {

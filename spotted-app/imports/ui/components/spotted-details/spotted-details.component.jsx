@@ -2,14 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./spotted-details.component.css";
 import { bindActionCreators } from "redux";
-
+import elasticScroll from "elastic-scroll-polyfill";
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 import InputComponent from "../core/input/input.component.jsx";
+import { Meteor } from "meteor/meteor";
+import moment from "moment";
 
 const SpottedDetails = props => {
+  const [commentInputValue, setCommentInputValue] = React.useState("");
   const { color, text, id, source, comments, likes, isLiked } = props;
   const openSpottedDetails = () => {
     const spottedPage = PAGE_SPOTTED;
@@ -28,6 +31,22 @@ const SpottedDetails = props => {
     props.actions.changeLocation({
       ...spottedPage
     });
+  };
+  React.useEffect(() => {
+    elasticScroll();
+  }, []);
+  const postComment = () => {
+    //"spotteds.insertComment"(spottedId, text, uniqueId) {
+    if (!commentInputValue.trim()) {
+      alert("Spotted can not be empty!");
+      return;
+    }
+    Meteor.call(
+      "spotteds.insertComment",
+      props._id,
+      commentInputValue,
+      props.uniqueId
+    );
   };
   return (
     <div>
@@ -105,19 +124,39 @@ const SpottedDetails = props => {
           {/* <span className="spotted-distance">{props.coordinates ? JSON.stringify(props.coordinates) : " oops"}</span> */}
         </div>
       </div>
-      <section className="comments">
-        {comments.map(comment => (
+
+      <section data-elastic className="comments">
+        {props.selectedSpotted.comments.map(comment => (
           <div className="comment">
             <div>
-              <span className="comment-author">{comment.author}</span>
-              <span className="comment-body">{comment.body}</span>
+              <span
+                style={{ color: comment.id ? "red" : "black" }}
+                className="comment-author"
+              >
+                {comment.author}
+              </span>
+              <span className="comment-body">{comment.text}</span>
             </div>
-            <span className="comment-when">{comment.createdAt}</span>
+            <span className="comment-when">
+              {moment(comment.createdAt).fromNow()}
+            </span>
           </div>
         ))}
       </section>
       <div style={{ padding: 16 }}>
-        <InputComponent placeholder="Write a comment" />
+        <InputComponent
+          value={commentInputValue}
+          onChange={setCommentInputValue}
+          placeholder="Write a comment"
+        />
+        <button
+          onClick={() => {
+            postComment();
+            setCommentInputValue("");
+          }}
+        >
+          POST
+        </button>
       </div>
     </div>
   );
@@ -134,7 +173,11 @@ SpottedDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { uniqueId: state.uniqueId, coordinates: state.coordinates };
+  return {
+    uniqueId: state.uniqueId,
+    coordinates: state.coordinates,
+    selectedSpotted: state.selectedSpotted
+  };
 }
 
 function mapDispatchToProps(dispatch) {
