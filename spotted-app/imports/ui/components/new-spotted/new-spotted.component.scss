@@ -68,6 +68,32 @@ $dark-grey: #b4b6b6;
       color: white;
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
     }
+    .upload-picture {
+
+      font-size: 24px;
+      text-align: center;
+      background: #f90000;
+      background: -moz-linear-gradient(
+        top,
+        #f90000 0%,
+        #20f700 51%,
+        #1800f7 100%
+      );
+      background: -webkit-linear-gradient(
+        top,
+        #f90000 0%,
+        #20f700 51%,
+        #1800f7 100%
+      );
+      background: linear-gradient(
+        to bottom,
+        #f90000 0%,
+        #20f700 51%,
+        #1800f7 100%
+      );
+      color: white;
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
+    }
 
     .yellow {
       background-color: yellow;
@@ -158,6 +184,14 @@ $dark-grey: #b4b6b6;
         fill: white !important;
       }
     }
+  }
+
+  &-custom{
+    >img{
+      object-fit: cover;
+    }
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   }
 
   &-yellow {
@@ -336,7 +370,7 @@ $dark-grey: #b4b6b6;
   &-text {
     display: table-cell;
     vertical-align: middle;
-
+    z-index: 100;
   
   }
   &-comments {

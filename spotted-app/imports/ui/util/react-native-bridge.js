@@ -132,7 +132,6 @@ export function getGeolocation(callback, err) {
         "getGeolocation",
         "",
         function(res) {
-          alert(JSON.stringify(res))
           callback(res);
         },
         function(err) {
@@ -153,7 +152,7 @@ export function uploadPicture(callback, err) {
         "uploadPicture",
         "",
         function(res) {
-         alert(JSON.stringify(res))
+        //  alert(JSON.stringify(res))
           callback(res);
         },
         function(err) {

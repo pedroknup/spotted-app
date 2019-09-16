@@ -246,18 +246,7 @@ class App extends Component {
           this.props.actions.verify();
           return;
         }}
-        <div>
-          <button
-            onClick={() => {
-              uploadPicture(res => {
-                self.setState({ uploadedImage: res.uri });
-              });
-            }}
-          >
-            Upload Image
-          </button>
-          <img style={{ width: "100%", height: "auto" }} src={uploadedImage} />
-        </div>
+
         {!this.state.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}

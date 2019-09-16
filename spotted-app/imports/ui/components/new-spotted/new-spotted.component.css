@@ -59,6 +59,16 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
 }
 
+.new-spotted-form .color-selector .upload-picture {
+  font-size: 24px;
+  text-align: center;
+  background: #f90000;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f90000), color-stop(51%, #20f700), to(#1800f7));
+  background: linear-gradient(to bottom, #f90000 0%, #20f700 51%, #1800f7 100%);
+  color: white;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
+}
+
 .new-spotted-form .color-selector .yellow {
   background-color: yellow;
 }
@@ -159,6 +169,16 @@
 
 .new-spotted.white-fg svg path {
   fill: white !important;
+}
+
+.new-spotted-custom {
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.new-spotted-custom > img {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .new-spotted-yellow {
@@ -277,6 +297,7 @@
 .new-spotted-text {
   display: table-cell;
   vertical-align: middle;
+  z-index: 100;
 }
 
 .new-spotted-comments {
