@@ -11,7 +11,9 @@ import DeviceInfo from "react-native-device-info";
 import ImagePicker from "react-native-image-picker";
 
 const SERVER_URL_WEBBIO = "http://192.168.177.141:3000"; // webbio
-// const SERVER_URL_WEBBIO = 'http://192.168.1.13:3000 '//kamile
+const SERVER_URL_KAMILE = 'http://192.168.1.13:3000 '// kamile
+const SERVER_URL_HOME = 'http://192.168.1.23:3000 '// home
+
 
 export default class App extends Component {
   constructor(props) {
@@ -160,8 +162,8 @@ export default class App extends Component {
             this.myWebView = webview;
           }}
           tyle={styles.container}
-          scrollEnabled={false}
-          source={{ uri: SERVER_URL_WEBBIO }}
+          // scrollEnabled={false}
+          source={{ uri: SERVER_URL_HOME }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>
