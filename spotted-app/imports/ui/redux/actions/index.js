@@ -24,6 +24,7 @@ export function changeUniqueId(payload) {
   return { type: CHANGE_UNIQUE_ID, payload };
 }
 export function changeCoordinates(payload) {
+  console.log("changing " + payload)
   return { type: CHANGE_COORDINATES, payload };
 }
 export function verify() {

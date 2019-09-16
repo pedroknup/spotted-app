@@ -46,12 +46,13 @@ export class NativeNavbar extends Component {
     alert("hello world");
   }
   previousPage() {
+    this.swipeLeft();
+
     this.setState({
       secondPageNewSpotted: false,
       secondPageSpottedInfo: false,
       selectedSpotted: null
     });
-    this.swipeLeft();
   }
   componentDidMount() {
     this.initialize();
@@ -180,10 +181,13 @@ export class NativeNavbar extends Component {
   };
 
   swipeLeft(changing) {
-    this.setState({
-      secondPageNewSpotted: false,
-      secondPageSpottedInfo: false
-    });
+    setTimeout(() => {
+      this.setState({
+        secondPageNewSpotted: false,
+        secondPageSpottedInfo: false,
+        selectedSpotted: null
+      });
+    }, ANIMATION_DURATION);
     const backButton = document.querySelector(".navbar-ios-button");
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
@@ -433,9 +437,15 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div style={{minHeight: "100vh"}}>
-                {/* <NearbyFeedComponent /> */}
-                <NearbyFeedComponent />
+              <div style={{ minHeight: "100vh" }}>
+                {/* <NearbyFeedComponent openSpotted={(spotted)=>{
+                  this.openSpottedInfo(spotted);
+                }} /> */}
+                <NearbyFeedComponent
+                  openSpotted={spotted => {
+                    this.openSpottedInfo(spotted);
+                  }}
+                />
                 <FooterIos />
               </div>
               <NewSpotted previousPage={this.previousPage} />
@@ -451,8 +461,12 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div style={{minHeight: "100vh"}}>
-                <NearbyFeedComponent />
+              <div style={{ minHeight: "100vh" }}>
+                <NearbyFeedComponent
+                  openSpotted={spotted => {
+                    this.openSpottedInfo(spotted);
+                  }}
+                />
                 <FooterIos />
               </div>
 
@@ -469,8 +483,12 @@ export class NativeNavbar extends Component {
               axis="x"
               ref="swpv"
             >
-              <div style={{minHeight: "100vh"}}>
-                <NearbyFeedComponent />
+              <div style={{ minHeight: "100vh" }}>
+                <NearbyFeedComponent
+                  openSpotted={spotted => {
+                    this.openSpottedInfo(spotted);
+                  }}
+                />
                 <FooterIos />
               </div>
             </SwipeableViews>

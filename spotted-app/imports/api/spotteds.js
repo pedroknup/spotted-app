@@ -1,8 +1,11 @@
 import { Mongo } from "meteor/mongo";
 import { getRandomName } from "../ui/util/random-names";
-
+import { calculateDistanceBetweenTwoCoords } from "../ui/util/geolocalization";
+import { _ } from "meteor/underscore";
+import { Random } from "meteor/random";
 const Spotteds = new Mongo.Collection("spotteds");
 
+const MAX_DISTANCE = 250;
 if (Meteor.isServer) {
   // This code only runs on the server
   console.log("server", Spotteds.find({}).count());
@@ -11,38 +14,92 @@ if (Meteor.isServer) {
   // });
 
   Meteor.publish("spotteds.published", function(
-    sort = null,
     skip = 0,
     limit = 20,
-    filters = {}
+    coordinates
   ) {
-    if (!sort || typeof sort !== "object") {
-      sort = { createdAt: -1 };
-    }
+    if (coordinates === null || coordinates === undefined) return [];
 
-    let params = Object.assign(
-      {
-        status: 1
+    if (coordinates.latitude === undefined) return [];
+    const sort = { createdAt: -1 };
+
+    console.log("coordinates", coordinates);
+
+    // const filteredSpotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
+    //   .fetch()
+    //   .filter(item => {
+    //     const distance = calculateDistanceBetweenTwoCoords(
+    //       item.coordinates.latitude,
+    //       item.coordinates.longitude,
+    //       coordinates.latitude,
+    //       coordinates.longitude
+    //     );
+    //     const max_distance =
+    //       coordinates.latitude == 0 ? Number.POSITIVE_INFINITY : MAX_DISTANCE;
+    //     return distance <= max_distance;
+    //   });
+    // console.log("----------------Publishing--------------------");
+    // // let cursor = Spotteds.find(
+    // //   {},
+    // //   {
+    // //     sort: sort,
+    // //     skip: skip,
+    // //     limit: limit
+    // //   }
+    // // );
+
+    // let feedIds = filteredSpotteds
+    //   .slice(skip, skip + limit)
+    //   .map(item => item._id);
+
+    // var results = Spotteds.find({
+    //   _id: { $in: feedIds }
+    // });
+
+    // Spotteds.find()
+    //   .fetch()
+    //   .map(function(doc) {
+    //     const distance = calculateDistanceBetweenTwoCoords(
+    //       doc.coordinates.latitude,
+    //       doc.coordinates.longitude,
+    //       coordinates.latitude,
+    //       coordinates.longitude
+    //     );
+    //     const max_distance =
+    //       coordinates.latitude == 0 ? Number.POSITIVE_INFINITY : MAX_DISTANCE;
+    //     // if(distance <= max_distance){
+    //     let newDoc = { ...doc };
+    //     newDoc.source = "coco";
+    //     this.added("spotted", doc._id, newDoc);
+    //     // }
+    //   }, this);
+
+    // this.ready();
+
+    var transform = function(doc) {
+      doc.source = 'Source'
+      return doc;
+    };
+
+    var self = this;
+
+    var observer = Spotteds.find().observe({
+      added: function(document) {
+        self.added("spotteds", document._id, transform(document));
       },
-      filters
-    );
-
-    console.log("----------------Publishing--------------------");
-
-    let cursor = Spotteds.find(
-      {},
-      {
-        sort: sort,
-        skip: skip,
-        limit: limit
+      changed: function(newDocument, oldDocument) {
+        self.changed("spotteds", oldDocument._id, transform(newDocument));
+      },
+      removed: function(oldDocument) {
+        self.removed("spotteds", oldDocument._id);
       }
-    );
+    });
 
-    // Test publication
-    // Count is always good
-    console.log(cursor.fetch().length);
+    self.onStop(function() {
+      observer.stop();
+    });
 
-    return cursor;
+    self.ready();
   });
   Meteor.methods({
     "spotteds.insertComment"(spottedId, text, uniqueId) {

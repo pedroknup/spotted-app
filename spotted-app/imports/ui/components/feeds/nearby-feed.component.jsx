@@ -37,22 +37,51 @@ const MAXIMUM_DISTANCE = 250;
 class NearbyFeedComponent extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
-      subscription: {
-        spotteds: Meteor.subscribe(
-          "spotteds.published",
-          { createdAt: -1 },
-          0,
-          itemPerPage
-        )
-        // spottedsCount: Meteor.subscribe("spotteds.count")
-      },
+      coordinates: null,
+      subscription: null,
       skip: 0,
       filters: {}
       //   sort: defaultOrder,
     };
+    getGeolocation(
+      response => {
+        // {
+        //   coords={
+        //     altitude,
+        //     altitudeAccuracy,
+        //     latitude,
+        //     accuracy,
+        //     longitude,
+        //   },
+        //   timestamp
+        // }
 
+        console.log("response", response);
+        const coordinates = {
+          latitude: response.latitude,
+          longitude: response.longitude
+        };
+        // alert(JSON.stringify(coordinates))
+
+        this.setState({
+          subscription: {
+            spotteds: Meteor.subscribe(
+              "spotteds.published",
+              0,
+              itemPerPage,
+              { latitude: response.latitude, longitude: response.longitude }
+            )
+            // spottedsCount: Meteor.subscribe("spotteds.count")
+          },
+          coordinates
+        });
+      },
+      () => {
+        alert("err");
+      }
+    );
     // our local data
     this.data = [];
     this.previous = [];
@@ -72,18 +101,19 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 
   updateFilters(values) {
     // Merge filters
-    let filters = Object.assign(this.state.filters, values);
+    // let filters = Object.assign(this.state.filters, values);
 
     // Update subscription ( reset pagination )
     this.state.subscription.spotteds.stop();
+    const coordinates = this.state.coordinates;
     // this.state.subscription.spottedsCount.stop();
     let newSubscription = Object.assign({}, this.state.subscription, {
       spotteds: Meteor.subscribe(
         "spotteds.published",
-        { createdAt: -1 },
+
         0,
         itemPerPage,
-        filters
+        coordinates
       )
       //   spottedsCount: Meteor.subscribe("spotteds.count", filters)
     });
@@ -104,10 +134,10 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     let newSubscription = Object.assign({}, this.state.subscription, {
       spotteds: Meteor.subscribe(
         "spotteds.published",
-        { createdAt: -1 },
+
         this.previous.length,
         itemPerPage,
-        this.state.filters
+        this.state.coordinates
       )
     });
 
@@ -119,6 +149,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 
   getSpotteds() {
     // Wait subscription ready to avoid replacing items
+    if (!this.state.subscription) return [];
     if (!this.state.subscription.spotteds.ready()) {
       return this.previous;
     }
@@ -151,11 +182,18 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     };
     let movies = this.getSpotteds();
     return (
-      <div
-        className="wtf"
-        style={fixedHeight()}
-      >
-        {!this.state.subscription.spotteds.ready() && !this.previous.length ? (
+      <div className="wtf" style={fixedHeight()}>
+        {!this.state.subscription ? (
+          <div
+            style={{
+              minHeight: "100vh",
+              minWidth: "100vw",
+              backgroundColor: "red"
+            }}
+          >
+            Loading
+          </div>
+        ) : !this.state.subscription.spotteds.ready() ? (
           <div
             style={{
               minHeight: "100vh",
@@ -166,18 +204,15 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
             Loading
           </div>
         ) : (
-          <div
-            style={fixedHeight()}
-            data-elastic
-            className="content"
-          >
+          <div style={fixedHeight()} data-elastic className="content">
             {movies.map((el, id) => {
               console.log(el);
               return (
                 <div
                   key={id}
                   onClick={() => {
-                    // this.openSpottedInfo(spotted);
+                    // ;
+                    if (this.props.openSpotted) this.props.openSpotted(el);
                     //   console.log("clicked");
                   }}
                 >
@@ -204,7 +239,11 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 // export default NearbyFeedComponent;
 
 function mapStateToProps(state) {
-  return { device: state.device, uniqueId: state.uniqueId };
+  return {
+    device: state.device,
+    uniqueId: state.uniqueId,
+    coordinates: state.coordinates
+  };
 }
 
 function mapDispatchToProps(dispatch) {

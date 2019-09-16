@@ -73,7 +73,7 @@ class App extends Component {
             longitude: response.coords.longitude
           };
           // alert(JSON.stringify(coordinates))
-          self.props.actions.changeCoordinates(coordinates);
+          this.props.actions.changeCoordinates(coordinates);
         },
         () => {
           alert("err");

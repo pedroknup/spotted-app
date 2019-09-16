@@ -132,38 +132,41 @@ export function getGeolocation(callback, err) {
         "getGeolocation",
         "",
         function(res) {
-          callback(res);
+          alert(JSON.stringify(res));
+          callback(res.coords);
         },
         function(err) {
           // callback(devices.WEB);
-          callback(false);
+          callback({
+            latitude: 0,
+            longitude: 0
+          });
           // callback(devices.IOS_NOTCH); //dev env
         }
       );
   } catch (e) {
-    callback({coords:{latitude: 0, longitude: 0}});
+    callback({ coords: { latitude: 0, longitude: 0 } });
   }
 }
 
 export function uploadPicture(callback, err) {
   try {
-   
-      window.webViewBridge.send(
-        "uploadPicture",
-        "",
-        function(res) {
+    window.webViewBridge.send(
+      "uploadPicture",
+      "",
+      function(res) {
         //  alert(JSON.stringify(res))
-          callback(res);
-        },
-        function(err) {
-          // callback(devices.WEB);
-          alert(JSON.stringify(err))
-          callback({source: ""});
-          // callback(devices.IOS_NOTCH); //dev env
-        }
-      );
+        callback(res);
+      },
+      function(err) {
+        // callback(devices.WEB);
+        alert(JSON.stringify(err));
+        callback({ source: "" });
+        // callback(devices.IOS_NOTCH); //dev env
+      }
+    );
   } catch (e) {
-    callback({ source: ""});
+    callback({ source: "" });
   }
 }
 export function getUniqueId(callback, err) {
