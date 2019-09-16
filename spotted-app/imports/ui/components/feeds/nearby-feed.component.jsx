@@ -21,19 +21,9 @@ import {
   calculateDistanceBetweenTwoCoords,
   simplifyDistance
 } from "../../util/geolocalization";
-function getTextWidth(text, font) {
-  // re-use canvas object for better performance
-  var canvas =
-    getTextWidth.canvas ||
-    (getTextWidth.canvas = document.createElement("canvas"));
-  var context = canvas.getContext("2d");
-  context.font = font;
-  var metrics = context.measureText(text);
-  return metrics.width;
-}
+
 const itemPerPage = 10;
 
-const MAXIMUM_DISTANCE = 250;
 class NearbyFeedComponent extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
@@ -67,12 +57,10 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 
         this.setState({
           subscription: {
-            spotteds: Meteor.subscribe(
-              "spotteds.published",
-              0,
-              itemPerPage,
-              { latitude: response.latitude, longitude: response.longitude }
-            )
+            spotteds: Meteor.subscribe("spotteds.published", 0, itemPerPage, {
+              latitude: response.latitude,
+              longitude: response.longitude
+            }, props.uniqueId)
             // spottedsCount: Meteor.subscribe("spotteds.count")
           },
           coordinates
@@ -113,7 +101,8 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 
         0,
         itemPerPage,
-        coordinates
+        coordinates,
+        this.props.uniqueId
       )
       //   spottedsCount: Meteor.subscribe("spotteds.count", filters)
     });
@@ -137,7 +126,8 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
 
         this.previous.length,
         itemPerPage,
-        this.state.coordinates
+        this.state.coordinates,
+        this.props.uniqueId
       )
     });
 
@@ -165,6 +155,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
   }
 
   render() {
+    const { coordinates } = this.props;
     const fixedHeight = () => {
       let value;
       if (this.props.device === devices.IOS_NOTCH) {
@@ -216,15 +207,18 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
                     //   console.log("clicked");
                   }}
                 >
-                  <Spotted
-                    text={el.text}
-                    source={el.source}
-                    color={el.color}
-                    id={el.id}
-                    comments={el.comments}
-                    likes={el.likes}
-                    isLiked={el.isLiked}
-                  />
+                  {el.visible && (
+                    <Spotted
+                      text={el.text}
+                      source={el.source}
+                      color={el.color}
+                      id={el.id}
+                      comments={el.comments}
+                      likes={el.likes}
+                      isLiked={el.isLiked}
+                    />
+                  )}
+
                   {/* <code>lol</code> */}
                 </div>
               );

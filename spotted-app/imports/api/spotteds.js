@@ -1,8 +1,12 @@
 import { Mongo } from "meteor/mongo";
 import { getRandomName } from "../ui/util/random-names";
-import { calculateDistanceBetweenTwoCoords } from "../ui/util/geolocalization";
+import {
+  calculateDistanceBetweenTwoCoords,
+  simplifyDistance
+} from "../ui/util/geolocalization";
 import { _ } from "meteor/underscore";
 import { Random } from "meteor/random";
+import { domainToASCII } from "url";
 const Spotteds = new Mongo.Collection("spotteds");
 
 const MAX_DISTANCE = 250;
@@ -16,74 +20,57 @@ if (Meteor.isServer) {
   Meteor.publish("spotteds.published", function(
     skip = 0,
     limit = 20,
-    coordinates
+    coordinates,
+    uniqueId
   ) {
     if (coordinates === null || coordinates === undefined) return [];
 
-    if (coordinates.latitude === undefined) return [];
+    if (coordinates.latitude === undefined || !uniqueId) return [];
     const sort = { createdAt: -1 };
 
+    console.log("uniqueId", uniqueId);
     console.log("coordinates", coordinates);
 
-    // const filteredSpotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
-    //   .fetch()
-    //   .filter(item => {
-    //     const distance = calculateDistanceBetweenTwoCoords(
-    //       item.coordinates.latitude,
-    //       item.coordinates.longitude,
-    //       coordinates.latitude,
-    //       coordinates.longitude
-    //     );
-    //     const max_distance =
-    //       coordinates.latitude == 0 ? Number.POSITIVE_INFINITY : MAX_DISTANCE;
-    //     return distance <= max_distance;
-    //   });
-    // console.log("----------------Publishing--------------------");
-    // // let cursor = Spotteds.find(
-    // //   {},
-    // //   {
-    // //     sort: sort,
-    // //     skip: skip,
-    // //     limit: limit
-    // //   }
-    // // );
-
-    // let feedIds = filteredSpotteds
-    //   .slice(skip, skip + limit)
-    //   .map(item => item._id);
-
-    // var results = Spotteds.find({
-    //   _id: { $in: feedIds }
-    // });
-
-    // Spotteds.find()
-    //   .fetch()
-    //   .map(function(doc) {
-    //     const distance = calculateDistanceBetweenTwoCoords(
-    //       doc.coordinates.latitude,
-    //       doc.coordinates.longitude,
-    //       coordinates.latitude,
-    //       coordinates.longitude
-    //     );
-    //     const max_distance =
-    //       coordinates.latitude == 0 ? Number.POSITIVE_INFINITY : MAX_DISTANCE;
-    //     // if(distance <= max_distance){
-    //     let newDoc = { ...doc };
-    //     newDoc.source = "coco";
-    //     this.added("spotted", doc._id, newDoc);
-    //     // }
-    //   }, this);
-
-    // this.ready();
-
     var transform = function(doc) {
-      doc.source = 'Source'
-      return doc;
+      const mappedObj = {};
+
+      if (doc.authorId == uniqueId) {
+        mappedObj.isUserOwner = true;
+      }
+      if (doc.likes.find(idLiked => uniqueId == idLiked))
+        mappedObj.isLiked = true;
+
+      const distance = calculateDistanceBetweenTwoCoords(
+        doc.coordinates.latitude,
+        doc.coordinates.longitude,
+        coordinates.latitude,
+        coordinates.longitude
+      );
+      const max_distance =
+        coordinates.latitude == 0 ? Number.POSITIVE_INFINITY : MAX_DISTANCE;
+      if (distance > max_distance) return;
+      mappedObj.source = simplifyDistance(distance);
+      mappedObj._id = doc._id;
+      mappedObj.comments = doc.comments.map(comment => {
+        return {
+          author: comment.author,
+          id: comment.authorId == uniqueId ? comment.authorId : null,
+          text: comment.text,
+          createdAt: comment.createdAt
+        };
+      });
+      mappedObj.color = doc.color;
+      mappedObj.backgroundImage = doc.backgroundImage;
+      mappedObj.text = doc.text;
+      mappedObj.likesAmount = doc.likes.length;
+      mappedObj.commentsAmount = doc.comments.length;
+      mappedObj.visible = true;
+      return mappedObj;
     };
 
     var self = this;
 
-    var observer = Spotteds.find().observe({
+    var observer = Spotteds.find({}, { skip, limit }).observe({
       added: function(document) {
         self.added("spotteds", document._id, transform(document));
       },

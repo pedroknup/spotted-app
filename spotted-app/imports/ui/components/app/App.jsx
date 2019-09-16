@@ -263,7 +263,6 @@ class App extends Component {
         )}
       </div>
     );
-    
   }
 }
 
@@ -289,54 +288,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withTracker(() => {
-    const handle = Meteor.subscribe("spotteds");
-    let spotteds;
-    try {
-      let currentState = JSON.parse(localStorage.getItem("reducer"));
-      // if (currentState.coordinates === undefined)
-      //   currentState.coordinates = {
-      //     latitude: 51.8125626,
-      //     longitude: 5.8372264
-      //   };
-
-      //amsterdam
-      // latitude 52.370216
-      // longitude:  4.895168
-
-      //tilburg:
-      // latitude: 10.2168
-      // longitude: 5.077
-
-      if (!currentState)
-        currentState = { coordinates: { latitude: 0, longitude: 0 } };
-      else if (!currentState.coordinates)
-        currentState.coordinates = { latitude: 0, longitude: 0 };
-
-      spotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
-        .fetch()
-        .map(item => {
-          let toReturn = { ...item };
-          const distance = calculateDistanceBetweenTwoCoords(
-            item.coordinates.latitude,
-            item.coordinates.longitude,
-            currentState.coordinates.latitude,
-            currentState.coordinates.longitude
-          );
-
-          toReturn.source = simplifyDistance(distance);
-          return toReturn;
-        });
-    } catch (e) {
-      alert(e);
-    }
-    return {
-      isLoading: !handle.ready(),
-      spotteds: spotteds
-    };
-  })(App)
-);
+)(App);
 
 // export default withTracker(() => {
 //   const subscriptionHandle = Meteor.subscribe("spotteds");
