@@ -193,3 +193,25 @@ $dark-grey: #b4b6b6;
     }
   }
 }
+
+
+.comments{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.comment{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  > div {
+    display: flex;
+    flex-direction: row;
+  }
+  &-author{
+    font-weight: bold;
+  }
+  &-when{
+    color: #b7b7b7;
+  }
+}

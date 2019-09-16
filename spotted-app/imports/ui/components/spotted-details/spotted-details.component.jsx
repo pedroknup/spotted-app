@@ -101,11 +101,21 @@ const SpottedDetails = props => {
               </svg>
             </span>
           </div>
-          {/* <span className="spotted-distance">{props.coordinates.latitude},{props.coordinates.longitude}</span> */}
-          <span className="spotted-distance">{props.coordinates ? JSON.stringify(props.coordinates) : " oops"}</span>
+          <span className="spotted-distance">{source}</span>
+          {/* <span className="spotted-distance">{props.coordinates ? JSON.stringify(props.coordinates) : " oops"}</span> */}
         </div>
       </div>
-
+      <section className="comments">
+        {comments.map(comment => (
+          <div className="comment">
+            <div>
+              <span className="comment-author">{comment.author}</span>
+              <span className="comment-body">{comment.body}</span>
+            </div>
+            <span className="comment-when">{comment.createdAt}</span>
+          </div>
+        ))}
+      </section>
       <div style={{ padding: 16 }}>
         <InputComponent placeholder="Write a comment" />
       </div>
@@ -130,7 +140,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(locationActions, dispatch) };
 }
-
 
 export default connect(
   mapStateToProps,
