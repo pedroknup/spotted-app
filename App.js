@@ -161,9 +161,9 @@ export default class App extends Component {
           ref={webview => {
             this.myWebView = webview;
           }}
-          tyle={styles.container}
+          style={styles.container}
           // scrollEnabled={false}
-          source={{ uri: SERVER_URL_HOME }}
+          source={{ uri: 'http://192.168.1.23:3000' }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>

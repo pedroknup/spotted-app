@@ -10,6 +10,8 @@ import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 import { devices } from "../../redux/constants/enums";
 import FooterIos from "../footer-ios/footer-ios.component.jsx";
 import { getRandomNames } from "../../util/random-names";
+import NearbyFeedComponent from "../feeds/nearby-feed.component.jsx";
+// import nearbyFeedComponent from "../feeds/nearby-feed.component.jsx";
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   var canvas =
@@ -432,34 +434,8 @@ export class NativeNavbar extends Component {
               ref="swpv"
             >
               <div style={{minHeight: "100vh"}}>
-                <div
-                  style={{
-                    maxHeight: getMaxHeight(),
-                    minHeight: getMaxHeight()
-                  }}
-                  data-elastic
-                  className="content"
-                >
-                  {this.props.spotteds.map((spotted, id) => (
-                    <div
-                      key={id}
-                      onClick={() => {
-                        this.openSpottedInfo(spotted);
-                        console.log("clicked");
-                      }}
-                    >
-                      <Spotted
-                        text={spotted.text}
-                        source={spotted.source}
-                        color={spotted.color}
-                        id={spotted.id}
-                        comments={spotted.comments}
-                        likes={spotted.likes}
-                        isLiked={spotted.isLiked}
-                      />
-                    </div>
-                  ))}
-                </div>
+                {/* <NearbyFeedComponent /> */}
+                <NearbyFeedComponent />
                 <FooterIos />
               </div>
               <NewSpotted previousPage={this.previousPage} />
@@ -476,34 +452,7 @@ export class NativeNavbar extends Component {
               ref="swpv"
             >
               <div style={{minHeight: "100vh"}}>
-                <div
-                  style={{
-                    maxHeight: getMaxHeight(),
-                    minHeight: getMaxHeight()
-                  }}
-                  data-elastic
-                  className="content"
-                >
-                  {this.props.spotteds.map((spotted, id) => (
-                    <div
-                      key={id}
-                      onClick={() => {
-                        this.openSpottedInfo(spotted);
-                        console.log("clicked");
-                      }}
-                    >
-                      <Spotted
-                        text={spotted.text}
-                        source={spotted.source}
-                        color={spotted.color}
-                        id={spotted.id}
-                        comments={spotted.comments}
-                        likes={spotted.likes}
-                        isLiked={spotted.isLiked}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <NearbyFeedComponent />
                 <FooterIos />
               </div>
 
@@ -521,34 +470,7 @@ export class NativeNavbar extends Component {
               ref="swpv"
             >
               <div style={{minHeight: "100vh"}}>
-                <div
-                  style={{
-                    maxHeight: getMaxHeight(),
-                    minHeight: getMaxHeight()
-                  }}
-                  data-elastic
-                  className="content"
-                >
-                  {this.props.spotteds.map((spotted, id) => (
-                    <div
-                      key={id}
-                      onClick={() => {
-                        this.openSpottedInfo(spotted);
-                        console.log("clicked");
-                      }}
-                    >
-                      <Spotted
-                        text={spotted.text}
-                        source={spotted.source}
-                        color={spotted.color}
-                        id={spotted.id}
-                        comments={spotted.comments}
-                        likes={spotted.likes}
-                        isLiked={spotted.isLiked}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <NearbyFeedComponent />
                 <FooterIos />
               </div>
             </SwipeableViews>

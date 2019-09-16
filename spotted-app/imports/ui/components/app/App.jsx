@@ -263,54 +263,7 @@ class App extends Component {
         )}
       </div>
     );
-    return (
-      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
-        <Navbar
-          backButtonCallback={() => {
-            previousPage();
-          }}
-          os={os}
-          hasActionButton={currentLocation.hasActionButton}
-          backButton={currentLocation.backButton}
-          title={currentLocation.page}
-          goToNewSpottedPage={() => {
-            changeLocation(NEW_SPOTTED);
-          }}
-        />
-        {currentLocation.id == "home" && os === "android" && <TabAndroid />}
-        <div
-          style={{
-            position: "fixed",
-            // top: 56,
-            top: 100,
-            left: 16,
-            backgroundColor: "red",
-            zIndex: 1000,
-            color: "white"
-          }}
-        >
-          {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
-        </div>
-        <div
-          style={{
-            maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
-          }}
-          data-elastic
-          className="content"
-        >
-          {currentLocation.id == "home" ? (
-            this.renderSpotteds()
-          ) : currentLocation.id == "spotted" ? (
-            this.renderSpotted()
-          ) : currentLocation.id == "newSpotted" ? (
-            this.renderNewSpotted()
-          ) : (
-            <div>404</div>
-          )}
-        </div>
-        {currentLocation.id == "home" && os === "ios" && <FooterIos />}
-      </div>
-    );
+    
   }
 }
 
