@@ -22,6 +22,7 @@ import {
   calculateDistanceBetweenTwoCoords,
   simplifyDistance
 } from "../../util/geolocalization";
+import LoadingComponent from "../loading/loading.component.jsx";
 
 const itemPerPage = 10;
 
@@ -239,21 +240,19 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
           <div
             style={{
               minHeight: "100vh",
-              minWidth: "100vw",
-              backgroundColor: "red"
+              minWidth: "100vw"
             }}
           >
-            Loading
+            <LoadingComponent />
           </div>
         ) : !this.state.subscription.spotteds.ready() ? (
           <div
             style={{
               minHeight: "100vh",
-              minWidth: "100vw",
-              backgroundColor: "red"
+              minWidth: "100vw"
             }}
           >
-            Loading
+            <LoadingComponent />
           </div>
         ) : (
           <div style={fixedHeight()} className="content">

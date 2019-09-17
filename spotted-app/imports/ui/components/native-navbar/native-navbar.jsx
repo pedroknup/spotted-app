@@ -495,7 +495,7 @@ export class NativeNavbar extends Component {
                 display:
                   !this.state.secondPageNewSpotted &&
                   !this.state.secondPageSpottedInfo
-                    ? "ivsible"
+                    ? "visible"
                     : "none"
                 // transform: `translateX(${
                 //   hasActionButton ? 0 : window.outerWidth * -1
