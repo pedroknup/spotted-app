@@ -123,7 +123,6 @@ export default class App extends Component {
   }
 
   onWebViewMessage(event) {
-    console.log("Message received from webview");
 
     let msgData;
     try {

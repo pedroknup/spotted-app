@@ -4,9 +4,8 @@ export const getRandomName = previousNames => {
     randomizedName = "";
   do {
     let randomIndex = Math.floor(Math.random() * arrayLenght);
-    console.log(randomIndex);
     randomizedName = randomNames[randomIndex];
-    console.log(" generated", randomizedName);
+    console.log("generated", randomizedName);
     if (previousNames)
       hasFound = previousNames.find(name => name == randomizedName)
         ? true

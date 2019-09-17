@@ -86,15 +86,10 @@ class App extends Component {
         () => {
           const device = devices.WEB;
           this.setState({ isLoading: false });
-          alert(device);
           self.props.actions.changeDevice(device);
         }
       );
-      //  alert(deviceId);
-      // else alert("oops");
     } catch (e) {
-      alert(e);
-      console.log("error");
     }
 
     try {
@@ -113,7 +108,6 @@ class App extends Component {
       // else alert("oops");
     } catch (e) {
       alert(e);
-      console.log("error");
     }
   }
 
@@ -137,7 +131,6 @@ class App extends Component {
   }
 
   previousPage() {
-    console.log("previous page");
 
     let pages = this.state.pages;
     if (pages.length) {
@@ -173,8 +166,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props.spotteds);
-
     elasticScroll();
   }
   renderSpotted() {
@@ -187,48 +178,6 @@ class App extends Component {
     event.preventDefault();
   }
 
-  generateFirstPage(pages) {
-    console.log("props", this.props);
-    // alert(this.props.spotteds.length);
-    const spotteds = this.renderSpotteds(this.props.spotteds);
-
-    // this.push(spotteds, "Spotteds", true);
-    const SpottedFeed = props => {
-      const [text, setText] = React.useState("");
-
-      return <div>{spotteds}</div>;
-    };
-    this.setState({
-      pages: []
-    });
-    this.push(SpottedFeed, "Spotteds", false);
-
-    this.push(NewSpotted, "New Spotted", false);
-
-    if (checkBridge()) {
-      let self = this;
-      window.webViewBridge.send(
-        "getDeviceId",
-        "",
-        function(res) {
-          const result = JSON.stringify(res);
-          if (result.includes("iPhone")) {
-            const iOSVersion = result.substring(7, result.length - 3);
-            if (parseInt(iOSVersion.replace(",", ".")) > 10.0) {
-              self.setState({ isNewIOS: true });
-            }
-            self.setState({ os: "ios" });
-          }
-        },
-        function(err) {
-          alert("lol", err);
-        }
-      );
-      // if (deviceId.includes("iphone")) {
-      //   alert("is IOS");
-      // }
-    }
-  }
 
   render() {
     const { currentLocation, history } = this.props;

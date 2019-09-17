@@ -12,10 +12,6 @@ const Spotteds = new Mongo.Collection("spotteds");
 const MAX_DISTANCE = 250;
 if (Meteor.isServer) {
   // This code only runs on the server
-  console.log("server", Spotteds.find({}).count());
-  // Meteor.publish("spotteds", () => {
-  //   return Spotteds.find({});
-  // });
 
   Meteor.publish("spotteds.published", function(
     skip = 0,
@@ -102,7 +98,6 @@ if (Meteor.isServer) {
     uniqueId
   ) {
     if (!uniqueId) return [];
-    console.log("popular");
     var transform = function(doc) {
       const mappedObj = {};
 
@@ -113,9 +108,6 @@ if (Meteor.isServer) {
         if (doc.likes.find(idLiked => uniqueId == idLiked))
           mappedObj.isLiked = true;
         else mappedObj.isLiked = false;
-
-      console.log("likes", doc.likes.length);
-      console.log("comments", doc.comments.length);
       if (doc.likes.length > 10 || doc.comments.length > 5) {
         //TODO: implement popularity algorithym
         mappedObj.source = simplifyDistance(distance);
@@ -168,14 +160,12 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     "spotteds.insertComment"(spottedId, text, uniqueId) {
-      console.log("inserting comment", spottedId, text, uniqueId);
       const spottedFound = Spotteds.findOne({ _id: spottedId });
       let previousCommentAuthor;
       if (spottedFound) {
         previousCommentAuthor = spottedFound.comments.find(
           comment => comment.authorId == uniqueId
         );
-        console.log("spotted found", previousCommentAuthor);
 
         const comment = {
           text,
@@ -212,11 +202,9 @@ if (Meteor.isServer) {
         createdAt: new Date()
       };
 
-      console.log(spotted);
       Spotteds.insert(spotted);
     },
     "spotteds.toggleLike"(spottedId, uniqueId) {
-      console.log("Toggling like", spottedId, uniqueId);
       const spottedFound = Spotteds.findOne({ _id: spottedId });
       let hasLiked;
       if (spottedFound) {

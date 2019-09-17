@@ -33,7 +33,6 @@ export class NativeNavbar extends Component {
       secondPageSpottedInfo: false
     };
     this.push = this.push.bind(this);
-    this.mapPages = this.mapPages.bind(this);
     this.previousPage = this.previousPage.bind(this);
     this.alert = this.alert.bind(this);
     this.onChangeIndex = this.onChangeIndex.bind(this);
@@ -144,11 +143,7 @@ export class NativeNavbar extends Component {
   componentWillReceiveProps(props) {
     this.initialize();
   }
-  mapPages(currentPages) {
-    // console.log(this.props.pages);
 
-    this.initialize();
-  }
 
   openSpottedInfo(selectedSpotted) {
     this.setState(
@@ -330,7 +325,6 @@ export class NativeNavbar extends Component {
     if (this.props.closeModal) this.props.closeModal();
   }
   onChangeIndex(index, index2) {
-    console.log("changed", index, index2);
     if (index == 0) {
       this.previousPage();
     }

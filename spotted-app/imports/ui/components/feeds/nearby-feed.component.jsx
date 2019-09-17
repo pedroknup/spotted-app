@@ -29,7 +29,6 @@ const itemPerPage = 10;
 class NearbyFeedComponent extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       coordinates: null,
       subscription: null,
@@ -197,7 +196,6 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     this.data = this.previous.concat(newData);
 
     if (this.props.selectedSpotted) {
-      console.log(this.state.subscription);
       const foundSpotted = this.data.find(spotted => {
         return spotted._id == this.props.selectedSpotted._id;
       });

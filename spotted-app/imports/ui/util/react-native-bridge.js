@@ -44,7 +44,6 @@ export var initBridge = function() {
       promiseChain = promiseChain
         .then(function() {
           return new Promise(function(resolve, reject) {
-            console.log("sending message " + msgObj.targetFunc);
             if (msgObj.msgId) {
               callbacks[msgObj.msgId] = {
                 onsuccess: success,
@@ -57,17 +56,14 @@ export var initBridge = function() {
         })
         .catch(function(e) {
           error();
-          console.error("rnBridge send failed " + e.message);
         });
     }
   };
   window.addEventListener("message", function(e) {
-    console.log("message received from react native");
     var message;
     try {
       message = JSON.parse(e.data);
     } catch (err) {
-      console.error("failed to parse message from react-native " + err);
       return;
     }
     //trigger callback
