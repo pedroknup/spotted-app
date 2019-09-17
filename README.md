@@ -65,7 +65,7 @@ This web app has the following user phone's informations, provided by the native
 
 Spotted was an idea that maybe I can continue work on. But before to publish it, I have to think better about the privacy and some legal stuff. I just used it as an excuse to create a cool app in Meteor being loaded by a WebView inside of a React Native App, instead of just creating a dummy and simple proof-of-concept.
 
-I don't even have space for Android Studio here, so I don't worked in the Android side, just iOS. Please consider that before running it. 
+I don't even have space for Android Studio here, so I didn't worked in the Android side, just iOS. Please consider that before running it. 
 
 In /App.js, do the proper changes to the webview url (currently http://192.168.1.23:3000)
 
