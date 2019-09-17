@@ -5,7 +5,7 @@
 
 ###What is Spotted?
 
-Spotted is an app where you can share a thought, an outburst, express yourself throught a catchphrase or even ask who was that red-shirt person in the math class this morning ;) All of this anonymously! You can also interact with the closest (250km) posts from you, with likes and comments, also in complete anonymity, of course!
+Spotted is an app where you can share a thought, an outburst, express yourself throught a catchphrase or even ask who was that red-shirt person in the math class this morning ;) All of that anonymously! You can also interact with the closest (250km) posts from you, with likes and comments, also in complete anonymity, of course!
 
 
 ###Breakthrough
@@ -24,9 +24,9 @@ My idea was to create a web application that looks native and with all, or almos
 ![](https://i.imgur.com/ITfQqNJ.png)
 
 
-I invested a lot of time in the layout, to make it very convincing that the user is using a native application.
+I invested a lot of time in the design, to make users very convinced that they are using a native application.
 
-Everything in pure scss + javascript
+Everything (design) was done in pure scss + javascript
 Including the transitions ;)
 
 #### iOS animation
