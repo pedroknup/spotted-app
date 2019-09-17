@@ -3,12 +3,12 @@
 
 ![](https://i.imgur.com/QwPuT7M.png)
 
-###What is Spotted?
+### What is Spotted?
 
 Spotted is an app where you can share a thought, an outburst, express yourself throught a catchphrase or even ask who was that red-shirt person in the math class this morning ;) All of that anonymously! You can also interact with the closest (250km) posts from you, with likes and comments, also in complete anonymity, of course!
 
 
-###Breakthrough
+### Breakthrough
 
 My idea was to create a web application that looks native and with all, or almost all, features of a native app (such as camera, geo-location, get unique device identifier, store presence etc). For this, I used Meteor for the web application and React Native to load the meteor app through a webview, using WebViewBridge to communicate between the two sides.
 
