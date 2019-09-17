@@ -5,7 +5,7 @@
 
 ###What is Spotted?
 
-Spotted is an app where you can share a thought, an outburst, express yourself throught a catchphrase or even ask who was that red-shirt person in the math class this morning ;) All of this anonymously! You can also interact with the closest (<250km) posts from you, with likes and comments, also in complete anonymity, of course!
+Spotted is an app where you can share a thought, an outburst, express yourself throught a catchphrase or even ask who was that red-shirt person in the math class this morning ;) All of this anonymously! You can also interact with the closest (250km) posts from you, with likes and comments, also in complete anonymity, of course!
 
 
 ###Breakthrough
@@ -37,5 +37,39 @@ Including the transitions :tw-1f60f::
 
 
 
+###Native Side
 
-###End
+This web app has the following user phone's informations, provided by the native side (React native)
+
+- Unique ID 
+- Camera (to upload a custom background to the spotted)
+- Geolocation 
+- Operational system (to properly load the layouts (iOS, iOS + notch and android)
+
+
+##To Do:
+
+- Refactor and clean the code (it's a bit messy, sorry for that)
+- Compress image before sending it out of the native side
+- Properly implement Popular Feed and a popularity calculator algorithym
+- Create a login (with facebook) system so the users can create communities/groups and they can know sometimes if the spotteds's author is a friend, a friend of a friend etc.
+- Create a better loading component
+- Create pagination with infinite scroll (it's already implemented)
+- Pull to refresh? Should I make the app not that real time? 
+
+
+
+##Final considerations
+
+Spotted was an idea that maybe I can continue work on. But before to publish it, I have to think better about the privacy and some legal stuff. I just used it as an excuse to create a cool app in Meteor being loaded by a WebView inside of a React Native App, instead of just creating a dummy and simple proof-of-concept.
+
+I don't even have space for Android Studio here, so I don't worked in the Android side, just iOS. Please consider that before running it. 
+
+In /App.js, do the proper changes to the webview url (currently http://192.168.1.23:3000)
+
+The Meteor app is inside of spotted-app.
+
+
+
+
+
