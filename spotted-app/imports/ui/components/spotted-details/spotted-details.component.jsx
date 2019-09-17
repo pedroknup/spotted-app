@@ -62,7 +62,7 @@ const SpottedDetails = props => {
   return (
     <div>
       <SpottedComponent {...props.selectedSpotted}/>
-
+    {console.log(props)}
       <section data-elastic className="comments">
         {props.selectedSpotted.comments.map(comment => (
           <div className="comment">

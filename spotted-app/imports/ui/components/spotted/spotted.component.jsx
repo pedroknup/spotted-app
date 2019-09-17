@@ -20,6 +20,10 @@ const Spotted = props => {
     isLiked
   } = props;
 
+  const toggleLike = () => {
+    Meteor.call("spotteds.toggleLike", props._id, props.uniqueId);
+  };
+
   return (
     <div
       className={`spotted spotted-${
@@ -51,7 +55,8 @@ const Spotted = props => {
         <div className="spotted-footer-actions">
           <span className="spotted-likes">
             <svg
-              className="spotted-icon"
+              onClick={toggleLike}
+              className={`spotted-icon ${isLiked && "spotted-liked"}`}
               version="1.1"
               id="Capa_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +101,9 @@ const Spotted = props => {
             </svg>
 
             {props.commentsAmount > 0 && (
-              <div className="spotted-comments-amount">{props.commentsAmount}</div>
+              <div className="spotted-comments-amount">
+                {props.commentsAmount}
+              </div>
             )}
           </span>
         </div>
@@ -119,7 +126,9 @@ Spotted.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { currentLocation: state.currentLocation };
+  return { currentLocation: state.currentLocation ,
+    uniqueId: state.uniqueId 
+  };
 }
 
 function mapDispatchToProps(dispatch) {

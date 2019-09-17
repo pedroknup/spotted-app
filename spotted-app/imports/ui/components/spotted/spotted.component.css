@@ -11,16 +11,6 @@
   overflow: hidden;
 }
 
-.spotted-custom {
-  color: white;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-
-.spotted-custom svg path {
-  fill: white !important;
-  stroke: black !important;
-}
-
 .spotted > * {
   z-index: 100;
 }
@@ -37,11 +27,25 @@
 }
 
 .spotted.white-fg > * {
-  color: white !important;
+  color: white;
 }
 
 .spotted.white-fg svg path {
+  fill: white;
+}
+
+.spotted-custom {
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.spotted-custom svg path {
   fill: white !important;
+  stroke: black !important;
+}
+
+.spotted-liked path {
+  fill: red !important;
 }
 
 .spotted-yellow {

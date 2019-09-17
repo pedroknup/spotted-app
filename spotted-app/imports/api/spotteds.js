@@ -40,6 +40,7 @@ if (Meteor.isServer) {
       if (doc.likes)
         if (doc.likes.find(idLiked => uniqueId == idLiked))
           mappedObj.isLiked = true;
+        else mappedObj.isLiked = false;
 
       const distance = calculateDistanceBetweenTwoCoords(
         doc.coordinates.latitude,
@@ -108,7 +109,7 @@ if (Meteor.isServer) {
 
         const comment = {
           text,
-          author: !!previousCommentAuthor 
+          author: !!previousCommentAuthor
             ? previousCommentAuthor.author
             : getRandomName(spottedFound.comments), //if it's the first time the user is commenting on this spotted, a new name will be generated for him
           authorId: uniqueId,
@@ -143,6 +144,24 @@ if (Meteor.isServer) {
 
       console.log(spotted);
       Spotteds.insert(spotted);
+    },
+    "spotteds.toggleLike"(spottedId, uniqueId) {
+      console.log("Toggling like", spottedId, uniqueId);
+      const spottedFound = Spotteds.findOne({ _id: spottedId });
+      let hasLiked;
+      if (spottedFound) {
+        if (spottedFound.likes.find(like => like == uniqueId)) {
+          console.log("already liked,", uniqueId);
+          Spotteds.update(spottedId, {
+            $pull: { likes: uniqueId }
+          });
+        } else {
+          console.log("not liked");
+          Spotteds.update(spottedId, {
+            $push: { likes: uniqueId }
+          });
+        }
+      }
     }
   });
 }

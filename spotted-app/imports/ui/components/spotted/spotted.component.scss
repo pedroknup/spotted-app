@@ -9,18 +9,6 @@ $dark-grey: #b4b6b6;
   text-align: center;
   font-size: 12px;
   overflow: hidden;
-  &-custom {
-    color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  
-    svg {
-      path {
-        fill: white !important;
-        stroke: black !important;
-      }
-    }
-
-  }
 
   > * {
     z-index: 100;
@@ -37,12 +25,29 @@ $dark-grey: #b4b6b6;
   }
   &.white-fg {
     > * {
-      color: white !important;
+      color: white;
     }
     svg {
       path {
-        fill: white !important;
+        fill: white;
       }
+    }
+  }
+  &-custom {
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+    svg {
+      path {
+        fill: white !important;
+        stroke: black !important;
+      }
+    }
+  }
+  &-liked {
+    path {
+      fill: red !important;
+      // stroke: black !important;
     }
   }
   &-yellow {

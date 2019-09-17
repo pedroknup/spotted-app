@@ -150,13 +150,16 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
       if (foundSpotted) {
         if (
           foundSpotted.commentsAmount !=
-          this.props.selectedSpotted.commentsAmount
+            this.props.selectedSpotted.commentsAmount ||
+          foundSpotted.likesAmount != this.props.selectedSpotted.likesAmount ||
+          foundSpotted.isLiked != this.props.selectedSpotted.isLiked
         ) {
           this.props.actions.changeSelectedSpotted(foundSpotted);
         }
       }
     }
 
+    console.log(this.data);
     // Reset previous array
     this.previous = [];
 
@@ -180,7 +183,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     };
     let spottedsArray = this.getSpotteds();
     return (
-      <div data-elastic  style={fixedHeight()}>
+      <div data-elastic style={fixedHeight()}>
         {!this.state.subscription ? (
           <div
             style={{
