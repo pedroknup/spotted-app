@@ -222,3 +222,18 @@ $dark-grey: #b4b6b6;
     color: #b7b7b7;
   }
 }
+
+.write-comment{
+  box-sizing: border-box;
+  display: inline-flex;
+  width: 100%;
+  position: absolute;
+  bottom: 42px;
+  button{
+    margin-left: -50px;
+    border: none;
+    background-color: transparent;
+    color: $primary-color;
+    font-weight: bold;
+  }
+}

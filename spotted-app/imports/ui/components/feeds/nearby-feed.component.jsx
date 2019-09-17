@@ -43,10 +43,16 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
         };
         this.setState({
           subscription: {
-            spotteds: Meteor.subscribe("spotteds.published", 0, itemPerPage, {
-              latitude: response.latitude,
-              longitude: response.longitude
-            }, props.uniqueId)
+            spotteds: Meteor.subscribe(
+              "spotteds.published",
+              0,
+              itemPerPage,
+              {
+                latitude: response.latitude,
+                longitude: response.longitude
+              },
+              props.uniqueId
+            )
             // spottedsCount: Meteor.subscribe("spotteds.count")
           },
           coordinates
@@ -68,7 +74,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
   componentDidMount() {
     elasticScroll();
   }
-  
+
   filterByGenre(event) {
     let filterGenre = {
       ["spotteds.slug"]:
@@ -137,30 +143,30 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     let newData = Spotteds.find().fetch();
     this.data = this.previous.concat(newData);
 
-    console.log(this.data)
-
-    if (this.props.selectedSpotted){
-        const foundSpotted = this.data.find(spotted=>{
-            return spotted._id == this.props.selectedSpotted._id
-        })
-        if (foundSpotted){
-            if (foundSpotted.commentsAmount != this.props.selectedSpotted.commentsAmount){
-                this.props.actions.changeSelectedSpotted(foundSpotted);
-            }
+    if (this.props.selectedSpotted) {
+      const foundSpotted = this.data.find(spotted => {
+        return spotted._id == this.props.selectedSpotted._id;
+      });
+      if (foundSpotted) {
+        if (
+          foundSpotted.commentsAmount !=
+          this.props.selectedSpotted.commentsAmount
+        ) {
+          this.props.actions.changeSelectedSpotted(foundSpotted);
         }
+      }
     }
 
     // Reset previous array
     this.previous = [];
-    return this.data;
+
+    return this.data.reverse();
   }
 
   render() {
-    const { coordinates } = this.props;
     const fixedHeight = () => {
       let value;
       if (this.props.device === devices.IOS_NOTCH) {
-        // return "calc(100vh - 171px)";
         value = "calc(100vh - 175px)";
       } else if (this.props.device === devices.IOS) {
         value = "calc(100vh - 110px)";
@@ -172,9 +178,9 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
         minHeight: value
       };
     };
-    let movies = this.getSpotteds();
+    let spottedsArray = this.getSpotteds();
     return (
-      <div className="wtf" style={fixedHeight()}>
+      <div data-elastic  style={fixedHeight()}>
         {!this.state.subscription ? (
           <div
             style={{
@@ -196,17 +202,14 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
             Loading
           </div>
         ) : (
-          <div style={fixedHeight()} data-elastic className="content">
-            {movies.map((el, id) => {
-
+          <div style={fixedHeight()} className="content">
+            {spottedsArray.map((el, id) => {
               return (
                 <div
                   key={id}
                   onClick={() => {
-                    // ;
-                    this.props.actions.changeSelectedSpotted(el)
+                    this.props.actions.changeSelectedSpotted(el);
                     if (this.props.openSpotted) this.props.openSpotted(el);
-                    //   console.log("clicked");
                   }}
                 >
                   {el.visible && (
@@ -218,13 +221,11 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
                       comments={el.comments}
                       likes={el.likes}
                       backgroundImage={el.backgroundImage}
-                      likesAmount = {el.likesAmount}
-                      commentsAmount = {el.commentsAmount}
+                      likesAmount={el.likesAmount}
+                      commentsAmount={el.commentsAmount}
                       isLiked={el.isLiked}
                     />
                   )}
-
-                  {/* <code>lol</code> */}
                 </div>
               );
             })}
@@ -242,7 +243,7 @@ function mapStateToProps(state) {
     device: state.device,
     uniqueId: state.uniqueId,
     coordinates: state.coordinates,
-    selectedSpotted: state.selectedSpotted,
+    selectedSpotted: state.selectedSpotted
   };
 }
 

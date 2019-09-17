@@ -202,4 +202,23 @@
 .comment-when {
   color: #b7b7b7;
 }
+
+.write-comment {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 100%;
+  position: absolute;
+  bottom: 42px;
+}
+
+.write-comment button {
+  margin-left: -50px;
+  border: none;
+  background-color: transparent;
+  color: #fc3158;
+  font-weight: bold;
+}
 /*# sourceMappingURL=spotted-details.component.css.map */

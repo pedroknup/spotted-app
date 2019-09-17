@@ -76,7 +76,7 @@ if (Meteor.isServer) {
 
     var self = this;
 
-    var observer = Spotteds.find({}, { sort: {createdAt: -1}, skip, limit }).observe({
+    var observer = Spotteds.find({}, { skip, limit }).observe({
       added: function(document) {
         self.added("spotteds", document._id, transform(document));
       },
@@ -101,22 +101,22 @@ if (Meteor.isServer) {
       const spottedFound = Spotteds.findOne({ _id: spottedId });
       let previousCommentAuthor;
       if (spottedFound) {
-        if (spottedFound.comments)
-          previousCommentAuthor = spottedFound.comments.find(
-            comment => comment.authorId === uniqueId
-          );
+        previousCommentAuthor = spottedFound.comments.find(
+          comment => comment.authorId == uniqueId
+        );
+        console.log("spotted found", previousCommentAuthor);
 
         const comment = {
           text,
-          author: previousCommentAuthor
+          author: !!previousCommentAuthor 
             ? previousCommentAuthor.author
             : getRandomName(spottedFound.comments), //if it's the first time the user is commenting on this spotted, a new name will be generated for him
           authorId: uniqueId,
           createdAt: new Date()
         };
-        if (previousCommentAuthor)
+        if (!previousCommentAuthor)
           while (
-            spottedFound.comments.find(el => el.author === comment.author)
+            spottedFound.comments.find(el => el.author == comment.author)
           ) {
             comment.author = getRandomName(spottedFound.comments); //making sure his name is not being used already on this spotted
           }
@@ -128,19 +128,20 @@ if (Meteor.isServer) {
       text,
       color,
       coordinates,
-      backgroundImage,
+      backgroundImage
     ) {
-     
       const spotted = {
         text,
         color,
         authorId: uniqueId,
         backgroundImage,
         coordinates,
+        comments: [],
+        likes: [],
         createdAt: new Date()
       };
 
-      console.log(spotted)
+      console.log(spotted);
       Spotteds.insert(spotted);
     }
   });
