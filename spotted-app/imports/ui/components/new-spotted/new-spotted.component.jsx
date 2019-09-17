@@ -64,18 +64,9 @@ const NewSpotted = props => {
         <div style={{ zIndex: 2 }} className="new-spotted-text">
           {text ? text : "Preview"}
         </div>
-        <img
-        src={uploadedImage}
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: "100%",
-            height: "100%"
-          }}
-        />
+        {backgroundImage && (
+          <img className="spotted-bg-img" src={backgroundImage} />
+        )}
       </div>
       <div className="new-spotted-form">
         <InputComponent

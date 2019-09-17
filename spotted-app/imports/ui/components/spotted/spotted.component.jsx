@@ -23,6 +23,7 @@ const Spotted = props => {
   const toggleLike = () => {
     Meteor.call("spotteds.toggleLike", props._id, props.uniqueId);
   };
+  console.log("bg:", backgroundImage)
 
   return (
     <div
@@ -109,7 +110,7 @@ const Spotted = props => {
         </div>
         <span className="spotted-distance">{source}</span>
       </div>
-      <img className="spotted-bg-img" src={backgroundImage} />
+     {backgroundImage &&  <img className="spotted-bg-img" src={backgroundImage} />}
     </div>
   );
 };

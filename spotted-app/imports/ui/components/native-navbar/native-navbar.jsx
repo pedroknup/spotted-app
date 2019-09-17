@@ -242,6 +242,10 @@ export class NativeNavbar extends Component {
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
     const secondPageTitle = document.querySelector(".title-blue");
+    const actionButton = document.querySelector(
+      `.navbar-${this.userOS}-create-post`
+    );
+
 
     if (this.props.device === devices.ANDROID) {
       const backAndroidButton = document.querySelector(`.back-android`);
@@ -250,6 +254,7 @@ export class NativeNavbar extends Component {
       firstPageTitleBlack.style = `opacity: 1;`;
       const menuButton = document.querySelector(`.menu-button`);
       menuButton.style = `opacity: 1`;
+      actionButton.style = `opacity: 1`;
     } else {
       const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect()
         .width;
@@ -262,12 +267,10 @@ export class NativeNavbar extends Component {
       let initialPositionFirstPage =
         window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
       initialPositionFirstPage -= 0;
-
       secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;opacity: 0; transform: translateX(${window.outerWidth}px)`;
-
       firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px);opacity: 0;`;
-
       firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${initialPositionFirstPage}px); opacity: 1`;
+      actionButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 1`;
     }
   }
   threshold = false;
@@ -538,7 +541,6 @@ export class NativeNavbar extends Component {
               className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={1}
-              // index={0}
               onSwitching={this.onSwipeHandler}
               enableMouseEvents={true}
               axis="x"
@@ -561,7 +563,6 @@ export class NativeNavbar extends Component {
               className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={1}
-              // index={0}
               onSwitching={this.onSwipeHandler}
               enableMouseEvents={true}
               axis="x"
@@ -582,7 +583,6 @@ export class NativeNavbar extends Component {
               className="swipeable-views"
               onChangeIndex={this.onChangeIndex}
               index={0}
-              // index={0}
               onSwitching={this.onSwipeHandler}
               enableMouseEvents={true}
               axis="x"

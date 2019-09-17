@@ -236,28 +236,34 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     let spottedsArray = this.getSpotteds();
     return (
       <div data-elastic style={fixedHeight()}>
-        {!this.state.subscription ? (
-          <div
-            style={{
-              minHeight: "100vh",
-              minWidth: "100vw"
-            }}
-          >
-            <LoadingComponent />
-          </div>
-        ) : !this.state.subscription.spotteds.ready() ? (
-          <div
-            style={{
-              minHeight: "100vh",
-              minWidth: "100vw"
-            }}
-          >
-            <LoadingComponent />
-          </div>
-        ) : (
-          <div style={fixedHeight()} className="content">
-            {this.props.device === devices.ANDROID && <TabAndroid />}
-            {spottedsArray.map((el, id) => {
+        <div style={fixedHeight()} className="content">
+          {this.props.device === devices.ANDROID && (
+            <TabAndroid
+              selectedIndex={this.state.tabSelected}
+              onPopularTabClick={this.changeFeedToPopular}
+              onNearbyTabClick={this.changeFeedToNearby}
+            />
+          )}
+          {!this.state.subscription ? (
+            <div
+              style={{
+                minHeight: "100vh",
+                minWidth: "100vw"
+              }}
+            >
+              <LoadingComponent />
+            </div>
+          ) : !this.state.subscription.spotteds.ready() ? (
+            <div
+              style={{
+                minHeight: "100vh",
+                minWidth: "100vw"
+              }}
+            >
+              <LoadingComponent />
+            </div>
+          ) : (
+            spottedsArray.map((el, id) => {
               return (
                 <div
                   key={id}
@@ -282,9 +288,10 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
                   )}
                 </div>
               );
-            })}
-          </div>
-        )}
+            })
+          )}
+        </div>
+
         {this.props.device != devices.ANDROID && (
           <FooterIos
             selectedIndex={this.state.tabSelected}

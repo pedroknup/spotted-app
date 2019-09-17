@@ -38,11 +38,14 @@ html {
     list-style-type: none;
   }
   &-create-post {
+    &:active:hover {
+      opacity: 0.8 !important
+    }
     position: absolute;
     box-sizing: border;
 
     right: 12px;
-    transition: opacity 260ms ease;
+    transition: all 260ms ease;
     path {
       fill: $primary-color;
     }

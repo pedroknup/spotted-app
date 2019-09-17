@@ -5,7 +5,7 @@ import "./loading.component.css";
 export default function LoadingComponent() {
   return (
     <div className="loading">
-      <span>Loading...</span>
+      <span >Loading...</span>
     </div>
   );
 }

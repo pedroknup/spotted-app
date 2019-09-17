@@ -43,9 +43,13 @@ html {
   -webkit-box-sizing: border;
           box-sizing: border;
   right: 12px;
-  -webkit-transition: opacity 260ms ease;
-  transition: opacity 260ms ease;
+  -webkit-transition: all 260ms ease;
+  transition: all 260ms ease;
   z-index: 2;
+}
+
+.navbar-ios-create-post:active:hover {
+  opacity: 0.8 !important;
 }
 
 .navbar-ios-create-post path {

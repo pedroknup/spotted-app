@@ -126,12 +126,18 @@
   bottom: 24px;
   right: 24px;
   padding: 20px;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
   border-radius: 50%;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   color: white;
   z-index: 2;
   background-color: #fc3158;
+}
+
+.navbar-android-create-post:active:hover {
+  opacity: 0.8 !important;
 }
 
 .navbar-android-create-post svg {
