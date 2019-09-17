@@ -97,7 +97,8 @@ const checkOS = device => {
       if (parseInt(version) >= 10.0) return devices.IOS_NOTCH;
       else return devices.IOS;
     } catch (e) {
-      return devices.IOS;
+      // return devices.IOS;
+      return devices.ANDROID;
     }
   }
   return devices.ANDROID;
@@ -120,7 +121,7 @@ export function getDeviceId(callback, err) {
     },
     function(err) {
       // callback(devices.WEB);
-      callback(devices.IOS);
+      callback(devices.ANDROID);
       // callback(devices.IOS_NOTCH); //dev env
     }
   );

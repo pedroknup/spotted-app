@@ -146,8 +146,10 @@
 .navbar-android-title {
   font-size: 17px;
   position: absolute;
-  left: 56px;
+  left: 72px !important;
   z-index: 1;
+  -webkit-transition: opacity 500ms ease;
+  transition: opacity 500ms ease;
 }
 
 .navbar-android-button {
@@ -160,10 +162,17 @@
   display: flex;
   cursor: pointer;
   color: #fc3158;
+  -webkit-transition: opacity 500ms ease;
+  transition: opacity 500ms ease;
+}
+
+.navbar-android-button-label {
+  color: white;
 }
 
 .navbar-android-button-icon {
   height: 32px;
+  color: white;
 }
 
 .navbar-android-button-icon path {
@@ -177,5 +186,9 @@
 
 .navbar-android-button-icon.stroke path {
   stroke: #fc3158;
+}
+
+.menu-button {
+  position: absolute;
 }
 /*# sourceMappingURL=navbar.component.css.map */

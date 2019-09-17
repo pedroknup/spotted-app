@@ -47,7 +47,6 @@ const SpottedDetails = props => {
     elasticScroll();
   }, []);
   const postComment = () => {
-    //"spotteds.insertComment"(spottedId, text, uniqueId) {
     if (!commentInputValue.trim()) {
       alert("Spotted can not be empty!");
       return;
@@ -61,8 +60,8 @@ const SpottedDetails = props => {
   };
   return (
     <div>
-      <SpottedComponent {...props.selectedSpotted}/>
-    {console.log(props)}
+      <SpottedComponent {...props.selectedSpotted} />
+      {console.log(props)}
       <section data-elastic className="comments">
         {props.selectedSpotted.comments.map(comment => (
           <div className="comment">
@@ -85,7 +84,12 @@ const SpottedDetails = props => {
         class="write-comment"
         style={{
           padding: 16,
-          bottom: props.device === devices.IOS_NOTCH ? "120px" : "42px"
+          bottom:
+            props.device === devices.IOS_NOTCH
+              ? "120px"
+              : props.device === devices.IOS
+              ? "42px"
+              : "56px"
         }}
       >
         <InputComponent
@@ -121,7 +125,6 @@ function mapStateToProps(state) {
   return {
     uniqueId: state.uniqueId,
     device: state.device,
-
     coordinates: state.coordinates,
     selectedSpotted: state.selectedSpotted
   };

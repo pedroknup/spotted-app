@@ -29,6 +29,7 @@ export class NativeNavbar extends Component {
     this.state = {
       currentIndex: 0,
       secondPageNewSpotted: false,
+
       secondPageSpottedInfo: false
     };
     this.push = this.push.bind(this);
@@ -40,6 +41,7 @@ export class NativeNavbar extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.initialize = this.initialize.bind(this);
     this.openSpottedInfo = this.openSpottedInfo.bind(this);
+    this.userOS = this.props.device == devices.ANDROID ? "android" : "ios";
   }
 
   alert() {
@@ -65,23 +67,37 @@ export class NativeNavbar extends Component {
 
     const backButton = document.querySelector(".navbar-ios-button");
 
-    const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect().width;
+    if (this.props.device === devices.ANDROID) {
+      const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect()
+        .width;
 
-    let initialPositionFirstPage =
-      window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
+      let initialPositionFirstPage =
+        window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
 
-    firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 0; `;
-    firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 1; `;
+      firstPageTitle.style = `opacity: 0; `;
+      firstPageTitleBlack.style = `opacity: 1; `;
 
-    const secondPageTitle = document.querySelector(".title-blue");
-    secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${window.outerWidth +
-      100}px);opacity: 0`;
-    // setTimeout(() => {
-    //   secondPageTitle.style = `transition: none; transform: translateX(${window.outerWidth +
-    //     200}px);`;
-    //   //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
-    //   //     100}px); opacity: 0.6`;
-    // }, 260); //hmm
+      const secondPageTitle = document.querySelector(".title-blue");
+      secondPageTitle.style = `opacity: 0`;
+
+      const menuButton = document.querySelector(`.menu-button`);
+      menuButton.style = `opacity: 1`;
+      const backAndroidButton = document.querySelector(`.back-android`);
+      backAndroidButton.style = `opacity: 0`;
+    } else {
+      const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect()
+        .width;
+
+      let initialPositionFirstPage =
+        window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
+
+      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 0; `;
+      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 1; `;
+
+      const secondPageTitle = document.querySelector(".title-blue");
+      secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${window.outerWidth +
+        100}px);opacity: 0`;
+    }
   }
   onSecondPage() {
     const firstPageTitle = document.querySelector(".title-red");
@@ -90,18 +106,23 @@ export class NativeNavbar extends Component {
 
     const backButton = document.querySelector(".navbar-ios-button");
 
-    let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect().width;
-
-    if (this.state.secondPageSpottedInfo)
-      elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
-    else
-      elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
-    let initialPositionSecondPage =
-      window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
-    firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 1; `;
-    firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 0; `;
-
-    secondPageTitle.style = `transition: all  ${ANIMATION_DURATION} ease; transform: translateX(${initialPositionSecondPage}px);opacity: 1`;
+    if (this.props.device == devices.ANDROID) {
+      firstPageTitle.style = `opacity: 0; display: none; `;
+      firstPageTitleBlack.style = `opacity: 0; `;
+      secondPageTitle.style = `opacity: 1`;
+    } else {
+      let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
+        .width;
+      if (this.state.secondPageSpottedInfo)
+        elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
+      else
+        elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
+      let initialPositionSecondPage =
+        window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
+      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 1; `;
+      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 0; `;
+      secondPageTitle.style = `transition: all  ${ANIMATION_DURATION} ease; transform: translateX(${initialPositionSecondPage}px);opacity: 1`;
+    }
   }
 
   initialize() {
@@ -138,43 +159,72 @@ export class NativeNavbar extends Component {
 
   onSwipeHandler = (progress, type) => {
     if (this.state.secondPageNewSpotted || this.state.secondPageSpottedInfo) {
-      const backButton = document.querySelector(".navbar-ios-button");
-      const actionButton = document.querySelector(".navbar-ios-create-post");
-      const firstPageTitle = document.querySelector(".title-red");
-      const firstPageTitleBlack = document.querySelector(".title-red-black");
-      const middleReference = document.querySelector(".middle");
-      const secondPageTitle = document.querySelector(".title-blue");
+      const backButton = document.querySelector(
+        `.navbar-${this.userOS}-button`
+      );
+      const actionButton = document.querySelector(
+        `.navbar-${this.userOS}-create-post`
+      );
+
+      const firstPageTitle = document.querySelector(`.title-red`);
+      const firstPageTitleBlack = document.querySelector(`.title-red-black`);
+      const secondPageTitle = document.querySelector(`.title-blue`);
       const elWidth = firstPageTitle.getBoundingClientRect().width / 2;
       const middleX = window.outerWidth / 2 - elWidth;
-
       const normalizedValue = (1 - progress) / 2;
       const output = normalizedValue * 2;
-      // const percentWidth = (window.outerWidth / 8) * normalized - 8 * normalized;
       const elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
         .width;
 
       let initialPositionSecondPage =
         window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
-      // middleReference.style = `left: ${middleX}px`;
-      if (type != "end") {
-        const progressNormalized = 1 - progress;
-        const normalized = progressNormalized * 2;
-        const translateFirstElementToCenter = output * middleX - 26 * output;
-        firstPageTitle.style = `transition: none;transform: translateX(${translateFirstElementToCenter}px); opacity: ${progress}`;
-        firstPageTitleBlack.style = `transition: none;transform: translateX(${translateFirstElementToCenter}px);opacity: ${progressNormalized}`;
-        backButton.style = `opacity: ${progress}`;
+      if (this.props.device === devices.ANDROID) {
+        const menuButton = document.querySelector(`.menu-button`);
+        const backAndroidButton = document.querySelector(`.back-android`);
+        if (type != "end") {
+          const progressNormalized = 1 - progress;
+          const normalized = progressNormalized * 2;
+          firstPageTitleBlack.style = `transition: none;opacity: ${progressNormalized}`;
+          menuButton.style = `transition: none;opacity: ${1 - progress}`;
+          secondPageTitle.style = `transition: none;opacity: ${1 - normalized}`;
 
-        secondPageTitle.style = `transition: none;transform: translateX( ${initialPositionSecondPage +
-          (normalized * window.outerWidth) / 2}px);opacity: ${1 - normalized}`;
-
-        actionButton.style = `transition: none;opacity: ${1 - progress}`;
-      } else {
-        if (progress == 0) {
-          this.swipeLeft();
-          actionButton.style = "opacity: 1";
+          backAndroidButton.style = `transition: none;opacity: ${progress}`;
+          actionButton.style = `transition: none;opacity: ${1 - progress}`;
         } else {
-          this.swipeRight();
-          actionButton.style = "opacity: 0";
+          if (progress == 0) {
+            this.swipeLeft();
+            actionButton.style = "opacity: 1";
+            menuButton.style = `opacity: 1`;
+            backAndroidButton.style = `opacity: 0`;
+          } else {
+            this.swipeRight();
+            backAndroidButton.style = `opacity: 1`;
+            menuButton.style = `opacity: 0`;
+            actionButton.style = "opacity: 0";
+          }
+        }
+      } else {
+        if (type != "end") {
+          const progressNormalized = 1 - progress;
+          const normalized = progressNormalized * 2;
+          const translateFirstElementToCenter = output * middleX - 26 * output;
+          firstPageTitle.style = `transition: none;transform: translateX(${translateFirstElementToCenter}px); opacity: ${progress}`;
+          firstPageTitleBlack.style = `transition: none;transform: translateX(${translateFirstElementToCenter}px);opacity: ${progressNormalized}`;
+          backButton.style = `opacity: ${progress}`;
+
+          secondPageTitle.style = `transition: none;transform: translateX( ${initialPositionSecondPage +
+            (normalized * window.outerWidth) / 2}px);opacity: ${1 -
+            normalized}`;
+
+          actionButton.style = `transition: none;opacity: ${1 - progress}`;
+        } else {
+          if (progress == 0) {
+            this.swipeLeft();
+            actionButton.style = "opacity: 1";
+          } else {
+            this.swipeRight();
+            actionButton.style = "opacity: 0";
+          }
         }
       }
     }
@@ -188,31 +238,37 @@ export class NativeNavbar extends Component {
         selectedSpotted: null
       });
     }, ANIMATION_DURATION);
-    const backButton = document.querySelector(".navbar-ios-button");
+
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
     const secondPageTitle = document.querySelector(".title-blue");
-    const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect().width;
-    const middleX = window.outerWidth / 2 - elWidthFirstPageTitle;
-    const center = 1 * middleX - 26 * 1;
-    const elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
-      .width;
-    let initialPositionSecondPage =
-      window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
-    initialPositionSecondPage -= 0;
-    let initialPositionFirstPage =
-      window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
-    initialPositionFirstPage -= 0;
 
-    secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;opacity: 0; transform: translateX(${window.outerWidth}px)`;
-    firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px);opacity: 0;`;
+    if (this.props.device === devices.ANDROID) {
+      const backAndroidButton = document.querySelector(`.back-android`);
+      backAndroidButton.style = `opacity: 0`;
+      secondPageTitle.style = `opacity: 0;`;
+      firstPageTitleBlack.style = `opacity: 1;`;
+      const menuButton = document.querySelector(`.menu-button`);
+      menuButton.style = `opacity: 1`;
+    } else {
+      const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect()
+        .width;
+      const middleX = window.outerWidth / 2 - elWidthFirstPageTitle;
+      const elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
+        .width;
+      let initialPositionSecondPage =
+        window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
+      initialPositionSecondPage -= 0;
+      let initialPositionFirstPage =
+        window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
+      initialPositionFirstPage -= 0;
 
-    firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${initialPositionFirstPage}px); opacity: 1`;
-    // setTimeout(() => {
-    //   secondPageTitle.style = `transition: none; transform: translateX(${window.outerWidth}px);`;
-    //   //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
-    //   //     100}px); opacity: 0.6`;
-    // }, 1060); //hmm
+      secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;opacity: 0; transform: translateX(${window.outerWidth}px)`;
+
+      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px);opacity: 0;`;
+
+      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${initialPositionFirstPage}px); opacity: 1`;
+    }
   }
   threshold = false;
   swipeRight() {
@@ -220,33 +276,44 @@ export class NativeNavbar extends Component {
     if (this.threshold) {
       this.threshold = false;
     } else {
-      const backButton = document.querySelector(".navbar-ios-button");
+      const backButton = document.querySelector(
+        `.navbar-${this.userOS}-button`
+      );
       const firstPageTitle = document.querySelector(".title-red");
       const firstPageTitleBlack = document.querySelector(".title-red-black");
       const middleReference = document.querySelector(".middle");
       const secondPageTitle = document.querySelector(".title-blue");
 
-      const elWidth = firstPageTitle.getBoundingClientRect().width / 2;
-      const middleX = window.outerWidth / 2 - 26 - elWidth;
       backButton.style = `opacity: 1`;
       let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
         .width;
 
-      if (this.state.secondPageNewSpotted) {
-        elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
-      } else if (this.state.secondPageSpottedInfo) {
-        elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
+      if (this.props.device == devices.ANDROID) {
+        secondPageTitle.style = `opacity:1;`;
+        firstPageTitle.style = `opacity: 0`;
+        firstPageTitleBlack.style = `opacity: 0`;
+        const menuButton = document.querySelector(`.menu-button`);
+        menuButton.style = `opacity: 0`;
+
+        const backAndroidButton = document.querySelector(`.back-android`);
+        backAndroidButton.style = `opacity: 1`;
+      } else {
+        if (this.state.secondPageNewSpotted) {
+          elWidthSecondPageTitle = getTextWidth(
+            "New Spotted",
+            "bold 12pt arial"
+          );
+        } else if (this.state.secondPageSpottedInfo) {
+          elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
+        }
+
+        let initialPositionSecondPage =
+          window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
+
+        secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity:1;transform: translateX(${initialPositionSecondPage}px);`;
+        firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
+        firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
       }
-
-      let initialPositionSecondPage =
-        window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
-      secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity:1;transform: translateX(${initialPositionSecondPage}px);`;
-      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
-      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
-
-      //   const actionButton = document.querySelector(".navbar-ios-create-post");
-      //   actionButton.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(0px);opacity:1`;
-      const self = this;
     }
   }
 
@@ -293,8 +360,8 @@ export class NativeNavbar extends Component {
             }}
             className="page-modal"
           >
-            <div className={`navbar-ios page-modal-title`}>
-              <div className={`navbar-ios-title`}>
+            <div className={`navbar-${this.userOS} page-modal-title`}>
+              <div className={`navbar-${this.userOS}-title`}>
                 {this.props.modalPage && this.props.modalPage.title}
               </div>
               <div
@@ -322,28 +389,73 @@ export class NativeNavbar extends Component {
               {this.props.modalPage && this.props.modalPage.component}
             </div>
           </div>
-          <div className={`navbar-ios`}>
-            <div
-              onClick={() => {
-                self.previousPage();
-              }}
-              className={`navbar-ios-button`}
-              style={{
-                opacity:
-                  this.state.secondPageNewSpotted ||
-                  this.state.secondPageSpottedInfo
-                    ? 1
-                    : 0
-              }}
-            >
-              <svg
-                className={`navbar-ios-button-icon back`}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
+          <div className={`navbar-${this.userOS}`}>
+            {this.props.device === devices.ANDROID ? (
+              <div>
+                <div
+                  onClick={() => {
+                    if (
+                      this.state.secondPageNewSpotted ||
+                      this.state.secondPageSpottedInfo
+                    )
+                      self.previousPage();
+                    else alert("Ooops. Menu still not implemented :P");
+                  }}
+                  className={`navbar-${this.userOS}-button`}
+                >
+                  <svg
+                    style={{
+                      opacity:
+                        this.state.secondPageNewSpotted ||
+                        this.state.secondPageSpottedInfo
+                          ? 1
+                          : 0
+                    }}
+                    className={`navbar-android-button-icon back-android`}
+                  >
+                    <path d="M10.273,5.009c0.444-0.444,1.143-0.444,1.587,0c0.429,0.429,0.429,1.143,0,1.571l-8.047,8.047h26.554  c0.619,0,1.127,0.492,1.127,1.111c0,0.619-0.508,1.127-1.127,1.127H3.813l8.047,8.032c0.429,0.444,0.429,1.159,0,1.587  c-0.444,0.444-1.143,0.444-1.587,0l-9.952-9.952c-0.429-0.429-0.429-1.143,0-1.571L10.273,5.009z" />
+                  </svg>
+                  <svg
+                    style={{
+                      opacity:
+                        this.state.secondPageNewSpotted ||
+                        this.state.secondPageSpottedInfo
+                          ? 0
+                          : 1
+                    }}
+                    className={`navbar-android-button-icon menu-button`}
+                    height="32px"
+                    version="1.1"
+                    viewBox="0 0 32 32"
+                    width="32px"
+                  >
+                    <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" />
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  self.previousPage();
+                }}
+                className={`navbar-${this.userOS}-button`}
+                style={{
+                  opacity:
+                    this.state.secondPageNewSpotted ||
+                    this.state.secondPageSpottedInfo
+                      ? 1
+                      : 0
+                }}
               >
-                <path d="M217.9 256L345 129c9.4-9.4 9.4-24.6 0-33.9-9.4-9.4-24.6-9.3-34 0L167 239c-9.1 9.1-9.3 23.7-.7 33.1L310.9 417c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7c9.4-9.4 9.4-24.6 0-33.9L217.9 256z" />
-              </svg>
-            </div>
+                <svg
+                  className={`navbar-ios-button-icon back`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M217.9 256L345 129c9.4-9.4 9.4-24.6 0-33.9-9.4-9.4-24.6-9.3-34 0L167 239c-9.1 9.1-9.3 23.7-.7 33.1L310.9 417c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7c9.4-9.4 9.4-24.6 0-33.9L217.9 256z" />
+                </svg>
+              </div>
+            )}
 
             <div
               onClick={() => {
@@ -352,7 +464,7 @@ export class NativeNavbar extends Component {
               style={{
                 top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
               }}
-              className={`title-red navbar-ios-title`}
+              className={`title-red navbar-${this.userOS}-title`}
             >
               Feed
             </div>
@@ -363,34 +475,40 @@ export class NativeNavbar extends Component {
               style={{
                 top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
               }}
-              className={`title-red-black navbar-ios-title`}
+              className={`title-red-black navbar-${this.userOS}-title`}
             >
               Feed
             </div>
 
             <div
               onClick={() => {
-                self.setState(
-                  {
-                    secondPageNewSpotted: true
-                  },
-                  this.initialize
-                );
+               
+                  self.setState(
+                    {
+                      secondPageNewSpotted: true
+                    },
+                    this.initialize
+                  );
+                
               }}
               style={{
-                opacity:
+                display:
                   !this.state.secondPageNewSpotted &&
                   !this.state.secondPageSpottedInfo
-                    ? 1
-                    : 0
+                    ? "ivsible"
+                    : "none"
                 // transform: `translateX(${
                 //   hasActionButton ? 0 : window.outerWidth * -1
                 // }px)`
               }}
-              className="navbar-ios-create-post"
+              className={`navbar-${this.userOS}-create-post`}
             >
               <svg
-                style={{ height: "24px", marginRight: "6px" }}
+                style={{
+                  height: "24px",
+                  marginRight:
+                    this.props.device === devices.ANDROID ? "0" : "6px"
+                }}
                 className="navbar-button-icon"
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -408,7 +526,7 @@ export class NativeNavbar extends Component {
               style={{
                 top: this.props.device === devices.IOS_NOTCH ? 57 : "auto"
               }}
-              className={`title-blue navbar-ios-title`}
+              className={`title-blue navbar-${this.userOS}-title`}
             >
               {this.state.secondPageNewSpotted ? "New Spotted" : "Spotted"}
             </div>
@@ -435,7 +553,6 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-             
               </div>
               <NewSpotted previousPage={this.previousPage} />
             </SwipeableViews>
@@ -456,7 +573,6 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-             
               </div>
 
               <SpottedDetails {...this.state.selectedSpotted} />
@@ -478,11 +594,9 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-             
               </div>
             </SwipeableViews>
           )}
-
         </div>
       </Router>
     );

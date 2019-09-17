@@ -121,8 +121,9 @@ $dark-grey: #b4b6b6;
   &-title {
     font-size: 17px;
     position: absolute;
-    left: 56px;
+    left: 72px !important;
     z-index: 1;
+    transition: opacity 500ms ease;
   }
   &-button {
     align-items: center;
@@ -130,8 +131,14 @@ $dark-grey: #b4b6b6;
     display: flex;
     cursor: pointer;
     color: $primary-color;
+    transition: opacity 500ms ease;
+    &-label {
+      color: white;
+    }
     &-icon {
       height: 32px;
+
+      color: white;
       path {
         fill: $primary-color;
       }
@@ -146,4 +153,8 @@ $dark-grey: #b4b6b6;
       }
     }
   }
+}
+
+.menu-button {
+  position: absolute;
 }

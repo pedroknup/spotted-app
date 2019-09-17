@@ -13,6 +13,7 @@ import NewSpotted from "../new-spotted/new-spotted.component.jsx";
 import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 import { devices } from "../../redux/constants/enums";
 import FooterIos from "../footer-ios/footer-ios.component.jsx";
+import TabAndroid from "../tab-android/tab-android.component.jsx";
 import { getRandomNames } from "../../util/random-names";
 import { connect } from "react-redux";
 import Spotteds from "../../../api/spotteds";
@@ -195,7 +196,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     this.data = this.previous.concat(newData);
 
     if (this.props.selectedSpotted) {
-        console.log(this.state.subscription)
+      console.log(this.state.subscription);
       const foundSpotted = this.data.find(spotted => {
         return spotted._id == this.props.selectedSpotted._id;
       });
@@ -256,6 +257,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
           </div>
         ) : (
           <div style={fixedHeight()} className="content">
+            {this.props.device === devices.ANDROID && <TabAndroid />}
             {spottedsArray.map((el, id) => {
               return (
                 <div
@@ -284,11 +286,13 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
             })}
           </div>
         )}
-        <FooterIos
-          selectedIndex={this.state.tabSelected}
-          onPopularTabClick={this.changeFeedToPopular}
-          onNearbyTabClick={this.changeFeedToNearby}
-        />
+        {this.props.device != devices.ANDROID && (
+          <FooterIos
+            selectedIndex={this.state.tabSelected}
+            onPopularTabClick={this.changeFeedToPopular}
+            onNearbyTabClick={this.changeFeedToNearby}
+          />
+        )}
       </div>
     );
   }
