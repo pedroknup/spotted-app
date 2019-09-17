@@ -156,14 +156,10 @@ export function uploadPicture(callback, err) {
       "uploadPicture",
       "",
       function(res) {
-        //  alert(JSON.stringify(res))
         callback(res);
       },
-      function(err) {
-        // callback(devices.WEB);
-        alert(JSON.stringify(err));
-        callback({ source: "" });
-        // callback(devices.IOS_NOTCH); //dev env
+      function(e) {
+        err();
       }
     );
   } catch (e) {

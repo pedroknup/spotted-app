@@ -59,16 +59,6 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
 }
 
-.new-spotted-form .color-selector .upload-picture {
-  font-size: 24px;
-  text-align: center;
-  background: #f90000;
-  background: -webkit-gradient(linear, left top, left bottom, from(#f90000), color-stop(51%, #20f700), to(#1800f7));
-  background: linear-gradient(to bottom, #f90000 0%, #20f700 51%, #1800f7 100%);
-  color: white;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
-}
-
 .new-spotted-form .color-selector .yellow {
   background-color: yellow;
 }
@@ -150,8 +140,6 @@
 }
 
 .new-spotted {
-  margin-bottom: 16px;
-  border-bottom: 1px solid #b4b6b6;
   width: 100%;
   display: table;
   -webkit-box-pack: justify;
@@ -160,15 +148,31 @@
   min-height: 200px;
   position: relative;
   text-align: center;
-  font-size: 24px;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.new-spotted > * {
+  z-index: 100;
+}
+
+.new-spotted-bg-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  z-index: 0;
 }
 
 .new-spotted.white-fg > * {
-  color: white !important;
+  color: white;
 }
 
 .new-spotted.white-fg svg path {
-  fill: white !important;
+  fill: white;
 }
 
 .new-spotted-custom {
@@ -176,9 +180,13 @@
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-.new-spotted-custom > img {
-  -o-object-fit: cover;
-     object-fit: cover;
+.new-spotted-custom svg path {
+  fill: white !important;
+  stroke: black !important;
+}
+
+.new-spotted-liked path {
+  fill: red !important;
 }
 
 .new-spotted-yellow {
@@ -295,9 +303,14 @@
 }
 
 .new-spotted-text {
-  display: table-cell;
-  vertical-align: middle;
-  z-index: 100;
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  z-index: 10;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 
 .new-spotted-comments {
@@ -317,6 +330,11 @@
   margin-left: 6px;
 }
 
+.new-spotted-comments-amount {
+  margin-left: 6px;
+  color: white !important;
+}
+
 .new-spotted-likes {
   margin-right: 12px;
   display: -webkit-box;
@@ -330,6 +348,11 @@
 
 .new-spotted-likes span {
   margin-left: 6px;
+}
+
+.new-spotted-likes-amount {
+  margin-left: 6px;
+  color: white !important;
 }
 
 .new-spotted-footer {
@@ -352,5 +375,27 @@
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
+}
+
+.upload-picture {
+  font-size: 16px;
+  text-align: center;
+  background: white;
+}
+
+.upload-picture > * {
+  margin-top: 3px;
+  height: 22px !important;
+  width: 22px !important;
+  min-height: 22px !important;
+  min-width: 22px !important;
+}
+
+.upload-picture > * svg path {
+  fill: black;
+}
+
+.upload-picture > * path {
+  fill: black;
 }
 /*# sourceMappingURL=new-spotted.component.css.map */

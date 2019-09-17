@@ -235,15 +235,16 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     };
     let spottedsArray = this.getSpotteds();
     return (
-      <div data-elastic style={fixedHeight()}>
-        <div style={fixedHeight()} className="content">
-          {this.props.device === devices.ANDROID && (
-            <TabAndroid
-              selectedIndex={this.state.tabSelected}
-              onPopularTabClick={this.changeFeedToPopular}
-              onNearbyTabClick={this.changeFeedToNearby}
-            />
-          )}
+      <div style={fixedHeight()}>
+        {this.props.device === devices.ANDROID && (
+          <TabAndroid
+            selectedIndex={this.state.tabSelected}
+            onPopularTabClick={this.changeFeedToPopular}
+            onNearbyTabClick={this.changeFeedToNearby}
+          />
+        )}
+
+        <div data-elastic style={fixedHeight()} className="content">
           {!this.state.subscription ? (
             <div
               style={{
@@ -263,32 +264,34 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
               <LoadingComponent />
             </div>
           ) : (
-            spottedsArray.map((el, id) => {
-              return (
-                <div
-                  key={id}
-                  onClick={() => {
-                    this.props.actions.changeSelectedSpotted(el);
-                    if (this.props.openSpotted) this.props.openSpotted(el);
-                  }}
-                >
-                  {el.visible && (
-                    <Spotted
-                      text={el.text}
-                      source={el.source}
-                      color={el.color}
-                      id={el.id}
-                      comments={el.comments}
-                      likes={el.likes}
-                      backgroundImage={el.backgroundImage}
-                      likesAmount={el.likesAmount}
-                      commentsAmount={el.commentsAmount}
-                      isLiked={el.isLiked}
-                    />
-                  )}
-                </div>
-              );
-            })
+            <div>
+              {spottedsArray.map((el, id) => {
+                return (
+                  <div
+                    key={id}
+                    onClick={() => {
+                      this.props.actions.changeSelectedSpotted(el);
+                      if (this.props.openSpotted) this.props.openSpotted(el);
+                    }}
+                  >
+                    {el.visible && (
+                      <Spotted
+                        text={el.text}
+                        source={el.source}
+                        color={el.color}
+                        id={el.id}
+                        comments={el.comments}
+                        likes={el.likes}
+                        backgroundImage={el.backgroundImage}
+                        likesAmount={el.likesAmount}
+                        commentsAmount={el.commentsAmount}
+                        isLiked={el.isLiked}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
 

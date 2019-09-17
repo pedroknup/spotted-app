@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./spotted.component.css";
 import { bindActionCreators } from "redux";
-
+import injectTapEventPlugin from "react-tap-event-plugin";
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
+import isDblTouchTap from "../../util/isDblTouchTap";
 
 const Spotted = props => {
   const {
@@ -23,10 +24,12 @@ const Spotted = props => {
   const toggleLike = () => {
     Meteor.call("spotteds.toggleLike", props._id, props.uniqueId);
   };
-  console.log("bg:", backgroundImage)
-
   return (
     <div
+      onDoubleClick={(e)=>
+      {
+        toggleLike()
+      }}
       className={`spotted spotted-${
         backgroundImage ? "custom" : color
       } ${color != "white" && "white-fg"}`}
@@ -110,7 +113,9 @@ const Spotted = props => {
         </div>
         <span className="spotted-distance">{source}</span>
       </div>
-     {backgroundImage &&  <img className="spotted-bg-img" src={backgroundImage} />}
+      {backgroundImage && (
+        <img className="spotted-bg-img" src={backgroundImage} />
+      )}
     </div>
   );
 };
@@ -127,9 +132,7 @@ Spotted.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { currentLocation: state.currentLocation ,
-    uniqueId: state.uniqueId 
-  };
+  return { currentLocation: state.currentLocation, uniqueId: state.uniqueId };
 }
 
 function mapDispatchToProps(dispatch) {

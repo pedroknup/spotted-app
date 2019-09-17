@@ -61,10 +61,20 @@ const SpottedDetails = props => {
   return (
     <div>
       <SpottedComponent {...props.selectedSpotted} />
-      {console.log(props)}
       <section data-elastic className="comments">
-        {props.selectedSpotted.comments.map(comment => (
-          <div className="comment">
+        <div>
+          {props.selectedSpotted.comments.length == 0 && (
+            <div className="comment">
+              <div>
+                <span className="comment-body">
+                  No one left a comment yet. Be the first to comment!
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {props.selectedSpotted.comments.map((comment, key) => (
+          <div key={key} className="comment">
             <div>
               <span
                 style={{ color: comment.id ? "red" : "black" }}
@@ -81,7 +91,7 @@ const SpottedDetails = props => {
         ))}
       </section>
       <div
-        class="write-comment"
+        className="write-comment"
         style={{
           padding: 16,
           bottom:

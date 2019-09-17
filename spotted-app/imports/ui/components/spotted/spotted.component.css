@@ -165,7 +165,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  font-size: 16px;
+  font-size: 20px;
   z-index: 10;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -191,7 +191,6 @@
 
 .spotted-comments-amount {
   margin-left: 6px;
-  color: white !important;
 }
 
 .spotted-likes {
@@ -211,7 +210,6 @@
 
 .spotted-likes-amount {
   margin-left: 6px;
-  color: white !important;
 }
 
 .spotted-footer {

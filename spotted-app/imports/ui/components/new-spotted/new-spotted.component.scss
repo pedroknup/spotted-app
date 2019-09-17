@@ -5,7 +5,6 @@ $dark-grey: #b4b6b6;
   padding: 16px;
   box-sizing: border-box;
 
-
   .color-selector {
     margin: 16px 0;
     display: inline-flex;
@@ -15,8 +14,6 @@ $dark-grey: #b4b6b6;
       height: 0px; /* Remove scrollbar space */
       background: transparent; /* Optional: just make scrollbar invisible */
     }
-   
-   
 
     width: 100%;
     overflow-x: scroll;
@@ -44,32 +41,6 @@ $dark-grey: #b4b6b6;
       }
     }
     .random {
-      font-size: 24px;
-      text-align: center;
-      background: #f90000;
-      background: -moz-linear-gradient(
-        top,
-        #f90000 0%,
-        #20f700 51%,
-        #1800f7 100%
-      );
-      background: -webkit-linear-gradient(
-        top,
-        #f90000 0%,
-        #20f700 51%,
-        #1800f7 100%
-      );
-      background: linear-gradient(
-        to bottom,
-        #f90000 0%,
-        #20f700 51%,
-        #1800f7 100%
-      );
-      color: white;
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
-    }
-    .upload-picture {
-
       font-size: 24px;
       text-align: center;
       background: #f90000;
@@ -165,35 +136,55 @@ $dark-grey: #b4b6b6;
 }
 
 .new-spotted {
-  margin-bottom: 16px;
-  border-bottom: 1px solid $dark-grey;
   width: 100%;
   display: table;
   justify-content: space-between;
   min-height: 200px;
   position: relative;
   text-align: center;
-  font-size: 24px;
+  font-size: 16px;
+  overflow: hidden;
 
+  > * {
+    z-index: 100;
+  }
+  &-bg-img {
+    position: absolute;
+    left: 0;
+
+    top: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: 0;
+  }
   &.white-fg {
     > * {
-      color: white !important;
+      color: white;
     }
     svg {
       path {
-        fill: white !important;
+        fill: white;
       }
     }
   }
-
-  &-custom{
-    >img{
-      object-fit: cover;
-    }
+  &-custom {
     color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  }
 
+    svg {
+      path {
+        fill: white !important;
+        stroke: black !important;
+      }
+    }
+  }
+  &-liked {
+    path {
+      fill: red !important;
+      // stroke: black !important;
+    }
+  }
   &-yellow {
     background: #fefcea;
     background: -moz-linear-gradient(top, #fefcea 0%, #f1da36 100%);
@@ -368,10 +359,16 @@ $dark-grey: #b4b6b6;
     cursor: pointer;
   }
   &-text {
-    display: table-cell;
-    vertical-align: middle;
-    z-index: 100;
-  
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+    // /optional, but helps horizontally center text that breaks into multiple lines
+    font-size: 20px;
+    z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
   }
   &-comments {
     display: flex;
@@ -380,6 +377,10 @@ $dark-grey: #b4b6b6;
     span {
       margin-left: 6px;
     }
+    &-amount {
+      margin-left: 6px;
+      color: white !important;
+    }
   }
   &-likes {
     margin-right: 12px;
@@ -387,6 +388,10 @@ $dark-grey: #b4b6b6;
     flex-direction: row;
     span {
       margin-left: 6px;
+    }
+    &-amount {
+      margin-left: 6px;
+      color: white !important;
     }
   }
   &-footer {
@@ -400,6 +405,27 @@ $dark-grey: #b4b6b6;
 
     &-actions {
       display: inline-flex;
+    }
+  }
+}
+
+.upload-picture {
+  font-size: 16px;
+  text-align: center;
+  background: white;
+  > * {
+    margin-top: 3px;
+    height: 22px !important;
+    width: 22px !important;
+    min-height: 22px !important;
+    min-width: 22px !important;
+    svg {
+      path {
+        fill: black;
+      }
+    }
+    path {
+      fill: black;
     }
   }
 }
