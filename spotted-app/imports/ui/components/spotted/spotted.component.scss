@@ -8,7 +8,32 @@ $dark-grey: #b4b6b6;
   position: relative;
   text-align: center;
   font-size: 12px;
+  &-custom {
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  
+    svg {
+      path {
+        fill: white !important;
+        stroke: black !important;
+      }
+    }
 
+  }
+
+  > * {
+    z-index: 100;
+  }
+  &-bg-img {
+    position: absolute;
+    left: 0;
+
+    top: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: 0;
+  }
   &.white-fg {
     > * {
       color: white !important;
@@ -193,9 +218,16 @@ $dark-grey: #b4b6b6;
     cursor: pointer;
   }
   &-text {
-    display: table-cell;
-    vertical-align: middle;
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+    // /optional, but helps horizontally center text that breaks into multiple lines
     font-size: 16px;
+    z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
   }
   &-comments {
     display: flex;
@@ -204,6 +236,10 @@ $dark-grey: #b4b6b6;
     span {
       margin-left: 6px;
     }
+    &-amount {
+      margin-left: 6px;
+      color: white !important;
+    }
   }
   &-likes {
     margin-right: 12px;
@@ -211,6 +247,10 @@ $dark-grey: #b4b6b6;
     flex-direction: row;
     span {
       margin-left: 6px;
+    }
+    &-amount {
+      margin-left: 6px;
+      color: white !important;
     }
   }
   &-footer {

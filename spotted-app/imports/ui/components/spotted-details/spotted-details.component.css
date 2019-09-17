@@ -96,11 +96,6 @@
   cursor: pointer;
 }
 
-.spotted-text {
-  display: table-cell;
-  vertical-align: middle;
-}
-
 .spotted-comments {
   display: -webkit-box;
   display: -ms-flexbox;

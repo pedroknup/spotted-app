@@ -146,7 +146,6 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
         if (foundSpotted){
             if (foundSpotted.commentsAmount != this.props.selectedSpotted.commentsAmount){
                 this.props.actions.changeSelectedSpotted(foundSpotted);
-                console.log("changing")
             }
         }
     }
@@ -218,6 +217,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
                       id={el.id}
                       comments={el.comments}
                       likes={el.likes}
+                      backgroundImage={el.backgroundImage}
                       likesAmount = {el.likesAmount}
                       commentsAmount = {el.commentsAmount}
                       isLiked={el.isLiked}

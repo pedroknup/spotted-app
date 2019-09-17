@@ -127,25 +127,20 @@ if (Meteor.isServer) {
       uniqueId,
       text,
       color,
+      coordinates,
       backgroundImage,
-      coordinates
     ) {
-      check(taskId, String);
-      check(spotted, String);
-      check(color, String);
-      check(backgroundImage, String);
-
+     
       const spotted = {
-        color,
         text,
+        color,
         authorId: uniqueId,
         backgroundImage,
         coordinates,
-        comments: [],
-        likes: [],
-        createdAt: newDate()
+        createdAt: new Date()
       };
 
+      console.log(spotted)
       Spotteds.insert(spotted);
     }
   });

@@ -40,35 +40,16 @@ const NewSpotted = props => {
       alert("Spotted can not be empty!");
       return;
     }
-    getGeolocation((res)=>{
-      Spotteds.insert({
-        color,
+    getGeolocation(res => {
+      Meteor.call(
+        "spotteds.insertSpotted",
+        props.uniqueId,
         text,
-        coordinates: res,
-        authorId: props.uniqueId,
-        createdAt: new Date() // current time
-      });
+        color,
+        res,
+        uploadedImage
+      );
       props.previousPage();
-    })
-
-   
-  };
-  const openSpottedDetails = () => {
-    const spottedPage = PAGE_SPOTTED;
-    spottedPage.backButton = {
-      PAGE_HOME
-    };
-    spottedPage.payload = {
-      color,
-      text,
-      id,
-      source,
-      comments,
-      likes,
-      isLiked
-    };
-    props.actions.changeLocation({
-      ...spottedPage
     });
   };
 
@@ -80,13 +61,21 @@ const NewSpotted = props => {
           uploadedImage ? "custom" : colorClass
         } ${colorClass != "white" && "white-fg"}`}
       >
-        <div style={{zIndex: 2}} className="new-spotted-text">{text ? text : "Preview"}</div>
-        {uploadedImage && (
-          <img
-            style={{left:0, right: 0, bottom: 0, top: 0, zIndex: 0, height: "100%", width: "100%", position: "absolute" }}
-            src={uploadedImage}
-          />
-        )}
+        <div style={{ zIndex: 2 }} className="new-spotted-text">
+          {text ? text : "Preview"}
+        </div>
+        <img
+        src={uploadedImage}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "100%",
+            height: "100%"
+          }}
+        />
       </div>
       <div className="new-spotted-form">
         <InputComponent

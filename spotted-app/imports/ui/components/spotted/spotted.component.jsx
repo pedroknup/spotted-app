@@ -9,31 +9,22 @@ import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 
 const Spotted = props => {
-  const { color, text, id, source, comments, likes, isLiked } = props;
-  const openSpotted = () => {
-    // const spottedPage = PAGE_SPOTTED;
-    // spottedPage.backButton = {
-    //   PAGE_HOME
-    // };
-    // spottedPage.payload = {
-    //   color,
-    //   text,
-    //   id,
-    //   source,
-    //   comments,
-    //   likes,
-    //   isLiked
-    // };
-    // props.actions.changeLocation({
-    //   ...spottedPage
-    // });
-  };
+  const {
+    color,
+    text,
+    id,
+    backgroundImage,
+    source,
+    comments,
+    likes,
+    isLiked
+  } = props;
 
   return (
     <div
-      onClick={openSpotted}
-      className={`spotted spotted-${color} ${color != "white" &&
-        "white-fg"}`}
+      className={`spotted spotted-${
+        backgroundImage ? "custom" : color
+      } ${color != "white" && "white-fg"}`}
     >
       <svg
         className="spotted-icon spotted-more"
@@ -55,7 +46,7 @@ const Spotted = props => {
         </g>
       </svg>
 
-      <span className="spotted-text">{text}</span>
+      <div className="spotted-text">{text}</div>
       <div className="spotted-footer">
         <div className="spotted-footer-actions">
           <span className="spotted-likes">
@@ -75,6 +66,9 @@ const Spotted = props => {
                   C52.216,18.553,51.97,16.611,51.911,16.242z"
               />
             </svg>
+            {props.likesAmount > 0 && (
+              <div className="spotted-likes-amount">{props.likesAmount}</div>
+            )}
           </span>
           <span className="spotted-comments">
             <svg
@@ -100,11 +94,15 @@ const Spotted = props => {
                 </g>
               </g>
             </svg>
-            {props.commentsAmount}
+
+            {props.commentsAmount > 0 && (
+              <div className="spotted-comments-amount">{props.commentsAmount}</div>
+            )}
           </span>
         </div>
         <span className="spotted-distance">{source}</span>
       </div>
+      <img className="spotted-bg-img" src={backgroundImage} />
     </div>
   );
 };
@@ -116,6 +114,7 @@ Spotted.propTypes = {
   source: PropTypes.string,
   comments: PropTypes.object,
   likes: PropTypes.number,
+  backgroundImage: PropTypes.string,
   isLiked: PropTypes.bool
 };
 
