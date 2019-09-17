@@ -27,7 +27,7 @@ My idea was to create a web application that looks native and with all, or almos
 I invested a lot of time in the layout, to make it very convincing that the user is using a native application.
 
 Everything in pure scss + javascript
-Including the transitions :tw-1f60f::
+Including the transitions ;)
 
 ####iOS animation
 ![](https://media.giphy.com/media/U4jd00ft2iUTG64Vtd/giphy.gif)
@@ -68,6 +68,7 @@ I don't even have space for Android Studio here, so I don't worked in the Androi
 In /App.js, do the proper changes to the webview url (currently http://192.168.1.23:3000)
 
 The Meteor app is inside of spotted-app.
+
 
 
 
