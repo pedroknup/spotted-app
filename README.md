@@ -29,15 +29,17 @@ I invested a lot of time in the layout, to make it very convincing that the user
 Everything in pure scss + javascript
 Including the transitions ;)
 
-####iOS animation
+#### iOS animation
+
 ![](https://media.giphy.com/media/U4jd00ft2iUTG64Vtd/giphy.gif)
 
-####Android animation
+#### Android animation
+
 ![](https://media.giphy.com/media/KBbl7kcOIWdh4CxECL/giphy.gif)
 
 
 
-###Native Side
+### Native Side
 
 This web app has the following user phone's informations, provided by the native side (React native)
 
@@ -47,7 +49,7 @@ This web app has the following user phone's informations, provided by the native
 - Operational system (to properly load the layouts (iOS, iOS + notch and android)
 
 
-##To Do:
+## To Do:
 
 - Refactor and clean the code (it's a bit messy, sorry for that)
 - Compress image before sending it out of the native side
@@ -59,7 +61,7 @@ This web app has the following user phone's informations, provided by the native
 
 
 
-##Final considerations
+## Final considerations
 
 Spotted was an idea that maybe I can continue work on. But before to publish it, I have to think better about the privacy and some legal stuff. I just used it as an excuse to create a cool app in Meteor being loaded by a WebView inside of a React Native App, instead of just creating a dummy and simple proof-of-concept.
 
