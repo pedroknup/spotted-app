@@ -282,17 +282,6 @@ export class NativeNavbar extends Component {
 
     const isNewIOS = true;
 
-    const getMaxHeight = () => {
-      if (device === devices.IOS_NOTCH) {
-        // return "calc(100vh - 171px)";
-        return "calc(100vh - 175px)";
-      } else if (device === devices.IOS) {
-        return "calc(100vh - 110px)";
-      } else if (device === devices.WEB) {
-        return "calc(100vh)";
-      }
-    };
-
     return (
       <Router>
         <div className="App">
@@ -446,7 +435,7 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-                <FooterIos />
+             
               </div>
               <NewSpotted previousPage={this.previousPage} />
             </SwipeableViews>
@@ -467,7 +456,7 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-                <FooterIos />
+             
               </div>
 
               <SpottedDetails {...this.state.selectedSpotted} />
@@ -489,12 +478,11 @@ export class NativeNavbar extends Component {
                     this.openSpottedInfo(spotted);
                   }}
                 />
-                <FooterIos />
+             
               </div>
             </SwipeableViews>
           )}
-          {/* {!(this.state.secondPageNewSpotted || this.state.secondPageSpottedInfo ) && (this.props.device === devices.IOS || */}
-          {/* <FooterIos /> */}
+
         </div>
       </Router>
     );

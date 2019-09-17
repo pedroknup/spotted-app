@@ -12,12 +12,11 @@
           box-sizing: border-box;
   max-height: 400px;
   overflow: scroll;
-  margin-top: 16px;
+  margin-top: 4px;
 }
 
 .comment {
   padding: 4px 16px;
-  margin: 4px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -26,6 +25,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  font-size: 12px;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -39,7 +39,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .comment-author {
@@ -49,6 +49,7 @@
 
 .comment-when {
   color: #b7b7b7;
+  font-size: 10px;
 }
 
 .write-comment {

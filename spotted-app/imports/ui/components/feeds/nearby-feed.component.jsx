@@ -31,6 +31,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     this.state = {
       coordinates: null,
       subscription: null,
+      tabSelected: 0,
       skip: 0,
       filters: {}
       //   sort: defaultOrder,
@@ -65,6 +66,56 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     // our local data
     this.data = [];
     this.previous = [];
+    this.changeFeedToNearby = this.changeFeedToNearby.bind(this);
+    this.changeFeedToPopular = this.changeFeedToPopular.bind(this);
+  }
+
+  changeFeedToPopular() {
+    this.setState({
+      data: [],
+      previous: [],
+      tabSelected: 1,
+      subscription: {
+        spotteds: Meteor.subscribe(
+          "spotteds.publishedPopular",
+          0,
+          itemPerPage,
+          this.props.uniqueId
+        )
+      }
+    });
+  }
+  changeFeedToNearby() {
+    this.state.subscription.spotteds.stop();
+    getGeolocation(
+      response => {
+        const coordinates = {
+          latitude: response.latitude,
+          longitude: response.longitude
+        };
+        this.setState({
+          data: [],
+          previous: [],
+          tabSelected: 0,
+          subscription: {
+            spotteds: Meteor.subscribe(
+              "spotteds.published",
+              0,
+              itemPerPage,
+              {
+                latitude: response.latitude,
+                longitude: response.longitude
+              },
+              this.props.uniqueId
+            )
+          },
+          coordinates
+        });
+      },
+      () => {
+        alert("err");
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -144,6 +195,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     this.data = this.previous.concat(newData);
 
     if (this.props.selectedSpotted) {
+        console.log(this.state.subscription)
       const foundSpotted = this.data.find(spotted => {
         return spotted._id == this.props.selectedSpotted._id;
       });
@@ -159,10 +211,8 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
       }
     }
 
-    console.log(this.data);
     // Reset previous array
     this.previous = [];
-
     return this.data.reverse();
   }
 
@@ -234,6 +284,11 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
             })}
           </div>
         )}
+        <FooterIos
+          selectedIndex={this.state.tabSelected}
+          onPopularTabClick={this.changeFeedToPopular}
+          onNearbyTabClick={this.changeFeedToNearby}
+        />
       </div>
     );
   }
@@ -258,50 +313,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(NearbyFeedComponent);
-
-// )(
-//   withTracker(() => {
-//     const handle = Meteor.subscribe("spotteds");
-//     let spotteds = [];
-//     let loadedGeolocation = false;
-//     try {
-//       let currentState = JSON.parse(localStorage.getItem("reducer"));
-
-//       //amsterdam
-//       // latitude 52.370216
-//       // longitude:  4.895168
-
-//       if (!currentState)
-//         currentState = {
-//           coordinates: { latitude: 54.370216, longitude: 4.895168 }
-//         };
-//       else if (!currentState.coordinates)
-//         currentState.coordinates = { latitude: 54.370216, longitude: 4.895168 };
-
-//       getGeolocation(res => {
-//         console.log(res);
-//         spotteds = Spotteds.find({}, { sort: { createdAt: -1 } })
-//           .fetch()
-//           .map(item => {
-//             const distance = calculateDistanceBetweenTwoCoords(
-//               item.coordinates.latitude,
-//               item.coordinates.longitude,
-//               res.latitude,
-//               res.longitude
-//             );
-
-//             let toReturn = { ...item };
-//             toReturn.source = simplifyDistance(distance);
-//             return toReturn;
-//           });
-
-//         loadedGeolocation = true;
-//       });
-//     } catch (e) {
-//       alert(e);
-//     }
-//     return {
-//       isLoading: !handle.ready() && !loadedGeolocation,
-//       spotteds: spotteds
-//     };
-//   })(NearbyFeedComponent)

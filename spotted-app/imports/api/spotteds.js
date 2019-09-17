@@ -26,7 +26,6 @@ if (Meteor.isServer) {
     if (coordinates === null || coordinates === undefined) return [];
 
     if (coordinates.latitude === undefined || !uniqueId) return [];
-    const sort = { createdAt: 1 };
 
     console.log("uniqueId", uniqueId);
     console.log("coordinates", coordinates);
@@ -38,7 +37,7 @@ if (Meteor.isServer) {
         mappedObj.isUserOwner = true;
       }
       if (doc.likes)
-        if (doc.likes.find(idLiked => uniqueId == idLiked))
+        if (doc.likes.find(like => uniqueId == like.id))
           mappedObj.isLiked = true;
         else mappedObj.isLiked = false;
 
@@ -94,6 +93,77 @@ if (Meteor.isServer) {
     });
 
     self.ready();
+
+  });
+
+  Meteor.publish("spotteds.publishedPopular", function(
+    skip = 0,
+    limit = 20,
+    uniqueId
+  ) {
+    if (!uniqueId) return [];
+    console.log("popular");
+    var transform = function(doc) {
+      const mappedObj = {};
+
+      if (doc.authorId == uniqueId) {
+        mappedObj.isUserOwner = true;
+      }
+      if (doc.likes)
+        if (doc.likes.find(idLiked => uniqueId == idLiked))
+          mappedObj.isLiked = true;
+        else mappedObj.isLiked = false;
+
+      console.log("likes", doc.likes.length);
+      console.log("comments", doc.comments.length);
+      if (doc.likes.length > 10 || doc.comments.length > 5) {
+        //TODO: implement popularity algorithym
+        mappedObj.source = simplifyDistance(distance);
+        mappedObj._id = doc._id;
+        if (doc.comments) {
+          mappedObj.comments = doc.comments.map(comment => {
+            return {
+              author: comment.author,
+              id: comment.authorId == uniqueId ? comment.authorId : null,
+              text: comment.text,
+              createdAt: comment.createdAt
+            };
+          });
+        } else mappedObj.comments = [];
+        mappedObj.color = doc.color;
+        mappedObj.backgroundImage = doc.backgroundImage;
+        mappedObj.text = doc.text;
+        if (doc.likes) mappedObj.likesAmount = doc.likes.length;
+        else mappedObj.likesAmount = 0;
+        if (doc.comments) mappedObj.commentsAmount = doc.comments.length;
+        else mappedObj.commentsAmount = 0;
+
+        mappedObj.visible = true;
+        return mappedObj;
+      } else return null;
+    };
+
+    var self = this;
+
+    var observer = Spotteds.find({}, { skip, limit }).observe({
+      added: function(document) {
+        self.added("spotteds", document._id, transform(document));
+        
+      },
+      changed: function(newDocument, oldDocument) {
+        self.changed("spotteds", oldDocument._id, transform(newDocument));
+      },
+      removed: function(oldDocument) {
+        self.removed("spotteds", oldDocument._id);
+      }
+    });
+
+    self.onStop(function() {
+      observer.stop();
+    });
+
+    self.ready();
+
   });
 
   Meteor.methods({
@@ -150,15 +220,13 @@ if (Meteor.isServer) {
       const spottedFound = Spotteds.findOne({ _id: spottedId });
       let hasLiked;
       if (spottedFound) {
-        if (spottedFound.likes.find(like => like == uniqueId)) {
-          console.log("already liked,", uniqueId);
+        if (spottedFound.likes.find(like => like.id == uniqueId)) {
           Spotteds.update(spottedId, {
-            $pull: { likes: uniqueId }
+            $pull: { likes: { id: uniqueId } }
           });
         } else {
-          console.log("not liked");
           Spotteds.update(spottedId, {
-            $push: { likes: uniqueId }
+            $push: { likes: { id: uniqueId, createdAt: new Date() } }
           });
         }
       }
