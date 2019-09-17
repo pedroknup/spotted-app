@@ -36,8 +36,6 @@ export class NativeNavbar extends Component {
     this.previousPage = this.previousPage.bind(this);
     this.alert = this.alert.bind(this);
     this.onChangeIndex = this.onChangeIndex.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.initialize = this.initialize.bind(this);
     this.openSpottedInfo = this.openSpottedInfo.bind(this);
     this.userOS = this.props.device == devices.ANDROID ? "android" : "ios";
@@ -318,12 +316,8 @@ export class NativeNavbar extends Component {
   previousPageTitle = "";
   currentPageTitle = "";
 
-  openModal(page) {
-    if (this.props.openModal) this.props.openModal(page);
-  }
-  closeModal() {
-    if (this.props.closeModal) this.props.closeModal();
-  }
+
+  
   onChangeIndex(index, index2) {
     if (index == 0) {
       this.previousPage();
@@ -349,44 +343,8 @@ export class NativeNavbar extends Component {
     return (
       <Router>
         <div className="App">
-          <div
-            style={{
-              transform: `translateY(${
-                this.props.modalPage ? "0px" : "calc(100vh)"
-              })`
-            }}
-            className="page-modal"
-          >
-            <div className={`navbar-${this.userOS} page-modal-title`}>
-              <div className={`navbar-${this.userOS}-title`}>
-                {this.props.modalPage && this.props.modalPage.title}
-              </div>
-              <div
-                onClick={() => {
-                  this.closeModal();
-                }}
-                className={`page-modal-close`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  version="1.1"
-                  id="Capa_1"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 47.971 47.971"
-                >
-                  <g>
-                    <path d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z" />
-                  </g>
-                </svg>
-              </div>
-            </div>
-
-            <div className="page-modal-content">
-              {this.props.modalPage && this.props.modalPage.component}
-            </div>
-          </div>
-          <div className={`navbar-${this.userOS}`}>
+       
+          <div style={{marginBottom: this.props.device === devices.ANDROID ? "-3px" : "0"}} className={`navbar-${this.userOS}`}>
             {this.props.device === devices.ANDROID ? (
               <div>
                 <div

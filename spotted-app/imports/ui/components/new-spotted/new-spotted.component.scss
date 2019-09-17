@@ -360,11 +360,9 @@ $dark-grey: #b4b6b6;
   }
   &-text {
     position: absolute;
-
+    padding: 0 32px !important;
     left: 0;
-
     right: 0;
-    // /optional, but helps horizontally center text that breaks into multiple lines
     font-size: 20px;
     z-index: 10;
     top: 50%;

@@ -11,6 +11,7 @@ import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 import Spotteds from "../../../api/spotteds";
 import InputComponent from "../core/input/input.component.jsx";
 import { uploadPicture, getGeolocation } from "../../util/react-native-bridge";
+import { devices } from "../../redux/constants/enums";
 
 const getRandomColor = () => {
   const colors = [
@@ -53,9 +54,9 @@ const NewSpotted = props => {
     });
   };
 
-  React.useEffect(()=>{
-    setUploadedImage("")
-  }, [colorClass])
+  React.useEffect(() => {
+    setUploadedImage("");
+  }, [colorClass]);
 
   return (
     <div style={{ height: "calc(100vh - 175px)" }}>
@@ -69,7 +70,11 @@ const NewSpotted = props => {
           {text ? text : "Preview"}
         </div>
         {uploadedImage && (
-          <img style={{zIndex: 0}} className="new-spotted-bg-img" src={uploadedImage} />
+          <img
+            style={{ zIndex: 0 }}
+            className="new-spotted-bg-img"
+            src={uploadedImage}
+          />
         )}
       </div>
       <div className="new-spotted-form">
@@ -91,11 +96,16 @@ const NewSpotted = props => {
           </div>
           <div
             onClick={() => {
-              uploadPicture(res => {
-                setUploadedImage(res.uri);
-              }, ()=>{
-                alert("Camera access denied or your phone doesn't have a camera.")
-              });
+              uploadPicture(
+                res => {
+                  setUploadedImage(res.uri);
+                },
+                () => {
+                  alert(
+                    "Camera access denied or your phone doesn't have a camera."
+                  );
+                }
+              );
             }}
             className="upload-picture"
           >
@@ -108,7 +118,6 @@ const NewSpotted = props => {
               width="510px"
               height="510px"
               viewBox="0 0 510 510"
-             
             >
               <g>
                 <g id="camera-alt">
@@ -233,7 +242,18 @@ const NewSpotted = props => {
         </div>
       </div>
 
-      <div className="post-spotted">
+      <div
+        style={{
+          padding: 16,
+          bottom:
+            props.device === devices.IOS_NOTCH
+              ? "120px"
+              : props.device === devices.IOS
+              ? "42px"
+              : "56px"
+        }}
+        className="post-spotted"
+      >
         <div className="policy">
           By proceeding you are stating that you agree to the terms of use and
           privacy policy. We guarantee absolute anonymity.
@@ -264,6 +284,7 @@ function mapStateToProps(state) {
   return {
     currentLocation: state.currentLocation,
     coordinates: state.coordinates,
+    device: state.device,
     uniqueId: state.uniqueId
   };
 }

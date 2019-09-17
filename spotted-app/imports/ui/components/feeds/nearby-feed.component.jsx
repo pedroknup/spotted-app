@@ -1,30 +1,20 @@
 import React from "react";
 import { getGeolocation } from "../../util/react-native-bridge";
-import { BrowserRouter as Router } from "react-router-dom";
 import "../native-navbar/index.css";
 import * as actions from "../../redux/actions/index";
 import "../native-navbar//styles.css";
 import { bindActionCreators } from "redux";
-import { withTracker } from "meteor/react-meteor-data";
-import SwipeableViews from "react-swipeable-views";
 import Spotted from "../spotted/spotted.component.jsx";
 import elasticScroll from "elastic-scroll-polyfill";
-import NewSpotted from "../new-spotted/new-spotted.component.jsx";
-import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 import { devices } from "../../redux/constants/enums";
 import FooterIos from "../footer-ios/footer-ios.component.jsx";
 import TabAndroid from "../tab-android/tab-android.component.jsx";
-import { getRandomNames } from "../../util/random-names";
 import { connect } from "react-redux";
 import Spotteds from "../../../api/spotteds";
 import TrackerReact from "meteor/ultimatejs:tracker-react";
-import {
-  calculateDistanceBetweenTwoCoords,
-  simplifyDistance
-} from "../../util/geolocalization";
 import LoadingComponent from "../loading/loading.component.jsx";
 
-const itemPerPage = 10;
+const itemPerPage = 10000; //TODO: implement pagination
 
 class NearbyFeedComponent extends TrackerReact(React.Component) {
   constructor(props) {
@@ -35,7 +25,6 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
       tabSelected: 0,
       skip: 0,
       filters: {}
-      //   sort: defaultOrder,
     };
     getGeolocation(
       response => {
@@ -55,7 +44,7 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
               },
               props.uniqueId
             )
-            // spottedsCount: Meteor.subscribe("spotteds.count")
+            
           },
           coordinates
         });
@@ -127,18 +116,9 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
     elasticScroll();
   }
 
-  filterByGenre(event) {
-    let filterGenre = {
-      ["spotteds.slug"]:
-        event.target.value !== "" ? event.target.value : { $ne: null }
-    };
-    this.updateFilters(filterGenre);
-  }
 
-  updateFilters(values) {
+  updateFilters() {
     // Merge filters
-    // let filters = Object.assign(this.state.filters, values);
-
     // Update subscription ( reset pagination )
     this.state.subscription.spotteds.stop();
     const coordinates = this.state.coordinates;
@@ -242,7 +222,11 @@ class NearbyFeedComponent extends TrackerReact(React.Component) {
           />
         )}
 
-        <div data-elastic style={fixedHeight()} className="content">
+        <div
+          data-elastic
+          style={fixedHeight()}
+          className="content"
+        >
           {!this.state.subscription ? (
             <div
               style={{

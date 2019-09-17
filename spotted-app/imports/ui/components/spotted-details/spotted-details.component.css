@@ -45,6 +45,7 @@
 .comment-author {
   font-weight: bold;
   margin-right: 6px;
+  white-space: nowrap;
 }
 
 .comment-when {

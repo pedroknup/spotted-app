@@ -7,7 +7,7 @@ import {
 import { _ } from "meteor/underscore";
 import { Random } from "meteor/random";
 import { domainToASCII } from "url";
-const Spotteds = new Mongo.Collection("spotteds");
+export const Spotteds = new Mongo.Collection("spotteds");
 
 const MAX_DISTANCE = 250;
 if (Meteor.isServer) {

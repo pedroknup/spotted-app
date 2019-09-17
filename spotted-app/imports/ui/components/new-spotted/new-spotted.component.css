@@ -304,6 +304,7 @@
 
 .new-spotted-text {
   position: absolute;
+  padding: 0 32px !important;
   left: 0;
   right: 0;
   font-size: 20px;

@@ -75,15 +75,13 @@ export default class App extends Component {
       };
  
       ImagePicker.showImagePicker(options, response => {
-         console.warn(JSON.stringify(response));
         if (response.didCancel) {
           msgData.isSuccessfull = false;
         } else if (response.error) {
           msgData.isSuccessfull = false;
         } else {
-          console.warn(JSON.stringify(response));
           msgData.isSuccessfull = true;
-          const source = { uri: `data:image/jpeg;base64, ${response.data}` };
+          const source = { uri: `data:image/jpeg;base64, ${response.data}` }; //TODO: img compression
           msgData.args = [source];
         }
         this.myWebView.injectJavaScript(
@@ -91,8 +89,6 @@ export default class App extends Component {
         );
       });
     } catch (e) {
-      // alert(JSON.stringify(e));
-      console.warn(e);
     }
   }
 
@@ -128,7 +124,6 @@ export default class App extends Component {
     try {
       msgData = JSON.parse(event.nativeEvent.data);
     } catch (err) {
-      console.warn(err);
       return;
     }
 
