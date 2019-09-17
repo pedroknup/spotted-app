@@ -10,7 +10,7 @@ Spotted is an app where you can share a thought, an outburst, express yourself t
 
 ### Breakthrough
 
-My idea was to create a web application that looks native and with all, or almost all, features of a native app (such as camera, geo-location, get unique device identifier, store presence etc). For this, I used Meteor for the web application and React Native to load the meteor app through a webview, using WebViewBridge to communicate between the two sides.
+My idea was to create a web application that looks native and with all, or almost all, features of a native app (such as camera, geo-location, get unique device identifier, app stores presence etc). For this, I used Meteor for the web application and React Native to load the meteor app through a webview, using WebViewBridge to communicate between the two sides.
 
 
 
@@ -38,6 +38,8 @@ Including the transitions ;)
 ![](https://media.giphy.com/media/KBbl7kcOIWdh4CxECL/giphy.gif)
 
 
+Again: it's not native. This is a web app!
+
 
 ### Native Side
 
@@ -46,7 +48,7 @@ This web app has the following user phone's informations, provided by the native
 - Unique ID 
 - Camera (to upload a custom background to the spotted)
 - Geolocation 
-- Operational system (to properly load the layouts (iOS, iOS + notch and android)
+- Operational system (to properly load the layouts (iOS, iOS + notch and android))
 
 
 ## To Do:
