@@ -55,6 +55,7 @@ This web app has the following user phone's informations, provided by the native
 
 - Multi language support with i18n.
 - Refactor and clean the code.
+- Error handling
 - Compress image before sending it out of the native side
 - Properly implement Popular Feed and a popularity calculator algorithym
 - Create a login (with facebook) system so the users can create communities/groups and they can know sometimes if the spotteds's author is a friend, a friend of a friend etc.
