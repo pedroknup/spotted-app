@@ -38,7 +38,7 @@ Including the transitions ;)
 ![](https://media.giphy.com/media/KBbl7kcOIWdh4CxECL/giphy.gif)
 
 
-Again: it's not native. This is a web app!
+Again: it's not native. It's a web app!
 
 
 ### Native Side
@@ -53,7 +53,8 @@ This web app has the following user phone's informations, provided by the native
 
 ## To Do:
 
-- Refactor and clean the code (it's a bit messy, sorry for that)
+- Multi language support with i18n.
+- Refactor and clean the code.
 - Compress image before sending it out of the native side
 - Properly implement Popular Feed and a popularity calculator algorithym
 - Create a login (with facebook) system so the users can create communities/groups and they can know sometimes if the spotteds's author is a friend, a friend of a friend etc.
@@ -67,7 +68,7 @@ This web app has the following user phone's informations, provided by the native
 
 Spotted was an idea that I may continue to work on. But before to publish it, I have to think better about the privacy and some legal stuff. I just used it as an excuse to create a cool app in Meteor being loaded by a WebView inside of a React Native App, instead of just creating a dummy and simple proof-of-concept.
 
-I don't even have space for Android Studio here, so I didn't worked in the Android side, just iOS. Please consider that before running it. 
+I don't even have space for Android Studio here, so I didn't work in the Android side, only iOS. Please consider that before running it. 
 
 In /App.js, do the proper changes to the webview url (currently http://192.168.1.23:3000)
 
