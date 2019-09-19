@@ -27,10 +27,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ImageResizerPackage(),
-            new ImagePickerPackage(),
-            new RNDeviceInfo(),
-            new RNCWebViewPackage()
+          new ImageResizerPackage(),
+          new ImagePickerPackage(),
+          new RNDeviceInfo(),
+          new RNCWebViewPackage()
       );
     }
 
