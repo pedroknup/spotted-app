@@ -9,6 +9,7 @@ import { StyleSheet, Text, View, Platform } from "react-native";
 import { WebView } from "react-native-webview";
 import DeviceInfo from "react-native-device-info";
 import ImagePicker from "react-native-image-picker";
+import Geolocation from 'react-native-geolocation-service';
 
 const SERVER_URL_WEBBIO = "http://192.168.177.141:3000"; // webbio
 const SERVER_URL_KAMILE = 'http://192.168.1.13:3000 '// kamile
@@ -56,7 +57,7 @@ export default class App extends Component {
   }
   getUniqueId(msgData) {
     msgData.isSuccessfull = true;
-    const uniqueId = DeviceInfo.getUniqueID();
+    const uniqueId = DeviceInfo.getUniqueId();
     msgData.args = [uniqueId];
     this.myWebView.injectJavaScript(
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
@@ -73,7 +74,7 @@ export default class App extends Component {
       const options = {
         title: "Upload picture"
       };
- 
+
       ImagePicker.showImagePicker(options, response => {
         if (response.didCancel) {
           msgData.isSuccessfull = false;
@@ -97,10 +98,11 @@ export default class App extends Component {
       enableHighAccuracy: false,
       timeout: 50000
     };
+
     // navigator.geolocation.setRNConfiguration(options);
     // navigator.geolocation.requestAuthorization();
 
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
       coordinates => {
         msgData.args = [coordinates];
         msgData.isSuccessfull = true;
@@ -110,6 +112,7 @@ export default class App extends Component {
       },
       () => {
         msgData.isSuccessfull = false;
+        msgData.args = [];
         this.myWebView.injectJavaScript(
           `window.postMessage('${JSON.stringify(msgData)}', '*');`
         );
@@ -157,7 +160,7 @@ export default class App extends Component {
           }}
           style={styles.container}
           // scrollEnabled={false}
-          source={{ uri: 'http://192.168.1.23:3000' }}
+          source={{ uri: 'http://192.168.1.38:3000' }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>

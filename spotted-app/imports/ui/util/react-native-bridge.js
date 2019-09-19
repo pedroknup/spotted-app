@@ -2,8 +2,8 @@ import { devices } from "../redux/constants/enums";
 
 var promiseChain = Promise.resolve();
 var callbacks = {};
-export var initBridge = function() {
-  const guid = function() {
+export var initBridge = function () {
+  const guid = function () {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
@@ -32,7 +32,7 @@ export var initBridge = function() {
      * @param success - success callback
      * @param error - error callback
      */
-    send: function(targetFunc, data, success, error) {
+    send: function (targetFunc, data, success, error) {
       var msgObj = {
         targetFunc: targetFunc,
         data: data || {}
@@ -42,8 +42,8 @@ export var initBridge = function() {
       }
       var msg = JSON.stringify(msgObj);
       promiseChain = promiseChain
-        .then(function() {
-          return new Promise(function(resolve, reject) {
+        .then(function () {
+          return new Promise(function (resolve, reject) {
             if (msgObj.msgId) {
               callbacks[msgObj.msgId] = {
                 onsuccess: success,
@@ -54,12 +54,13 @@ export var initBridge = function() {
             resolve();
           });
         })
-        .catch(function(e) {
+        .catch(function (e) {
           error();
         });
     }
   };
-  window.addEventListener("message", function(e) {
+  window.addEventListener("message", function (e) {
+    console.log(e);
     var message;
     try {
       message = JSON.parse(e.data);
@@ -67,8 +68,8 @@ export var initBridge = function() {
       return;
     }
     //trigger callback
-    if (message.args && callbacks[message.msgId]) {
-      if (message.isSuccessfull) {
+    if (callbacks[message.msgId]) {
+      if (message.isSuccessfull && message.args) {
         callbacks[message.msgId].onsuccess.apply(null, message.args);
       } else {
         callbacks[message.msgId].onerror.apply(null, message.args);
@@ -87,6 +88,8 @@ export function checkBridge() {
 }
 
 const checkOS = device => {
+  device = Array.isArray(device) ? device : [device];
+
   if (device.includes("iPhone")) {
     const version = device.replace("iPhone", "");
     try {
@@ -110,11 +113,11 @@ export function getDeviceId(callback, err) {
   window.webViewBridge.send(
     "getDeviceId",
     "",
-    function(res) {
+    function (res) {
       const device = checkOS(res);
       callback(device);
     },
-    function(err) {
+    function (err) {
       callback(devices.ANDROID);
     }
   );
@@ -125,11 +128,11 @@ export function getGeolocation(callback, err) {
       window.webViewBridge.send(
         "getGeolocation",
         "",
-        function(res) {
+        function (res) {
           // alert(JSON.stringify(res));
           callback(res.coords);
         },
-        function(err) {
+        function (err) {
           // callback(devices.WEB);
           callback({
             latitude: 0,
@@ -148,10 +151,10 @@ export function uploadPicture(callback, err) {
     window.webViewBridge.send(
       "uploadPicture",
       "",
-      function(res) {
+      function (res) {
         callback(res);
       },
-      function(e) {
+      function (e) {
         err();
       }
     );
@@ -169,11 +172,11 @@ export function getUniqueId(callback, err) {
   window.webViewBridge.send(
     "getUniqueId",
     "",
-    function(res) {
+    function (res) {
       callback(res);
       // callback(devices.IOS);
     },
-    function(err) {
+    function (err) {
       callback("web");
     }
   );

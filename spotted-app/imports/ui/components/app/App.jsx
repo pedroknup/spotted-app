@@ -239,7 +239,7 @@ export default connect(
   mapDispatchToProps
 )(App);
 
-// export default withTracker(() => {
+// export default withTracker((props) => {
 //   const subscriptionHandle = Meteor.subscribe("spotteds");
 
 //   return {
