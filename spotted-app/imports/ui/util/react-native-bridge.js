@@ -60,7 +60,6 @@ export var initBridge = function () {
     }
   };
   window.addEventListener("message", function (e) {
-    console.log(e);
     var message;
     try {
       message = JSON.parse(e.data);

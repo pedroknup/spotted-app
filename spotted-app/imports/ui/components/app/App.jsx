@@ -68,12 +68,8 @@ class App extends Component {
           //   timestamp
           // }
 
-          const coordinates = {
-            latitude: response.coords.latitude,
-            longitude: response.coords.longitude
-          };
-          // alert(JSON.stringify(coordinates))
-          this.props.actions.changeCoordinates(coordinates);
+          // alert(JSON.stringify(response))
+          this.props.actions.changeCoordinates(response);
         },
         () => {
           alert("err");
@@ -92,23 +88,25 @@ class App extends Component {
     } catch (e) {
     }
 
-    try {
-      getUniqueId(
-        uniqueId => {
-          self.props.actions.changeUniqueId(uniqueId);
-          self.setState({ isLoading: false });
-        },
-        () => {
-          self.setState({ isLoading: false });
-          // self.props.actions.setUniqueId("web");
-          alert(" oops");
-        }
-      );
-      //  alert(deviceId);
-      // else alert("oops");
-    } catch (e) {
-      alert(e);
+    function getUniqueId() {
+      if (typeof ReactNativeBridge !== 'undefined') {
+        ReactNativeBridge.call('getUniqueId', function (err, res) {
+          if (err) {
+            self.setState({ isLoading: false });
+            // self.props.actions.setUniqueId("web");
+            alert(" oops");
+          } else {
+            self.props.actions.changeUniqueId(res);
+
+            self.setState({ isLoading: false });
+          }
+        });
+      } else {
+        setTimeout(getUniqueId, 100);
+      }
     }
+
+    getUniqueId();
   }
 
   push(component, title, hasActionButton) {
