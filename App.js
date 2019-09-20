@@ -5,15 +5,39 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
-import { WebView } from "react-native-webview";
+import { StyleSheet, Text, View, Platform, PermissionsAndroid } from "react-native";
+import BridgedWebView from "./BridgedWebView";
 import DeviceInfo from "react-native-device-info";
 import ImagePicker from "react-native-image-picker";
+import Geolocation from '@react-native-community/geolocation';
 
 const SERVER_URL_WEBBIO = "http://192.168.177.141:3000"; // webbio
 const SERVER_URL_KAMILE = 'http://192.168.1.13:3000 '// kamile
 const SERVER_URL_HOME = 'http://192.168.1.23:3000 '// home
 
+async function requestLocationPermission(callback) {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      // {
+      //   title: 'Cool Photo App Camera Permission',
+      //   message:
+      //     'Cool Photo App needs access to your camera ' +
+      //     'so you can take awesome pictures.',
+      //   buttonNeutral: 'Ask Me Later',
+      //   buttonNegative: 'Cancel',
+      //   buttonPositive: 'OK',
+      // },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      callback(true);
+    } else {
+      callback(false);
+    }
+  } catch (err) {
+    callback(false);
+  }
+}
 
 export default class App extends Component {
   constructor(props) {
@@ -25,6 +49,8 @@ export default class App extends Component {
       text2: ""
     };
 
+    this.myWebView = React.createRef();
+
     this.onWebViewMessage = this.onWebViewMessage.bind(this);
   }
 
@@ -34,15 +60,16 @@ export default class App extends Component {
     });
     msgData.isSuccessfull = true;
     msgData.args = [msgData.data % 2 ? "green" : "red"];
-    this.myWebView.injectJavaScript(
+    this.myWebView.current.injectJavaScript(
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
   }
   getDeviceBattery(msgData) {
     msgData.isSuccessfull = true;
     const batteryLevel = DeviceInfo.getDeviceId();
+    console.log(this.myWebView);
     msgData.args = [batteryLevel];
-    this.myWebView.injectJavaScript(
+    this.myWebView.current.injectJavaScript(
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
   }
@@ -50,22 +77,17 @@ export default class App extends Component {
     msgData.isSuccessfull = true;
     const deviceBrand = DeviceInfo.getDeviceId();
     msgData.args = [deviceBrand];
-    this.myWebView.injectJavaScript(
+    this.myWebView.current.injectJavaScript(
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
   }
   getUniqueId(msgData) {
     msgData.isSuccessfull = true;
-    const uniqueId = DeviceInfo.getUniqueID();
+    const uniqueId = DeviceInfo.getUniqueId();
     msgData.args = [uniqueId];
-    this.myWebView.injectJavaScript(
+    this.myWebView.current.injectJavaScript(
       `window.postMessage('${JSON.stringify(msgData)}', '*');`
     );
-  }
-
-  requestLocationPermission() {
-    geolocation.setRNConfiguration({ skipPermissionRequests: true });
-    geolocation.requestAuthorization();
   }
 
   uploadPicture(msgData) {
@@ -73,7 +95,7 @@ export default class App extends Component {
       const options = {
         title: "Upload picture"
       };
- 
+
       ImagePicker.showImagePicker(options, response => {
         if (response.didCancel) {
           msgData.isSuccessfull = false;
@@ -84,7 +106,7 @@ export default class App extends Component {
           const source = { uri: `data:image/jpeg;base64, ${response.data}` }; //TODO: img compression
           msgData.args = [source];
         }
-        this.myWebView.injectJavaScript(
+        this.myWebView.current.injectJavaScript(
           `window.postMessage('${JSON.stringify(msgData)}', '*');`
         );
       });
@@ -93,34 +115,47 @@ export default class App extends Component {
   }
 
   getGeolocation(msgData) {
-    const options = {
-      enableHighAccuracy: false,
-      timeout: 50000
-    };
-    // navigator.geolocation.setRNConfiguration(options);
-    // navigator.geolocation.requestAuthorization();
+    msgData.isSuccessfull = false;
+    msgData.args = [];
 
-    navigator.geolocation.getCurrentPosition(
-      coordinates => {
-        msgData.args = [coordinates];
-        msgData.isSuccessfull = true;
-        this.myWebView.injectJavaScript(
+    requestLocationPermission((granted) => {
+      if (granted) {
+        const options = {
+          enableHighAccuracy: false,
+          timeout: 50000
+        };
+
+        Geolocation.getCurrentPosition(
+          coordinates => {
+            msgData.args.push(coordinates);
+            msgData.isSuccessfull = true;
+
+            console.log(coordinates);
+
+            this.myWebView.current.injectJavaScript(
+              `window.postMessage('${JSON.stringify(msgData)}', '*');`
+            );
+          },
+          (err) => {
+            console.log(err);
+
+            this.myWebView.current.injectJavaScript(
+              `window.postMessage('${JSON.stringify(msgData)}', '*');`
+            );
+          },
+          options
+        );
+      } else {
+        this.myWebView.current.injectJavaScript(
           `window.postMessage('${JSON.stringify(msgData)}', '*');`
         );
-      },
-      () => {
-        msgData.isSuccessfull = false;
-        this.myWebView.injectJavaScript(
-          `window.postMessage('${JSON.stringify(msgData)}', '*');`
-        );
-      },
-      options
-    );
+      }
+    });
   }
 
   onWebViewMessage(event) {
-
     let msgData;
+
     try {
       msgData = JSON.parse(event.nativeEvent.data);
     } catch (err) {
@@ -151,13 +186,11 @@ export default class App extends Component {
   render() {
     return (
       <Fragment>
-        <WebView
-          ref={webview => {
-            this.myWebView = webview;
-          }}
+        <BridgedWebView
+          reference={this.myWebView}
           style={styles.container}
           // scrollEnabled={false}
-          source={{ uri: 'http://192.168.1.23:3000' }}
+          source={{ uri: 'http://192.168.1.38:3000' }}
           onMessage={this.onWebViewMessage}
         />
       </Fragment>
